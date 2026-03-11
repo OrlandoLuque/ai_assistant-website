@@ -54,6 +54,10 @@
 -->
 <html lang="es">
 <head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Assistant — Framework Comparison vs Industry</title>
@@ -276,7 +280,7 @@
   <!-- ai_assistant -->
   <div class="fw-card" style="border-color: #8b5cf6;">
     <div class="fw-name text-purple">ai_assistant (Ours)</div>
-    <div class="fw-lang">Rust &bull; 275k+ LoC &bull; 6445 tests &bull; 285 files &bull; 51 examples &bull; Private</div>
+    <div class="fw-lang">Rust &bull; 275k+ LoC &bull; 6445 tests &bull; 285 files &bull; 51 examples &bull; <strong style="color:#f59e0b">Experimental</strong></div>
     <div class="fw-row"><span>LLM Providers</span><div class="fw-bar-bg"><div class="fw-bar" style="width:95%;background:#8b5cf6"></div></div></div>
     <div class="fw-row"><span>RAG / Vector</span><div class="fw-bar-bg"><div class="fw-bar" style="width:96%;background:#8b5cf6"></div></div></div>
     <div class="fw-row"><span>Agents</span><div class="fw-bar-bg"><div class="fw-bar" style="width:97%;background:#8b5cf6"></div></div></div>
@@ -1268,6 +1272,18 @@
   <td><span class="badge r5">5</span><br>Rust compiled, minimal overhead</td>
 </tr>
 <tr>
+  <td>Maturity</td>
+  <td class="our-col"><span class="badge" style="background:#f59e0b;color:#000">Experimental</span><br>Active development, API may change</td>
+  <td><span class="badge" style="background:#10b981">GA</span><br>v1.2, production-ready, large ecosystem</td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">Pre-1.0</span><br>v0.14, API stabilizing</td>
+  <td><span class="badge" style="background:#10b981">GA</span><br>v1.x, enterprise-backed by Microsoft</td>
+  <td><span class="badge" style="background:#10b981">GA</span><br>v2.x, production pipeline framework</td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">Pre-1.0</span><br>v0.4, framework in transition</td>
+  <td><span class="badge" style="background:#10b981">GA</span><br>v1.x, stable with CrewAI Cloud</td>
+  <td><span class="badge" style="background:#10b981">GA</span><br>v6, production-ready</td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">Pre-1.0</span><br>v0.31, early stage</td>
+</tr>
+<tr>
   <td>License</td>
   <td class="our-col"><span class="badge" style="background:#7c3aed">PolyForm NC</span><br>Commercial use requires paid license</td>
   <td>MIT</td>
@@ -1517,6 +1533,20 @@
   <td><span class="badge r4">4</span></td>
 </tr>
 <tr>
+  <td>Maturity</td>
+  <td class="our-col"><span class="badge" style="background:#f59e0b;color:#000">Experimental</span></td>
+  <td><span class="badge" style="background:#10b981">GA</span></td>
+  <td><span class="badge" style="background:#10b981">GA</span></td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">Pre-1.0</span></td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">New (2025)</span></td>
+  <td><span class="badge" style="background:#10b981">GA</span></td>
+  <td><span class="badge" style="background:#10b981">Active</span></td>
+  <td><span class="badge" style="background:#10b981">Active</span></td>
+  <td><span class="badge" style="background:#10b981">GA</span></td>
+  <td><span class="badge" style="background:#10b981">GA</span></td>
+  <td><span class="badge" style="background:#f59e0b;color:#000">Pre-GA</span></td>
+</tr>
+<tr>
   <td>License</td>
   <td class="our-col"><span class="badge" style="background:#7c3aed">PolyForm NC</span></td>
   <td>MIT</td>
@@ -1613,6 +1643,7 @@
 <div class="card-grid">
 <div class="card" style="border-left: 4px solid #8b5cf6;">
   <h3 class="text-purple">ai_assistant (Ours) &mdash; Rust</h3>
+  <p><strong style="color:#f59e0b">Status: Experimental</strong> &mdash; Active development, API surface may change. Not yet production-ready.</p>
   <p><strong>What it is:</strong> A standalone, zero-dependency AI assistant library in Rust. 285 source files, 275k+ LoC, 6445 tests (0 warnings), zero stubs, 30+ feature flags. 51 examples covering all major features.</p>
   <p><strong>Unique strengths:</strong></p>
   <ul>
