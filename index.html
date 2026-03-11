@@ -26,7 +26,7 @@
   --red: #ef4444;
   --cyan: #06b6d4;
   --pink: #ec4899;
-  --gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
 }
 [data-theme="light"] {
   --bg: #f8fafc;
@@ -97,6 +97,7 @@ nav a:hover { color: var(--text-bright); text-decoration: none; background: var(
 .hero h1 {
   font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em;
   background: var(--gradient);
+  background-size: 200% 100%;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; margin-bottom: 16px; line-height: 1.2;
 }
@@ -117,8 +118,33 @@ nav a:hover { color: var(--text-bright); text-decoration: none; background: var(
 .stat-badge .num {
   font-size: 1.5rem; font-weight: 800; display: block;
   background: var(--gradient);
+  background-size: 200% 100%;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ── Experimental Banner ─────────────────────────────────── */
+.experimental-banner {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 10px;
+  padding: 14px 20px;
+  max-width: 680px;
+  margin: 24px auto 0;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.experimental-banner strong {
+  color: var(--yellow);
+}
+[data-theme="light"] .experimental-banner {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.35);
+}
+[data-theme="light"] .experimental-banner strong {
+  color: var(--yellow);
 }
 .stat-badge .label { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
 
@@ -307,6 +333,12 @@ footer {
       <div class="stat-badge"><span class="num">30+</span><span class="label">Feature Flags</span></div>
       <div class="stat-badge"><span class="num">51</span><span class="label">Examples</span></div>
       <div class="stat-badge"><span class="num">42</span><span class="label">Benchmarks</span></div>
+    </div>
+    <div class="experimental-banner">
+      <strong>Status: Experimental</strong> &mdash;
+      This project compiles and passes 6,696 tests with zero warnings, but it has not been
+      validated in production or real-world usage. Some modules may be
+      undertested against live LLM APIs. Security-audited, not battle-tested.
     </div>
   </div>
 </section>
@@ -714,6 +746,24 @@ function toggleTheme() {
     const saved = localStorage.getItem('theme');
     if (saved) document.documentElement.setAttribute('data-theme', saved);
   } catch(e) {}
+})();
+
+// ── Animated gradient shift ──────────────────────────────
+// Slowly scrolls the background-position of all gradient-clipped text
+// so the colors appear to drift continuously to the right.
+(function() {
+  const els = document.querySelectorAll('.hero h1, .stat-badge .num');
+  if (!els.length) return;
+  let offset = 0;
+  const speed = 0.015;  // % per frame — very slow
+  function tick() {
+    offset = (offset + speed) % 200;
+    for (let i = 0; i < els.length; i++) {
+      els[i].style.backgroundPosition = offset + '% 0';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
 </script>
 
