@@ -95,7 +95,8 @@
     text-align: center;
     font-size: 1.6rem;
     margin-bottom: 8px;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -2374,5 +2375,18 @@ renderTable();
 updateEditCount();
 </script>
 
+<script>
+(function() {
+  var els = document.querySelectorAll('h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>

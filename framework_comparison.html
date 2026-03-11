@@ -87,7 +87,8 @@
   }
   h1 {
     text-align: center; font-size: 1.8rem; margin-bottom: 6px;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+    background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+    background-size: 200% 100%;
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .subtitle { text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-bottom: 24px; }
@@ -2702,5 +2703,18 @@ function showTab(name) {
   Data sources: GitHub, official docs, crates.io, PyPI, npm, web research
 </p>
 
+<script>
+(function() {
+  var els = document.querySelectorAll('h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>
