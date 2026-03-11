@@ -238,6 +238,7 @@ footer {
     <a href="#rag">RAG</a>
     <a href="#docker">Docker</a>
     <a href="#next">Next Steps</a>
+    <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener" style="margin-left:auto; margin-right:4px;">GitHub</a>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
   </div>
 </nav>
@@ -298,9 +299,10 @@ footer {
       <p>Add ai_assistant as a dependency in your <code>Cargo.toml</code>:</p>
       <span class="code-label toml">Cargo.toml</span>
       <pre>[dependencies]
-ai_assistant = { path = "../ai_assistant_standalone", features = ["full"] }</pre>
+ai_assistant = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
       <div class="info-box">
-        <strong>Note:</strong> The crate is not yet published on crates.io. Use a local path or git dependency.
+        <strong>Source:</strong> The repository is at
+        <a href="https://github.com/OrlandoLuque/ai_assistant">github.com/OrlandoLuque/ai_assistant</a>.
         The <code>full</code> feature enables all lightweight features (core, RAG, security, streaming, multi-agent, etc.).
       </div>
     </div>
@@ -796,6 +798,7 @@ cargo run --features full --bin ai_assistant_cli -- --provider ollama --model ll
 <footer>
   <div class="container">
     <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
     <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
   </div>
 </footer>
