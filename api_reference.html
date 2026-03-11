@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Reference &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 640px; margin: 0 auto;
+}
+.hero .base-url {
+  margin-top: 20px; display: inline-block;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 20px; font-family: 'Cascadia Code', monospace; font-size: 0.9rem;
+  color: var(--accent);
+}
+
+/* ── Headings ─────────────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px; overflow-x: auto; font-size: 0.82rem;
+  line-height: 1.6; margin: 14px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px;
+  letter-spacing: 0.03em; color: #fff;
+}
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.code-label.python { background: #3776ab; }
+.code-label.js { background: #f7df1e; color: #1e293b; }
+.code-label.http { background: #8b5cf6; }
+.code-label.text { background: #64748b; }
+
+/* ── Endpoint cards ───────────────────────────────────────── */
+.endpoint {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0;
+}
+.endpoint-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.method {
+  display: inline-block; padding: 4px 14px; border-radius: 6px;
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+  font-family: 'Cascadia Code', monospace;
+}
+.method-get { background: rgba(16, 185, 129, 0.2); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+.method-post { background: rgba(59, 130, 246, 0.2); color: var(--accent); border: 1px solid rgba(59, 130, 246, 0.3); }
+.method-delete { background: rgba(239, 68, 68, 0.2); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+.method-ws { background: rgba(139, 92, 246, 0.2); color: var(--accent2); border: 1px solid rgba(139, 92, 246, 0.3); }
+.endpoint-path {
+  font-family: 'Cascadia Code', monospace; font-size: 1rem;
+  font-weight: 700; color: var(--text-bright);
+}
+.endpoint p { font-size: 0.86rem; color: var(--text-dim); margin-bottom: 12px; }
+.endpoint h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin: 16px 0 8px; }
+
+/* ── Tables ───────────────────────────────────────────────── */
+.api-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem;
+  background: var(--bg); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border); margin: 10px 0;
+}
+.api-table th, .api-table td {
+  padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.api-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.api-table td:first-child {
+  font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent);
+  white-space: nowrap;
+}
+.api-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.api-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── Info / Warning boxes ─────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.84rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box.error { border-left-color: var(--red); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tab-row {
+  display: flex; gap: 4px; margin-bottom: -1px; flex-wrap: wrap;
+}
+.tab-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  border-bottom: none; border-radius: 8px 8px 0 0;
+  padding: 8px 18px; font-size: 0.82rem; font-weight: 600;
+  color: var(--text-dim); cursor: pointer; transition: all .2s;
+}
+.tab-btn:hover { color: var(--text-bright); }
+.tab-btn.active { color: var(--accent); border-color: var(--accent); background: var(--bg); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── Status badges ────────────────────────────────────────── */
+.status-code {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 700;
+  font-family: 'Cascadia Code', monospace;
+}
+.status-2xx { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+.status-4xx { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+.status-5xx { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+/* ── TOC ──────────────────────────────────────────────────── */
+.toc {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 24px 28px; margin: 24px 0; columns: 2; column-gap: 24px;
+}
+.toc a {
+  display: block; font-size: 0.84rem; padding: 3px 0; color: var(--text-dim);
+  break-inside: avoid;
+}
+.toc a:hover { color: var(--accent); }
+.toc a code { font-size: 0.82em; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.76rem; }
+  .endpoint { padding: 20px; }
+  .toc { columns: 1; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#auth">Auth</a>
+    <a href="#endpoints">Endpoints</a>
+    <a href="#openai">OpenAI</a>
+    <a href="#websocket">WebSocket</a>
+    <a href="#enrichment">Pipeline</a>
+    <a href="#examples">Examples</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>API Reference</h1>
+    <p class="tagline">
+      Complete HTTP API documentation for the ai_assistant embedded server.
+      OpenAI-compatible endpoints, SSE streaming, WebSocket, and Prometheus metrics.
+    </p>
+    <div class="base-url">Base URL: http://localhost:8090</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TOC ════════════════════════ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Table of Contents</h2>
+    <div class="toc">
+      <a href="#auth">Authentication</a>
+      <a href="#headers">Common Headers</a>
+      <a href="#errors">Error Format</a>
+      <a href="#ep-health"><code>GET /health</code></a>
+      <a href="#ep-models"><code>GET /models</code></a>
+      <a href="#ep-chat"><code>POST /chat</code></a>
+      <a href="#ep-chat-stream"><code>POST /chat/stream</code></a>
+      <a href="#ep-config-get"><code>GET /config</code></a>
+      <a href="#ep-config-post"><code>POST /config</code></a>
+      <a href="#ep-metrics"><code>GET /metrics</code></a>
+      <a href="#ep-sessions"><code>GET /sessions</code></a>
+      <a href="#ep-session-id"><code>GET /sessions/{id}</code></a>
+      <a href="#ep-session-delete"><code>DELETE /sessions/{id}</code></a>
+      <a href="#openai"><code>POST /v1/chat/completions</code></a>
+      <a href="#ep-v1-models"><code>GET /v1/models</code></a>
+      <a href="#websocket"><code>GET /ws</code> (WebSocket)</a>
+      <a href="#ep-openapi"><code>GET /openapi.json</code></a>
+      <a href="#enrichment">Enrichment Pipeline</a>
+      <a href="#rate-limiting">Rate Limiting</a>
+      <a href="#cors">CORS</a>
+      <a href="#versioning">API Versioning</a>
+      <a href="#examples">Code Examples</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ AUTH ═══════════════════════ -->
+<section id="auth">
+  <div class="container">
+    <h2 class="section-title">Authentication</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
+      When <code>auth.enabled = true</code>, all requests (except exempt paths) must include one of:
+    </p>
+
+    <div style="overflow-x: auto;">
+    <table class="api-table">
+      <thead><tr><th>Method</th><th>Header</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Bearer Token</td><td><code>Authorization</code></td><td><code>Authorization: Bearer my-secret</code></td></tr>
+        <tr><td>API Key</td><td><code>X-API-Key</code></td><td><code>X-API-Key: abc123</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p style="font-size: 0.86rem; color: var(--text-dim); margin-top: 12px;">
+      <strong style="color: var(--text-bright);">Exempt paths</strong> (default): <code>/health</code>
+    </p>
+
+    <p style="font-size: 0.86rem; color: var(--text-dim); margin-top: 8px;">
+      <strong style="color: var(--text-bright);">Failure response:</strong> <span class="status-code status-4xx">401</span>
+    </p>
+    <span class="code-label json">JSON</span>
+    <pre>{
+  "error": "Authentication required"
+}</pre>
+
+    <div class="info-box">
+      <strong>Security:</strong> Token comparison uses constant-time XOR to prevent timing side-channel attacks.
+      Auth is disabled by default for development &mdash; always enable it in production.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ HEADERS ════════════════════ -->
+<section id="headers">
+  <div class="container">
+    <h2 class="section-title">Common Headers</h2>
+
+    <h3 style="color: var(--text-bright); font-size: 1rem; margin-bottom: 12px;">Request Headers</h3>
+    <div style="overflow-x: auto;">
+    <table class="api-table">
+      <thead><tr><th>Header</th><th>Description</th><th>Required</th></tr></thead>
+      <tbody>
+        <tr><td>Content-Type</td><td>Must be <code>application/json</code> for POST</td><td>Yes (POST)</td></tr>
+        <tr><td>Authorization</td><td>Bearer token authentication</td><td>When auth enabled</td></tr>
+        <tr><td>X-API-Key</td><td>API key authentication</td><td>When auth enabled</td></tr>
+        <tr><td>X-Request-Id</td><td>Correlation ID (reused if provided, generated otherwise)</td><td>No</td></tr>
+        <tr><td>Accept-Encoding</td><td>Set to <code>gzip</code> for compressed responses</td><td>No</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="color: var(--text-bright); font-size: 1rem; margin: 24px 0 12px;">Response Headers</h3>
+    <div style="overflow-x: auto;">
+    <table class="api-table">
+      <thead><tr><th>Header</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Content-Type</td><td><code>application/json</code> for most endpoints</td></tr>
+        <tr><td>X-Request-Id</td><td>32-character hex correlation ID</td></tr>
+        <tr><td>X-API-Version</td><td>API version (e.g., <code>v1</code>)</td></tr>
+        <tr><td>Access-Control-Allow-Origin</td><td>CORS origin (configurable)</td></tr>
+        <tr><td>Content-Encoding</td><td><code>gzip</code> when response is compressed</td></tr>
+        <tr><td>Retry-After</td><td>Seconds to wait (on <span class="status-code status-4xx">429</span> responses)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ERRORS ═════════════════════ -->
+<section id="errors">
+  <div class="container">
+    <h2 class="section-title">Error Format</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 12px;">
+      All errors return a structured JSON body:
+    </p>
+    <span class="code-label json">JSON</span>
+    <pre>{
+  "error_code": "INVALID_JSON",
+  "message": "Failed to parse request body",
+  "details": "expected ',' or '}' at line 3 column 1",
+  "retry_after_secs": null
+}</pre>
+
+    <div style="overflow-x: auto; margin-top: 16px;">
+    <table class="api-table">
+      <thead><tr><th>Code</th><th>HTTP Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>INVALID_JSON</td><td><span class="status-code status-4xx">400</span></td><td>Malformed JSON in request body</td></tr>
+        <tr><td>AUTH_FAILED</td><td><span class="status-code status-4xx">401</span></td><td>Missing or invalid authentication</td></tr>
+        <tr><td>RATE_LIMITED</td><td><span class="status-code status-4xx">429</span></td><td>Too many requests; check <code>Retry-After</code></td></tr>
+        <tr><td>VALIDATION_ERROR</td><td><span class="status-code status-4xx">422</span></td><td>Request validation failed (message too long, etc.)</td></tr>
+        <tr><td>MODEL_ERROR</td><td><span class="status-code status-5xx">500</span></td><td>LLM provider returned an error</td></tr>
+        <tr><td>INTERNAL_ERROR</td><td><span class="status-code status-5xx">500</span></td><td>Unexpected server error</td></tr>
+        <tr><td>NOT_FOUND</td><td><span class="status-code status-4xx">404</span></td><td>Unknown endpoint</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ENDPOINTS ══════════════════ -->
+<section id="endpoints">
+  <div class="container">
+    <h2 class="section-title">Endpoints</h2>
+
+    <!-- GET /health -->
+    <div class="endpoint" id="ep-health">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/health</span>
+      </div>
+      <p>Health check endpoint. Exempt from authentication by default.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "status": "ok",
+  "version": "0.1.0",
+  "model": "llama3.2",
+  "provider": "Ollama",
+  "uptime_secs": 3600,
+  "active_sessions": 5,
+  "conversation_messages": 42
+}</pre>
+      <div style="overflow-x: auto;">
+      <table class="api-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>status</td><td>string</td><td>Always <code>"ok"</code> when running</td></tr>
+          <tr><td>version</td><td>string</td><td>Crate version from Cargo.toml</td></tr>
+          <tr><td>model</td><td>string</td><td>Currently selected LLM model</td></tr>
+          <tr><td>provider</td><td>string</td><td>Active LLM provider name</td></tr>
+          <tr><td>uptime_secs</td><td>integer</td><td>Server uptime in seconds</td></tr>
+          <tr><td>active_sessions</td><td>integer</td><td>Number of stored sessions</td></tr>
+          <tr><td>conversation_messages</td><td>integer</td><td>Messages in current conversation</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- GET /models -->
+    <div class="endpoint" id="ep-models">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/models</span>
+      </div>
+      <p>List available LLM models and current selection.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>[
+  { "id": "llama3.2", "provider": "Ollama", "selected": true },
+  { "id": "gpt-4", "provider": "OpenAI", "selected": false }
+]</pre>
+    </div>
+
+    <!-- POST /chat -->
+    <div class="endpoint" id="ep-chat">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/chat</span>
+      </div>
+      <p>Send a message to the AI assistant (non-streaming). Returns the complete response.</p>
+      <h4>Request Body</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "message": "What is Rust?",
+  "system_prompt": "You are a helpful assistant.",
+  "knowledge_context": "Optional RAG context to include."
+}</pre>
+      <div style="overflow-x: auto;">
+      <table class="api-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>message</td><td>string</td><td>Yes</td><td>The user message</td></tr>
+          <tr><td>system_prompt</td><td>string</td><td>No</td><td>System prompt override</td></tr>
+          <tr><td>knowledge_context</td><td>string</td><td>No</td><td>Additional RAG context</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "content": "Rust is a systems programming language...",
+  "model": "llama3.2"
+}</pre>
+    </div>
+
+    <!-- POST /chat/stream -->
+    <div class="endpoint" id="ep-chat-stream">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/chat/stream</span>
+      </div>
+      <p>Send a message with Server-Sent Events (SSE) streaming response. Same request body as <code>/chat</code>.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span> &mdash; <code>text/event-stream</code></h4>
+      <span class="code-label text">SSE Stream</span>
+      <pre>data: {"token":"Hello"}
+
+data: {"token":" how"}
+
+data: {"token":" are"}
+
+data: {"token":" you?"}
+
+data: [DONE]</pre>
+      <p>Each SSE event contains a JSON object with a <code>token</code> field. The stream ends with <code>data: [DONE]</code>.</p>
+    </div>
+
+    <!-- GET /config -->
+    <div class="endpoint" id="ep-config-get">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/config</span>
+      </div>
+      <p>Retrieve the current assistant configuration.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "provider": "ollama",
+  "model": "llama3.2",
+  "temperature": 0.7,
+  "max_history": 20
+}</pre>
+    </div>
+
+    <!-- POST /config -->
+    <div class="endpoint" id="ep-config-post">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/config</span>
+      </div>
+      <p>Update the assistant configuration at runtime. Supports hot-reload of model, temperature, and provider.</p>
+      <h4>Request Body</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "model": "llama3.2",
+  "temperature": 0.5,
+  "provider": "ollama"
+}</pre>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{ "status": "updated" }</pre>
+    </div>
+
+    <!-- GET /metrics -->
+    <div class="endpoint" id="ep-metrics">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/metrics</span>
+      </div>
+      <p>Prometheus-format metrics endpoint. Scrape with Prometheus, Grafana, or any compatible tool.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span> &mdash; <code>text/plain</code></h4>
+      <span class="code-label text">Prometheus</span>
+      <pre># HELP ai_server_requests_total Total number of HTTP requests.
+# TYPE ai_server_requests_total counter
+ai_server_requests_total 1234
+# HELP ai_server_requests_by_status HTTP requests by status class.
+# TYPE ai_server_requests_by_status counter
+ai_server_requests_by_status{status="2xx"} 1100
+ai_server_requests_by_status{status="4xx"} 120
+ai_server_requests_by_status{status="5xx"} 14
+# HELP ai_server_request_duration_seconds_total Total time processing.
+# TYPE ai_server_request_duration_seconds_total counter
+ai_server_request_duration_seconds_total 45.123456</pre>
+    </div>
+
+    <!-- GET /sessions -->
+    <div class="endpoint" id="ep-sessions">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/sessions</span>
+      </div>
+      <p>List all stored conversation sessions.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "sessions": ["default", "session-abc", "session-xyz"],
+  "count": 3
+}</pre>
+    </div>
+
+    <!-- GET /sessions/{id} -->
+    <div class="endpoint" id="ep-session-id">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/sessions/{id}</span>
+      </div>
+      <p>Get details of a specific session.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "session_id": "session-abc",
+  "message_count": 15
+}</pre>
+      <p>Returns <span class="status-code status-4xx">404</span> if session not found.</p>
+    </div>
+
+    <!-- DELETE /sessions/{id} -->
+    <div class="endpoint" id="ep-session-delete">
+      <div class="endpoint-header">
+        <span class="method method-delete">DELETE</span>
+        <span class="endpoint-path">/sessions/{id}</span>
+      </div>
+      <p>Delete a specific conversation session.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{ "deleted": "session-abc" }</pre>
+      <p>Returns <span class="status-code status-4xx">404</span> if session not found.</p>
+    </div>
+
+    <!-- GET /openapi.json -->
+    <div class="endpoint" id="ep-openapi">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/openapi.json</span>
+      </div>
+      <p>Returns the OpenAPI 3.0.0 specification for all server endpoints.</p>
+      <span class="code-label bash">bash</span>
+      <pre>curl http://localhost:8090/openapi.json | jq .info
+# {"title": "AI Assistant API", "version": "1.0.0", ...}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ OPENAI COMPAT ══════════════ -->
+<section id="openai">
+  <div class="container">
+    <h2 class="section-title">OpenAI-Compatible Endpoints</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 20px;">
+      Drop-in compatible with Open WebUI, LangChain, LiteLLM, Cursor, and any tool that speaks the OpenAI API format.
+    </p>
+
+    <!-- POST /v1/chat/completions -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/v1/chat/completions</span>
+      </div>
+      <p>OpenAI-compatible chat completion. Supports both streaming and non-streaming modes.</p>
+      <h4>Request Body</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "model": "llama3.2",
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is Rust?"}
+  ],
+  "temperature": 0.7,
+  "max_tokens": 1024,
+  "stream": false
+}</pre>
+      <div style="overflow-x: auto;">
+      <table class="api-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>model</td><td>string</td><td>No</td><td>Model name (uses server default if omitted)</td></tr>
+          <tr><td>messages</td><td>array</td><td>Yes</td><td>Array of <code>{role, content}</code> message objects</td></tr>
+          <tr><td>temperature</td><td>float</td><td>No</td><td>Generation temperature (0.0&ndash;2.0)</td></tr>
+          <tr><td>max_tokens</td><td>integer</td><td>No</td><td>Maximum tokens to generate</td></tr>
+          <tr><td>stream</td><td>boolean</td><td>No</td><td>Enable SSE streaming (default: false)</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h4>Response (non-streaming) <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1709654400,
+  "model": "llama3.2",
+  "choices": [{
+    "index": 0,
+    "message": {"role": "assistant", "content": "Rust is..."},
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 25,
+    "completion_tokens": 150,
+    "total_tokens": 175
+  }
+}</pre>
+
+      <h4>Response (streaming) <span class="status-code status-2xx">200 OK</span> &mdash; <code>text/event-stream</code></h4>
+      <span class="code-label text">SSE Stream</span>
+      <pre>data: {"id":"chatcmpl-abc123","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-abc123","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"Rust"},"finish_reason":null}]}
+
+data: [DONE]</pre>
+    </div>
+
+    <!-- GET /v1/models -->
+    <div class="endpoint" id="ep-v1-models">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/v1/models</span>
+      </div>
+      <p>List available models in OpenAI format.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "object": "list",
+  "data": [
+    {"id": "llama3.2", "object": "model", "created": 1709654400, "owned_by": "ollama"},
+    {"id": "gpt-4", "object": "model", "created": 1709654400, "owned_by": "openai"}
+  ]
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ WEBSOCKET ══════════════════ -->
+<section id="websocket">
+  <div class="container">
+    <h2 class="section-title">WebSocket</h2>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-ws">WS</span>
+        <span class="endpoint-path">/ws</span>
+      </div>
+      <p>WebSocket chat endpoint (RFC 6455). Supports persistent bidirectional connections for real-time chat.</p>
+
+      <h4>Upgrade Request</h4>
+      <span class="code-label http">HTTP</span>
+      <pre>GET /ws HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Sec-WebSocket-Version: 13</pre>
+
+      <h4>Client &rarr; Server Message</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "message": "Hello, assistant!",
+  "system_prompt": "You are a helpful assistant"
+}</pre>
+
+      <h4>Server &rarr; Client Frames</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{"type": "chunk", "data": "Hello"}
+{"type": "chunk", "data": "! How"}
+{"type": "chunk", "data": " can I help?"}
+{"type": "done"}</pre>
+
+      <h4>JavaScript Example</h4>
+      <span class="code-label js">JavaScript</span>
+      <pre>const ws = new WebSocket('ws://localhost:8090/ws');
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({ message: 'Hello!' }));
+};
+
+ws.onmessage = (event) => {
+  const msg = JSON.parse(event.data);
+  if (msg.type === 'done') return;
+  document.getElementById('output').textContent += msg.data;
+};</pre>
+    </div>
+
+    <div class="info-box">
+      <strong>Origin validation:</strong> WebSocket upgrade requests are validated against the configured
+      <code>allowed_origins</code>. Connections from unauthorized origins are rejected before the upgrade completes.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ENRICHMENT ═════════════════ -->
+<section id="enrichment">
+  <div class="container">
+    <h2 class="section-title">Enrichment Pipeline</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
+      When enrichment is enabled via <code>ServerConfig.enrichment</code>, both native and OpenAI-compatible
+      endpoints apply a full processing pipeline:
+    </p>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 16px 0; text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; font-size: 0.82rem; font-weight: 600;">
+        <span style="background: var(--surface2); padding: 6px 14px; border-radius: 6px; color: var(--text-bright);">Request</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: rgba(239,68,68,0.15); padding: 6px 14px; border-radius: 6px; color: var(--red);">Cost Check</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: rgba(245,158,11,0.15); padding: 6px 14px; border-radius: 6px; color: var(--yellow);">Input Guard</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 6px; color: var(--accent);">RAG Context</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: rgba(139,92,246,0.15); padding: 6px 14px; border-radius: 6px; color: var(--accent2);">LLM</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: rgba(16,185,129,0.15); padding: 6px 14px; border-radius: 6px; color: var(--green);">Output Guard</span>
+        <span style="color: var(--text-dim);">&rarr;</span>
+        <span style="background: var(--surface2); padding: 6px 14px; border-radius: 6px; color: var(--text-bright);">Response</span>
+      </div>
+    </div>
+
+    <h4 style="color: var(--text-bright); margin-top: 20px;">Top-Level Configuration</h4>
+    <div style="overflow-x: auto;">
+    <table class="api-table">
+      <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>enable_rag</td><td>bool</td><td>false</td><td>Enable RAG context retrieval</td></tr>
+        <tr><td>enable_guardrails</td><td>bool</td><td>false</td><td>Enable input guardrails</td></tr>
+        <tr><td>enable_memory</td><td>bool</td><td>false</td><td>Enable conversation memory</td></tr>
+        <tr><td>block_on_input_violation</td><td>bool</td><td>true</td><td>Return 400 on guardrail violations</td></tr>
+        <tr><td>redact_output_pii</td><td>bool</td><td>true</td><td>Mask PII in responses</td></tr>
+        <tr><td>guardrail_threshold</td><td>f32</td><td>0.8</td><td>Guardrail confidence threshold</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p style="font-size: 0.84rem; color: var(--text-dim); margin-top: 12px;">
+      The enrichment config has 52 configurable fields across 7 sub-configs:
+      <strong style="color: var(--text-bright);">guardrails</strong> (18),
+      <strong style="color: var(--text-bright);">rag</strong> (8),
+      <strong style="color: var(--text-bright);">context</strong> (5),
+      <strong style="color: var(--text-bright);">compaction</strong> (6),
+      <strong style="color: var(--text-bright);">model_selection</strong> (5),
+      <strong style="color: var(--text-bright);">cost</strong> (5),
+      <strong style="color: var(--text-bright);">thinking</strong> (7).
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ RATE LIMITING ══════════════ -->
+<section id="rate-limiting">
+  <div class="container">
+    <h2 class="section-title">Rate Limiting</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
+      The server tracks requests per time window (global + per-IP). Exceeding the limit returns:
+    </p>
+    <span class="code-label json">429 Too Many Requests</span>
+    <pre>{
+  "error_code": "RATE_LIMITED",
+  "message": "Rate limit exceeded",
+  "retry_after_secs": 30
+}</pre>
+    <p style="font-size: 0.86rem; color: var(--text-dim); margin-top: 8px;">
+      The <code>Retry-After</code> header indicates seconds to wait before retrying.
+      Per-IP limits are automatically calculated as <code>global_rpm / 4</code> (minimum 10).
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ CORS ═══════════════════════ -->
+<section id="cors">
+  <div class="container">
+    <h2 class="section-title">CORS</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 12px;">
+      The server handles CORS preflight (<code>OPTIONS</code>) requests automatically based on <code>CorsConfig</code>.
+    </p>
+    <span class="code-label bash">bash</span>
+    <pre># Preflight request
+curl -X OPTIONS \
+  -H "Origin: https://app.example.com" \
+  -H "Access-Control-Request-Method: POST" \
+  http://localhost:8090/chat
+
+# Response headers:
+# Access-Control-Allow-Origin: *
+# Access-Control-Allow-Methods: GET, POST, OPTIONS
+# Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key
+# Access-Control-Max-Age: 86400</pre>
+
+    <div class="info-box warning">
+      <strong>Security:</strong> Wildcard origin (<code>*</code>) with <code>Access-Control-Allow-Credentials</code>
+      is automatically blocked. Use specific origins in production.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ VERSIONING ═════════════════ -->
+<section id="versioning">
+  <div class="container">
+    <h2 class="section-title">API Versioning</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
+      All endpoints are available under both root (<code>/</code>) and versioned (<code>/api/v1/</code>) paths:
+    </p>
+    <div style="overflow-x: auto;">
+    <table class="api-table">
+      <thead><tr><th>Root Path</th><th>Versioned Path</th></tr></thead>
+      <tbody>
+        <tr><td>/health</td><td>/api/v1/health</td></tr>
+        <tr><td>/models</td><td>/api/v1/models</td></tr>
+        <tr><td>/chat</td><td>/api/v1/chat</td></tr>
+        <tr><td>/chat/stream</td><td>/api/v1/chat/stream</td></tr>
+        <tr><td>/config</td><td>/api/v1/config</td></tr>
+        <tr><td>/metrics</td><td>/api/v1/metrics</td></tr>
+        <tr><td>/sessions</td><td>/api/v1/sessions</td></tr>
+        <tr><td>/ws</td><td>/api/v1/ws</td></tr>
+        <tr><td>/openapi.json</td><td>/api/v1/openapi.json</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ EXAMPLES ═══════════════════ -->
+<section id="examples">
+  <div class="container">
+    <h2 class="section-title">Code Examples</h2>
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="showTab('curl')">curl</button>
+      <button class="tab-btn" onclick="showTab('python')">Python</button>
+      <button class="tab-btn" onclick="showTab('javascript')">JavaScript</button>
+    </div>
+
+    <div id="tab-curl" class="tab-content active">
+      <span class="code-label bash">bash</span>
+      <pre># Health check
+curl http://localhost:8090/health
+
+# Simple chat
+curl -X POST http://localhost:8090/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is Rust?"}'
+
+# Streaming chat (SSE)
+curl -X POST http://localhost:8090/chat/stream \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Explain async/await"}'
+
+# With authentication
+curl -X POST http://localhost:8090/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer my-token" \
+  -d '{"message": "Hello"}'
+
+# OpenAI-compatible
+curl -X POST http://localhost:8090/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama3.2",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+
+# List sessions
+curl http://localhost:8090/sessions
+
+# Get metrics
+curl http://localhost:8090/metrics</pre>
+    </div>
+
+    <div id="tab-python" class="tab-content">
+      <span class="code-label python">Python</span>
+      <pre>import requests
+
+BASE = "http://localhost:8090/api/v1"
+HEADERS = {"Authorization": "Bearer my-token"}
+
+# Simple chat
+resp = requests.post(f"{BASE}/chat",
+    json={"message": "Hello!"},
+    headers=HEADERS)
+print(resp.json()["content"])
+
+# Streaming chat (SSE)
+resp = requests.post(f"{BASE}/chat/stream",
+    json={"message": "Tell me a story"},
+    headers=HEADERS,
+    stream=True)
+for line in resp.iter_lines():
+    if line:
+        text = line.decode()
+        if text.startswith("data: ") and text != "data: [DONE]":
+            import json
+            token = json.loads(text[6:])["token"]
+            print(token, end="", flush=True)
+
+# OpenAI-compatible (works with openai library)
+from openai import OpenAI
+client = OpenAI(base_url="http://localhost:8090/v1", api_key="my-token")
+response = client.chat.completions.create(
+    model="llama3.2",
+    messages=[{"role": "user", "content": "What is Rust?"}]
+)
+print(response.choices[0].message.content)</pre>
+    </div>
+
+    <div id="tab-javascript" class="tab-content">
+      <span class="code-label js">JavaScript</span>
+      <pre>const BASE = 'http://localhost:8090/api/v1';
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer my-token'
+};
+
+// Simple chat
+const resp = await fetch(`${BASE}/chat`, {
+  method: 'POST',
+  headers: HEADERS,
+  body: JSON.stringify({ message: 'Hello!' })
+});
+const data = await resp.json();
+console.log(data.content);
+
+// SSE Streaming
+const streamResp = await fetch(`${BASE}/chat/stream`, {
+  method: 'POST',
+  headers: HEADERS,
+  body: JSON.stringify({ message: 'Tell me a story' })
+});
+const reader = streamResp.body.getReader();
+const decoder = new TextDecoder();
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  const text = decoder.decode(value);
+  for (const line of text.split('\n')) {
+    if (line.startsWith('data: ') &amp;&amp; line !== 'data: [DONE]') {
+      const { token } = JSON.parse(line.slice(6));
+      process.stdout.write(token);
+    }
+  }
+}
+
+// WebSocket
+const ws = new WebSocket('ws://localhost:8090/ws');
+ws.onopen = () => ws.send(JSON.stringify({ message: 'Hello!' }));
+ws.onmessage = (e) => {
+  const msg = JSON.parse(e.data);
+  if (msg.type !== 'done') console.log(msg.data);
+};</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ JS ═════════════════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

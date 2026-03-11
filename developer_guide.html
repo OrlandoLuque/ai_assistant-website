@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Guide &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 660px; margin: 0 auto;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+h2.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+h3.sub-title {
+  font-size: 1.1rem; font-weight: 700; color: var(--text-bright);
+  margin: 28px 0 12px;
+}
+h4.detail-title {
+  font-size: 0.95rem; font-weight: 700; color: var(--text-bright);
+  margin: 20px 0 8px;
+}
+
+/* ── Prose ─────────────────────────────────────────────────── */
+.prose { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; }
+.prose p { margin-bottom: 12px; }
+.prose ul, .prose ol { padding-left: 20px; margin-bottom: 12px; }
+.prose li { margin-bottom: 6px; }
+.prose strong { color: var(--text-bright); }
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px; overflow-x: auto; font-size: 0.82rem;
+  line-height: 1.6; margin: 14px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px;
+  letter-spacing: 0.03em; color: #fff;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+
+/* ── Cards / Boxes ────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px; margin: 16px 0;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 22px; transition: border-color .2s;
+}
+.card:hover { border-color: var(--accent); }
+.card h4 { font-size: 0.92rem; font-weight: 700; color: var(--text-bright); margin-bottom: 6px; }
+.card p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; }
+.card .tag {
+  display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 8px;
+  border-radius: 4px; margin-top: 8px;
+}
+.tag-core { background: rgba(59,130,246,0.15); color: var(--accent); }
+.tag-opt { background: rgba(139,92,246,0.15); color: var(--accent2); }
+.tag-heavy { background: rgba(245,158,11,0.15); color: var(--yellow); }
+
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.84rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Architecture diagram ─────────────────────────────────── */
+.arch-diagram {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; overflow-x: auto;
+}
+.arch-diagram pre {
+  background: transparent; border: none; padding: 0; margin: 0;
+  font-size: 0.78rem; line-height: 1.5; color: var(--text-dim);
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+.doc-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); margin: 12px 0;
+}
+.doc-table th, .doc-table td {
+  padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.doc-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.doc-table td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+.doc-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.doc-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── TOC ──────────────────────────────────────────────────── */
+.toc {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 24px 28px; margin: 24px 0;
+}
+.toc-cols { columns: 2; column-gap: 24px; }
+.toc a {
+  display: block; font-size: 0.84rem; padding: 3px 0; color: var(--text-dim);
+  break-inside: avoid;
+}
+.toc a:hover { color: var(--accent); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.76rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .toc-cols { columns: 1; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#providers">Providers</a>
+    <a href="#rag">RAG</a>
+    <a href="#agents">Agents</a>
+    <a href="#security">Security</a>
+    <a href="#streaming">Streaming</a>
+    <a href="#config">Config</a>
+    <a href="#testing">Testing</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Developer Guide</h1>
+    <p class="tagline">
+      Architecture, module structure, design patterns, and in-depth documentation
+      for building with and extending ai_assistant.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ TOC ════════════════════════ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Contents</h2>
+    <div class="toc">
+      <div class="toc-cols">
+        <a href="#architecture">Architecture Overview</a>
+        <a href="#modules">Module Map</a>
+        <a href="#features">Feature Flags Deep Dive</a>
+        <a href="#providers">Provider System (13+ LLMs)</a>
+        <a href="#rag">RAG Pipeline (5 Tiers)</a>
+        <a href="#agents">Multi-Agent System</a>
+        <a href="#autonomous">Autonomous Agents</a>
+        <a href="#security">Security Model</a>
+        <a href="#streaming">Streaming Protocols</a>
+        <a href="#mcp">MCP Protocol</a>
+        <a href="#distributed">Distributed Computing</a>
+        <a href="#config">Configuration System</a>
+        <a href="#errors">Error Handling</a>
+        <a href="#testing">Testing</a>
+        <a href="#performance">Performance &amp; Benchmarks</a>
+        <a href="#deployment">Deployment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ARCHITECTURE ═══════════════ -->
+<section id="architecture">
+  <div class="container">
+    <h2 class="section-title">Architecture Overview</h2>
+    <div class="prose">
+      <p>
+        ai_assistant is a <strong>single Rust crate</strong> (~353K LOC, 313 source files) organized as a modular
+        library with feature-flag-based compilation. The central type is <code>AiAssistant</code>, which provides
+        a unified interface to all subsystems.
+      </p>
+    </div>
+
+    <div class="arch-diagram">
+      <pre>
+                         ┌─────────────────────────┐
+                         │      AiAssistant         │  &larr; Main entry point
+                         │  (assistant.rs)          │
+                         └──────────┬──────────────┘
+                                    │
+          ┌─────────────┬───────────┼───────────┬──────────────┐
+          │             │           │           │              │
+    ┌─────┴─────┐ ┌─────┴─────┐ ┌──┴───┐ ┌────┴────┐ ┌───────┴──────┐
+    │ Providers │ │    RAG    │ │Server│ │ Agents  │ │  Security    │
+    │ 13+ LLMs │ │ 5 tiers   │ │ HTTP │ │ Multi + │ │ RBAC, PII,   │
+    │           │ │ 7 VecDBs  │ │ WS   │ │ Auto    │ │ Guardrails   │
+    └─────┬─────┘ └─────┬─────┘ └──┬───┘ └────┬────┘ └───────┬──────┘
+          │             │           │           │              │
+    ┌─────┴─────┐ ┌─────┴─────┐ ┌──┴───┐ ┌────┴────┐ ┌───────┴──────┐
+    │ Streaming │ │ Documents │ │ MCP  │ │ Tools   │ │ Encryption   │
+    │ SSE + WS  │ │ PDF, EPUB │ │ v2   │ │ OS, Web │ │ AES-256-GCM  │
+    └───────────┘ │ DOCX, etc │ └──────┘ │ Code    │ └──────────────┘
+                  └───────────┘          └─────────┘
+          ┌─────────────┬───────────────┬──────────────┐
+          │             │               │              │
+    ┌─────┴─────┐ ┌─────┴─────┐ ┌──────┴─────┐ ┌─────┴──────┐
+    │Distributed│ │ Analytics │ │ Workflows  │ │ Voice/Media│
+    │ CRDT, DHT │ │ Sentiment │ │ DAG engine │ │ STT/TTS    │
+    │ QUIC/TLS  │ │ Topics    │ │ Events     │ │ WebRTC     │
+    └───────────┘ └───────────┘ └────────────┘ └────────────┘</pre>
+    </div>
+
+    <div class="prose">
+      <p><strong>Key design principles:</strong></p>
+      <ul>
+        <li><strong>Single crate, feature-gated</strong> &mdash; No workspace, no sub-crates. Feature flags control what compiles.</li>
+        <li><strong>Zero <code>.unwrap()</code></strong> in production code &mdash; all errors propagated via <code>Result</code></li>
+        <li><strong>Zero clippy warnings</strong> &mdash; clean builds across all feature combinations</li>
+        <li><strong>Sync-first API</strong> &mdash; <code>AiAssistant</code> owns a <code>tokio::runtime::Runtime</code> internally; callers use synchronous polling</li>
+        <li><strong>No external state</strong> &mdash; Everything can run embedded, no mandatory external services</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ MODULES ════════════════════ -->
+<section id="modules">
+  <div class="container">
+    <h2 class="section-title">Module Map</h2>
+    <div class="prose">
+      <p>The crate is organized into functional modules, each behind a feature flag. Here are the major ones:</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>assistant.rs</h4>
+        <p>Central orchestrator. Owns providers, config, conversation, streaming, sessions. All public API methods.</p>
+        <span class="tag tag-core">core</span>
+      </div>
+      <div class="card">
+        <h4>providers.rs</h4>
+        <p>13+ LLM provider implementations. Ollama, LM Studio, OpenAI, Anthropic, Gemini, Bedrock, HuggingFace, DeepSeek, xAI, and more.</p>
+        <span class="tag tag-core">core</span>
+      </div>
+      <div class="card">
+        <h4>server.rs</h4>
+        <p>Embedded HTTP server. REST + SSE + WebSocket + OpenAI-compatible + Prometheus metrics + Auth + CORS.</p>
+        <span class="tag tag-core">core</span>
+      </div>
+      <div class="card">
+        <h4>rag.rs / rag_methods.rs</h4>
+        <p>5-tier RAG pipeline. Vector search, reranking, Self-RAG, CRAG, Graph RAG, RAPTOR. 7 vector DB backends.</p>
+        <span class="tag tag-core">rag</span>
+      </div>
+      <div class="card">
+        <h4>multi_agent.rs</h4>
+        <p>5-role agent orchestration (Researcher, Analyst, Writer, Reviewer, Coordinator). Shared memory, delegation.</p>
+        <span class="tag tag-core">multi-agent</span>
+      </div>
+      <div class="card">
+        <h4>guardrail_pipeline.rs</h4>
+        <p>Constitutional AI guardrails. Input/output guards, PII detection, toxicity filtering, attack detection.</p>
+        <span class="tag tag-core">security</span>
+      </div>
+      <div class="card">
+        <h4>autonomous_loop.rs</h4>
+        <p>Autonomous agent with 5 autonomy levels. Task planning, tool execution, self-correction, human approval gates.</p>
+        <span class="tag tag-opt">autonomous</span>
+      </div>
+      <div class="card">
+        <h4>mcp_protocol/</h4>
+        <p>Model Context Protocol v2. 40+ tools, resources, prompts, sampling, OAuth, Streamable HTTP transport.</p>
+        <span class="tag tag-core">core</span>
+      </div>
+      <div class="card">
+        <h4>distributed_network.rs</h4>
+        <p>QUIC/TLS 1.3 networking. Peer discovery, anti-entropy sync, Merkle trees, join tokens, reputation.</p>
+        <span class="tag tag-heavy">distributed-network</span>
+      </div>
+      <div class="card">
+        <h4>event_workflow.rs</h4>
+        <p>Event-driven workflows. DAG execution, conditional branching, parallel tasks, retry policies.</p>
+        <span class="tag tag-opt">workflows</span>
+      </div>
+      <div class="card">
+        <h4>voice_agent.rs</h4>
+        <p>Real-time voice conversations. STT/TTS pipeline, WebRTC integration, turn detection.</p>
+        <span class="tag tag-opt">voice-agent</span>
+      </div>
+      <div class="card">
+        <h4>knowledge_graph.rs</h4>
+        <p>Entity-relation graphs. Pattern and LLM extraction, graph queries, export/import, SQLite-backed.</p>
+        <span class="tag tag-core">rag</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Full module list:</strong> See the <a href="feature_matrix.html">Feature Matrix</a> for the complete list
+      of 313 source files with their feature gates and test counts.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FEATURES ═══════════════════ -->
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Feature Flags Deep Dive</h2>
+    <div class="prose">
+      <p>
+        Feature flags are the primary mechanism for controlling build size and dependencies.
+        The <code>full</code> meta-feature includes all lightweight features. Heavy or specialized
+        features are always opt-in.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Dependency Graph</h3>
+    <div class="arch-diagram">
+      <pre>
+full ─┬─ core ─┬─ multi-agent
+      │        ├─ security
+      │        ├─ analytics
+      │        ├─ vision
+      │        ├─ embeddings
+      │        ├─ streaming (advanced-streaming)
+      │        ├─ adapters
+      │        ├─ tools
+      │        ├─ documents
+      │        └─ eval
+      ├─ rag
+      ├─ distributed (CRDTs, DHT, MapReduce)
+      ├─ binary-storage
+      ├─ async-runtime
+      └─ advanced-memory
+
+autonomous ──┬── scheduler (cron + triggers)
+             ├── butler (auto-detection + advisor)
+             ├── browser (CDP automation)
+             └── distributed-agents ── distributed-network (QUIC/TLS)
+
+containers (Docker/bollard) ── standalone
+
+audio ── whisper-local (whisper.cpp native)
+
+voice-agent, media-generation, distillation,
+constrained-decoding, hitl, webrtc, devtools ── standalone</pre>
+    </div>
+
+    <h3 class="sub-title">Build Profiles</h3>
+    <div class="prose">
+      <p>Common build configurations for different use cases:</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Profile</th><th>Features</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>Minimal</td><td><code>core</code></td><td>Just LLM providers + config</td></tr>
+        <tr><td>Chat App</td><td><code>core, streaming, rag</code></td><td>Chat with RAG knowledge</td></tr>
+        <tr><td>Full Library</td><td><code>full</code></td><td>All lightweight features</td></tr>
+        <tr><td>Autonomous</td><td><code>full, autonomous, scheduler, butler</code></td><td>Self-driving agent with cron</td></tr>
+        <tr><td>Distributed</td><td><code>full, distributed-network</code></td><td>Multi-node cluster</td></tr>
+        <tr><td>Everything</td><td><code>full, autonomous, scheduler, butler, browser, distributed-agents, containers, audio, workflows, ...</code></td><td>All features compiled</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <span class="code-label bash">bash</span>
+    <pre># Minimal build (fast compile, small binary)
+cargo build --features core
+
+# Chat app with RAG
+cargo build --features "core,streaming,rag"
+
+# Full library
+cargo build --release --features full
+
+# Everything (used for testing)
+cargo build --features "full,autonomous,scheduler,butler,browser,distributed-agents,\
+containers,audio,workflows,prompt-signatures,a2a,voice-agent,media-generation,\
+distillation,constrained-decoding,hitl,webrtc,devtools,eval-suite"</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ PROVIDERS ══════════════════ -->
+<section id="providers">
+  <div class="container">
+    <h2 class="section-title">Provider System</h2>
+    <div class="prose">
+      <p>
+        ai_assistant supports 13+ LLM providers through a unified <code>LlmProvider</code> trait.
+        All providers share the same API for generating text, streaming, and fetching models.
+        Provider switching is a runtime operation &mdash; no recompilation needed.
+      </p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Provider</th><th>Type</th><th>Default URL</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td>Ollama</td><td>Local</td><td>http://localhost:11434</td><td>None</td></tr>
+        <tr><td>LM Studio</td><td>Local</td><td>http://localhost:1234</td><td>None</td></tr>
+        <tr><td>OpenAI</td><td>Cloud</td><td>api.openai.com</td><td>API Key</td></tr>
+        <tr><td>Anthropic</td><td>Cloud</td><td>api.anthropic.com</td><td>API Key</td></tr>
+        <tr><td>Google Gemini</td><td>Cloud</td><td>generativelanguage.googleapis.com</td><td>API Key</td></tr>
+        <tr><td>AWS Bedrock</td><td>Cloud</td><td>bedrock-runtime.*.amazonaws.com</td><td>AWS Credentials</td></tr>
+        <tr><td>HuggingFace</td><td>Cloud</td><td>api-inference.huggingface.co</td><td>API Token</td></tr>
+        <tr><td>DeepSeek</td><td>Cloud</td><td>api.deepseek.com</td><td>API Key</td></tr>
+        <tr><td>xAI (Grok)</td><td>Cloud</td><td>api.x.ai</td><td>API Key</td></tr>
+        <tr><td>Mistral</td><td>Cloud</td><td>api.mistral.ai</td><td>API Key</td></tr>
+        <tr><td>Cohere</td><td>Cloud</td><td>api.cohere.ai</td><td>API Key</td></tr>
+        <tr><td>Together AI</td><td>Cloud</td><td>api.together.xyz</td><td>API Key</td></tr>
+        <tr><td>OpenRouter</td><td>Aggregator</td><td>openrouter.ai/api</td><td>API Key</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Provider Failover</h3>
+    <div class="prose">
+      <p>
+        The <code>auto_model_selection</code> module provides intelligent routing with failover:
+      </p>
+      <ul>
+        <li><strong>Bandit algorithms</strong> &mdash; Epsilon-greedy and UCB for model selection based on response quality</li>
+        <li><strong>NFA/DFA routing</strong> &mdash; State-machine-based provider selection with configurable rules</li>
+        <li><strong>Composite rewards</strong> &mdash; Multi-objective optimization (quality, latency, cost)</li>
+        <li><strong>Automatic failover</strong> &mdash; If a provider is down, traffic routes to the next available one</li>
+      </ul>
+    </div>
+
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{AiAssistant, ProviderType};
+
+let mut assistant = AiAssistant::new();
+
+// Configure multiple providers
+assistant.set_provider(ProviderType::Ollama);
+assistant.set_provider_url("http://localhost:11434");
+
+// Switch at runtime
+assistant.set_provider(ProviderType::OpenAi);
+assistant.set_api_key("sk-...");
+
+// Auto-selection based on query complexity
+// (requires auto_model_selection module)
+let response = assistant.generate_with_auto_selection("Complex analysis query...");</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ RAG ════════════════════════ -->
+<section id="rag">
+  <div class="container">
+    <h2 class="section-title">RAG Pipeline</h2>
+    <div class="prose">
+      <p>
+        The RAG (Retrieval-Augmented Generation) pipeline is one of the most comprehensive features.
+        It implements 5 progressive tiers, from simple vector search to self-correcting retrieval
+        with knowledge graphs.
+      </p>
+    </div>
+
+    <div class="arch-diagram">
+      <pre>
+User Query
+    │
+    ▼
+┌──────────────────────┐
+│  Query Analysis      │  Complexity routing (T1-T5)
+│  (QueryComplexity)   │
+└──────────┬───────────┘
+           │
+     ┌─────┴─────┐
+     │           │
+   Simple    Complex
+     │           │
+     ▼           ▼
+┌─────────┐ ┌──────────────┐
+│ T1/T2   │ │ T3-T5        │
+│ Vector  │ │ Self-RAG     │
+│ Search  │ │ CRAG         │
+│ Rerank  │ │ Graph RAG    │
+└────┬────┘ │ RAPTOR       │
+     │      └──────┬───────┘
+     │             │
+     └──────┬──────┘
+            ▼
+┌──────────────────────┐
+│  Context Assembly    │  Token budgeting, deduplication
+│  (build_rag_context) │
+└──────────┬───────────┘
+           │
+           ▼
+     LLM Generation
+     (with context)</pre>
+    </div>
+
+    <h3 class="sub-title">Document Processing</h3>
+    <div class="prose">
+      <p>The <code>document_parsing</code> module handles 10+ formats:</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>Text Formats</h4>
+        <p>Markdown (.md), Plain text (.txt), CSV (.csv), JSON (.json)</p>
+      </div>
+      <div class="card">
+        <h4>Office Formats</h4>
+        <p>DOCX, PPTX, XLSX, ODT (via XML parsing, no external dependencies)</p>
+      </div>
+      <div class="card">
+        <h4>Web &amp; Publishing</h4>
+        <p>HTML, EPUB, PDF (with page/chapter detection)</p>
+      </div>
+      <div class="card">
+        <h4>Communication</h4>
+        <p>EML (email with attachment extraction)</p>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Knowledge Packages (.kpkg)</h3>
+    <div class="prose">
+      <p>
+        Encrypted knowledge packages bundle multiple documents with AES-256-GCM encryption.
+        Distribute domain knowledge securely:
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{KpkgWriter, KpkgReader};
+
+// Create an encrypted package
+let mut writer = KpkgWriter::new("my-secret-key");
+writer.add_document("guide.md", &content);
+writer.add_document("faq.txt", &faq_content);
+let package_bytes = writer.finish()?;
+
+// Read and decrypt
+let reader = KpkgReader::new("my-secret-key");
+let docs = reader.read(&package_bytes)?;
+for doc in &docs {
+    println!("{}: {} bytes", doc.name, doc.content.len());
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ AGENTS ═════════════════════ -->
+<section id="agents">
+  <div class="container">
+    <h2 class="section-title">Multi-Agent System</h2>
+    <div class="prose">
+      <p>
+        The multi-agent module provides 5 specialized roles that collaborate on complex tasks.
+        Agents share memory, delegate subtasks, and consolidate results.
+      </p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Role</th><th>Responsibility</th><th>Typical Tasks</th></tr></thead>
+      <tbody>
+        <tr><td>Researcher</td><td>Information gathering, web search, document analysis</td><td>Find data, summarize sources, fact-check</td></tr>
+        <tr><td>Analyst</td><td>Data analysis, pattern recognition, reasoning</td><td>Evaluate options, compare alternatives, identify trends</td></tr>
+        <tr><td>Writer</td><td>Content creation, drafting, formatting</td><td>Write reports, create documentation, compose emails</td></tr>
+        <tr><td>Reviewer</td><td>Quality control, fact-checking, critique</td><td>Review drafts, verify claims, suggest improvements</td></tr>
+        <tr><td>Coordinator</td><td>Orchestration, task planning, delegation</td><td>Break down complex tasks, assign work, merge results</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{AiAssistant, MultiAgentSession, AgentRole};
+
+let mut assistant = AiAssistant::new();
+// ... configure provider
+
+// Create a multi-agent session
+let mut session = MultiAgentSession::new();
+session.add_agent(AgentRole::Researcher);
+session.add_agent(AgentRole::Analyst);
+session.add_agent(AgentRole::Writer);
+
+// Execute a collaborative task
+let result = session.execute_task(
+    &assistant,
+    "Research and write a report on Rust adoption in 2025"
+)?;</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ AUTONOMOUS ═════════════════ -->
+<section id="autonomous">
+  <div class="container">
+    <h2 class="section-title">Autonomous Agents</h2>
+    <div class="prose">
+      <p>
+        The autonomous agent system (feature: <code>autonomous</code>) provides self-driving agents
+        with 5 autonomy levels, tool execution, and human-in-the-loop approval gates.
+      </p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Level</th><th>Name</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr><td>L1</td><td>Supervised</td><td>Every action requires human approval</td></tr>
+        <tr><td>L2</td><td>Assisted</td><td>Low-risk actions auto-approved, high-risk need approval</td></tr>
+        <tr><td>L3</td><td>Semi-autonomous</td><td>Most actions auto-approved, critical actions need approval</td></tr>
+        <tr><td>L4</td><td>Autonomous</td><td>All actions auto-approved, humans notified of critical ones</td></tr>
+        <tr><td>L5</td><td>Fully autonomous</td><td>No human oversight (not recommended for production)</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Butler Advisor</h3>
+    <div class="prose">
+      <p>
+        The <code>butler</code> module auto-detects the environment (OS, GPU, Docker, installed providers)
+        and provides 30+ actionable recommendations for optimal configuration. It analyzes feature flags,
+        suggests compilation profiles, and recommends deployment scenarios.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Scheduler</h3>
+    <div class="prose">
+      <p>
+        The <code>scheduler</code> module adds cron-based scheduling for recurring tasks.
+        Agents can be triggered by time, events, or custom conditions.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SECURITY ═══════════════════ -->
+<section id="security">
+  <div class="container">
+    <h2 class="section-title">Security Model</h2>
+    <div class="prose">
+      <p>
+        Security is built into every layer, not bolted on. The crate has been through a comprehensive
+        security audit (31 findings, all resolved).
+      </p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>RBAC Access Control</h4>
+        <p>Role-based access with granular conditions: time ranges, IP ranges, max usage limits, MFA requirements. CIDR notation support.</p>
+      </div>
+      <div class="card">
+        <h4>Constitutional Guardrails</h4>
+        <p>Pre-send and post-receive guardrails. Attack detection (prompt injection, jailbreak), toxicity filtering, content moderation.</p>
+      </div>
+      <div class="card">
+        <h4>PII Detection</h4>
+        <p>Detects and redacts: SSN, credit cards, emails, phone numbers, IP addresses. Configurable sensitivity levels.</p>
+      </div>
+      <div class="card">
+        <h4>Encryption</h4>
+        <p>AES-256-GCM for knowledge packages. SecureString with volatile zeroization. Constant-time comparisons.</p>
+      </div>
+      <div class="card">
+        <h4>SSRF Protection</h4>
+        <p>Blocks requests to private IP ranges (127.x, 10.x, 172.16-31.x, 192.168.x, 169.254.x). MCP tool argument scanning.</p>
+      </div>
+      <div class="card">
+        <h4>Command Injection</h4>
+        <p>Shell metacharacter rejection. No <code>sh -c</code>. Commands split into program + args. Docker exec hardened.</p>
+      </div>
+      <div class="card">
+        <h4>Path Traversal</h4>
+        <p>Canonicalization + <code>..</code> rejection in shared folders, agent policies, and file operations.</p>
+      </div>
+      <div class="card">
+        <h4>API Security</h4>
+        <p>Constant-time token comparison, per-IP rate limiting, CORS validation, WebSocket origin checks, CRLF sanitization.</p>
+      </div>
+    </div>
+
+    <div class="info-box success">
+      <strong>Audit results:</strong> 5 Critical + 12 High + 14 Medium findings &mdash; all resolved.
+      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 313 files.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ STREAMING ══════════════════ -->
+<section id="streaming">
+  <div class="container">
+    <h2 class="section-title">Streaming Protocols</h2>
+    <div class="prose">
+      <p>ai_assistant supports three streaming protocols for real-time token delivery:</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Protocol</th><th>Transport</th><th>Use Case</th><th>Features</th></tr></thead>
+      <tbody>
+        <tr><td>SSE</td><td>HTTP (text/event-stream)</td><td>Web frontends, REST APIs</td><td>Auto-reconnect, event IDs, resumable</td></tr>
+        <tr><td>WebSocket</td><td>TCP (RFC 6455)</td><td>Real-time chat UIs, persistent connections</td><td>Bidirectional, binary frames, compression</td></tr>
+        <tr><td>Polling</td><td>In-process</td><td>Library embedding, CLI tools</td><td><code>poll_response()</code> returns <code>StreamEvent</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="prose">
+      <p>
+        The <code>StreamEvent</code> enum unifies all streaming modes:
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>pub enum StreamEvent {
+    Chunk(String),           // A token/fragment
+    Complete(String),        // Full response assembled
+    Error(String),           // Error during generation
+    ThinkingStart,           // Model started reasoning
+    ThinkingChunk(String),   // Reasoning token
+    ThinkingEnd,             // Reasoning complete
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ MCP ════════════════════════ -->
+<section id="mcp">
+  <div class="container">
+    <h2 class="section-title">MCP Protocol</h2>
+    <div class="prose">
+      <p>
+        ai_assistant implements the <strong>Model Context Protocol v2 (2025-03-26)</strong> specification.
+        The MCP server exposes 40+ tools, resources, and prompts that LLM clients can discover and invoke.
+      </p>
+      <p>Key capabilities:</p>
+      <ul>
+        <li><strong>Tools</strong> &mdash; LLM integration, document processing, web search, code execution, knowledge graph queries</li>
+        <li><strong>Resources</strong> &mdash; Configuration, session data, metrics exposed as MCP resources</li>
+        <li><strong>Prompts</strong> &mdash; Pre-built prompt templates for common tasks</li>
+        <li><strong>Sampling</strong> &mdash; Server-initiated LLM calls through the client</li>
+        <li><strong>OAuth</strong> &mdash; PKCE (SHA-256) authentication flow for secure connections</li>
+        <li><strong>Transport</strong> &mdash; Streamable HTTP (replacing SSE), stdio for local processes</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      See the <a href="mcp_catalog.html">MCP Tool Catalog</a> for the full list of tools with parameters and usage examples.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ DISTRIBUTED ════════════════ -->
+<section id="distributed">
+  <div class="container">
+    <h2 class="section-title">Distributed Computing</h2>
+    <div class="prose">
+      <p>
+        Two levels of distributed support:
+      </p>
+      <ul>
+        <li><strong><code>distributed</code></strong> (in <code>full</code>) &mdash; CRDTs, DHT Kademlia, MapReduce. Data structures and algorithms for distributed coordination.</li>
+        <li><strong><code>distributed-network</code></strong> (opt-in) &mdash; QUIC/TLS 1.3 networking. Real peer-to-peer connections with peer discovery, anti-entropy sync, Merkle trees, and reputation tracking.</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Network Features</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>QUIC + TLS 1.3</h4>
+        <p>Encrypted transport via quinn/rustls. Mutual TLS with Ed25519 certificates.</p>
+      </div>
+      <div class="card">
+        <h4>Peer Discovery</h4>
+        <p>LAN broadcast, seed nodes, peer exchange, NAT traversal (STUN, UPnP, NAT-PMP, ICE).</p>
+      </div>
+      <div class="card">
+        <h4>Anti-Entropy Sync</h4>
+        <p>Merkle tree-based delta sync. Efficient state reconciliation between nodes.</p>
+      </div>
+      <div class="card">
+        <h4>Security</h4>
+        <p>Join tokens with expiration/usage limits. HMAC-SHA256 challenge-response. Reputation &amp; probation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CONFIG ═════════════════════ -->
+<section id="config">
+  <div class="container">
+    <h2 class="section-title">Configuration System</h2>
+    <div class="prose">
+      <p>
+        Configuration supports TOML and JSON formats with hot-reload capability.
+        Runtime changes to model, temperature, and log level take effect without restart.
+      </p>
+    </div>
+
+    <span class="code-label toml">config.toml</span>
+    <pre>[provider]
+type = "ollama"           # Provider: ollama, lm_studio, openai, anthropic, ...
+model = "llama3.2"        # Default model
+
+[urls]
+ollama = "http://localhost:11434"
+lm_studio = "http://localhost:1234"
+
+[generation]
+temperature = 0.7         # 0.0 (deterministic) to 2.0 (creative)
+max_history = 20          # Conversation messages to keep
+system_prompt = "You are a helpful assistant."
+
+[rag]
+enabled = true
+knowledge_tokens = 2000   # Max tokens for RAG context
+conversation_tokens = 1500
+
+[server]
+host = "127.0.0.1"        # Bind address (127.0.0.1 = local only)
+port = 8090
+max_body_size = 1048576   # 1MB request body limit
+trust_proxy = false       # Trust X-Forwarded-For headers
+
+[server.auth]
+enabled = false
+bearer_token = ""         # Set a strong token in production
+api_keys = []
+
+[server.cors]
+allowed_origins = ["*"]   # Restrict in production
+allow_credentials = false
+
+[server.rate_limit]
+requests_per_minute = 60  # Global rate limit</pre>
+
+    <h3 class="sub-title">Programmatic Configuration</h3>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{AiAssistant, AiConfig};
+
+// Load from file
+let config = AiConfig::from_file("config.toml")?;
+let mut assistant = AiAssistant::from_config(config);
+
+// Or configure programmatically
+let mut assistant = AiAssistant::new();
+assistant.set_temperature(0.7);
+assistant.set_max_history(20);
+assistant.set_system_prompt("You are a helpful coding assistant.");</pre>
+
+    <h3 class="sub-title">Hot Reload</h3>
+    <div class="prose">
+      <p>
+        The <code>ConfigWatcher</code> monitors config files and applies changes at runtime.
+        Only safe fields are hot-reloadable (model, temperature, log level). Structural changes
+        (like enabling new features) require a restart.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ERRORS ═════════════════════ -->
+<section id="errors">
+  <div class="container">
+    <h2 class="section-title">Error Handling</h2>
+    <div class="prose">
+      <p>
+        The crate uses a comprehensive error type hierarchy with no panics in production code.
+        The top-level <code>AiError</code> enum covers all failure modes:
+      </p>
+    </div>
+
+    <span class="code-label rust">Rust</span>
+    <pre>pub enum AiError {
+    // Core errors
+    ProviderError(String),      // LLM provider failures
+    ConfigError(String),        // Configuration problems
+    NetworkError(String),       // HTTP/network issues
+    ParseError(String),         // JSON/response parsing
+    IoError(std::io::Error),    // File system operations
+
+    // Feature-specific errors
+    RagError(String),           // RAG pipeline failures
+    SecurityError(String),      // Auth, RBAC, guardrail violations
+    McpError(String),           // MCP protocol errors
+    AgentError(String),         // Multi-agent coordination
+    StreamingError(String),     // SSE/WebSocket issues
+    // ... and more per feature
+}
+
+// Contextual errors with ResultExt trait
+use ai_assistant::ResultExt;
+
+let data = std::fs::read("file.txt")
+    .context("reading knowledge file")?;  // Adds context to io::Error</pre>
+
+    <div class="info-box warning">
+      <strong>Rule:</strong> Zero <code>.unwrap()</code> in production code. All errors are propagated
+      via <code>Result&lt;T, AiError&gt;</code>. The <code>?</code> operator handles propagation, and
+      <code>ResultExt::context()</code> adds human-readable context.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TESTING ════════════════════ -->
+<section id="testing">
+  <div class="container">
+    <h2 class="section-title">Testing</h2>
+    <div class="prose">
+      <p>The project maintains 6,696 tests across multiple layers:</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Category</th><th>Count</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td>Unit tests (all features)</td><td>~6,578</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
+        <tr><td>Integration tests</td><td>38</td><td><code>cargo test --features full --test '*'</code></td></tr>
+        <tr><td>Test harness (CLI)</td><td>~436</td><td><code>cargo run --bin ai_test_harness -- --all</code></td></tr>
+        <tr><td>Distributed networking</td><td>115</td><td><code>cargo test --features "full,distributed-network" --lib</code></td></tr>
+        <tr><td>P2P tests</td><td>32</td><td><code>cargo test --features "full,p2p" --lib -- p2p::</code></td></tr>
+        <tr><td>Autonomous agents</td><td>255</td><td><code>cargo test --features "full,autonomous" --lib</code></td></tr>
+        <tr><td>Benchmarks</td><td>42</td><td><code>cargo bench --bench core_benchmarks --features full</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Running Tests</h3>
+    <span class="code-label bash">bash</span>
+    <pre># Quick: run all tests for base features
+cargo test -p ai_assistant --features full --lib
+
+# Full: all features including opt-in
+cargo test --features "full,autonomous,scheduler,butler,browser,\
+distributed-agents,containers,audio,workflows,prompt-signatures,a2a,\
+voice-agent,media-generation,distillation,constrained-decoding,hitl,\
+webrtc,devtools,eval-suite" --lib
+
+# Specific module
+cargo test --features full --lib -- rag::
+cargo test --features "full,autonomous" --lib -- autonomous_loop::
+
+# Test harness (categorized test runner)
+cargo run --bin ai_test_harness -- --all
+cargo run --bin ai_test_harness -- --category=security
+cargo run --bin ai_test_harness -- --category=rag
+
+# Benchmarks
+cargo bench --bench core_benchmarks --features full</pre>
+
+    <h3 class="sub-title">Test Categories</h3>
+    <div class="prose">
+      <p>The test harness organizes tests into categories:</p>
+      <ul>
+        <li><strong>Config</strong> &mdash; Configuration loading, validation, hot reload</li>
+        <li><strong>Security</strong> &mdash; Sanitization, rate limiting, injection prevention, PII detection</li>
+        <li><strong>Analysis</strong> &mdash; Confidence scoring, hallucination detection, entity extraction</li>
+        <li><strong>RAG/Memory</strong> &mdash; Vector search, reranking, indexing, context assembly</li>
+        <li><strong>Infrastructure</strong> &mdash; Cost tracking, token budgets, caching, streaming</li>
+        <li><strong>Networking</strong> &mdash; QUIC connections, peer discovery, sync, reputation</li>
+        <li><strong>Agents</strong> &mdash; Autonomous loop, task planning, tool execution, scheduling</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ PERFORMANCE ════════════════ -->
+<section id="performance">
+  <div class="container">
+    <h2 class="section-title">Performance &amp; Benchmarks</h2>
+    <div class="prose">
+      <p>
+        As a compiled Rust binary, ai_assistant provides significant performance advantages
+        over Python/Node.js alternatives:
+      </p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Metric</th><th>ai_assistant (Rust)</th><th>Typical Python</th><th>Typical Node.js</th></tr></thead>
+      <tbody>
+        <tr><td>Binary size</td><td style="color: var(--green); font-weight: 700;">15&ndash;30 MB</td><td>200+ MB (venv)</td><td>150+ MB (node_modules)</td></tr>
+        <tr><td>Cold start</td><td style="color: var(--green); font-weight: 700;">&lt;50 ms</td><td>2&ndash;5 sec</td><td>1&ndash;3 sec</td></tr>
+        <tr><td>RAM (idle)</td><td style="color: var(--green); font-weight: 700;">~12 MB</td><td>80&ndash;200 MB</td><td>50&ndash;120 MB</td></tr>
+        <tr><td>GC pauses</td><td style="color: var(--green); font-weight: 700;">None</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>Thread safety</td><td style="color: var(--green); font-weight: 700;">Compile-time</td><td>GIL</td><td>Single-threaded*</td></tr>
+        <tr><td>Memory safety</td><td style="color: var(--green); font-weight: 700;">Guaranteed</td><td>Runtime</td><td>Runtime</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Benchmark Suite</h3>
+    <div class="prose">
+      <p>
+        42 criterion benchmarks cover core operations. Run them with:
+      </p>
+    </div>
+    <span class="code-label bash">bash</span>
+    <pre>cargo bench --bench core_benchmarks --features full</pre>
+    <div class="prose">
+      <p>Key benchmarked operations:</p>
+      <ul>
+        <li>Token counting and context window management</li>
+        <li>Embedding similarity search (in-memory HNSW)</li>
+        <li>Conversation compaction strategies</li>
+        <li>PII detection throughput</li>
+        <li>Guardrail pipeline latency</li>
+        <li>Configuration serialization/deserialization</li>
+        <li>CRDT merge operations</li>
+        <li>HTTP request routing and parsing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ DEPLOYMENT ═════════════════ -->
+<section id="deployment">
+  <div class="container">
+    <h2 class="section-title">Deployment</h2>
+    <div class="prose">
+      <p>ai_assistant supports three deployment models:</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>Embedded Library</h4>
+        <p>Use as a Rust dependency. Compile into your application binary. Zero external services required.</p>
+        <span class="tag tag-core">Simplest</span>
+      </div>
+      <div class="card">
+        <h4>Standalone Server</h4>
+        <p>Run the HTTP server binary. OpenAI-compatible API. Docker support. TLS via rustls or reverse proxy.</p>
+        <span class="tag tag-opt">Most common</span>
+      </div>
+      <div class="card">
+        <h4>Distributed Cluster</h4>
+        <p>Multiple nodes with QUIC/TLS. CRDT sync, peer discovery, load distribution, fault tolerance.</p>
+        <span class="tag tag-heavy">Advanced</span>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Production Checklist</h3>
+    <div class="prose">
+      <ol>
+        <li>Enable authentication (<code>auth.enabled = true</code>)</li>
+        <li>Set specific CORS origins (not wildcard <code>*</code>)</li>
+        <li>Enable TLS (via <code>server-tls</code> feature or reverse proxy)</li>
+        <li>Configure logging (<code>RUST_LOG=info</code>)</li>
+        <li>Enable Prometheus metrics (<code>/metrics</code> endpoint)</li>
+        <li>Set up memory persistence (auto-save or manual snapshots)</li>
+        <li>Configure rate limiting</li>
+        <li>Set request body size limits</li>
+        <li>Add health checks (<code>/health</code> for Docker/K8s probes)</li>
+        <li>Run as non-root user</li>
+        <li>Keep secrets in environment variables, not config files</li>
+        <li>Schedule regular backups of session and RAG data</li>
+      </ol>
+    </div>
+
+    <div class="info-box">
+      See the <a href="quickstart.html">Getting Started</a> guide for installation and first steps,
+      or the <a href="api_reference.html">API Reference</a> for endpoint details.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ THEME TOGGLE JS ════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+</body>
+</html>

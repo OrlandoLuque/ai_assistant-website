@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 640px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.code-label.yaml { background: #06b6d4; }
+.code-label.python { background: #3776ab; }
+.code-label.js { background: #f7df1e; color: #1e293b; }
+
+/* ── Step cards ───────────────────────────────────────────── */
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.9rem; margin-right: 12px; flex-shrink: 0;
+}
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Feature flag table ───────────────────────────────────── */
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+.tag-yes { color: var(--green); font-weight: 700; }
+.tag-no { color: var(--text-dim); }
+
+/* ── Next steps grid ──────────────────────────────────────── */
+.next-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px; margin-top: 24px;
+}
+.next-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; display: flex; gap: 14px; align-items: center;
+  transition: border-color .2s, transform .15s; text-decoration: none;
+}
+.next-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+.next-card .icon { font-size: 1.3rem; flex-shrink: 0; }
+.next-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+.next-card .info p { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+  .next-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#prerequisites">Prerequisites</a>
+    <a href="#installation">Installation</a>
+    <a href="#first-chat">First Chat</a>
+    <a href="#server">Server</a>
+    <a href="#rag">RAG</a>
+    <a href="#docker">Docker</a>
+    <a href="#next">Next Steps</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Getting Started</h1>
+    <p class="tagline">
+      From zero to a working AI assistant in under 5 minutes.
+      This guide covers installation, your first chat, the HTTP server, RAG, and Docker deployment.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ PREREQUISITES ══════════════ -->
+<section id="prerequisites">
+  <div class="container">
+    <h2 class="section-title">Prerequisites</h2>
+    <p class="section-sub">
+      ai_assistant is a Rust library. You need the Rust toolchain and at least one LLM provider.
+    </p>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Install Rust (1.82+)</h3>
+      <p>If you don't have Rust installed:</p>
+      <span class="code-label bash">bash</span>
+      <pre>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</pre>
+      <p>On Windows, download <a href="https://rustup.rs">rustup-init.exe</a> from rustup.rs.
+         Verify with: <code>rustc --version</code> (must be 1.82 or higher).</p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>Install an LLM Provider</h3>
+      <p>You need at least one local or cloud LLM provider. The easiest option:</p>
+      <ul>
+        <li><strong>Ollama</strong> (recommended) &mdash; Download from <a href="https://ollama.com">ollama.com</a>, then: <code>ollama pull llama3.2</code></li>
+        <li><strong>LM Studio</strong> &mdash; Download from <a href="https://lmstudio.ai">lmstudio.ai</a>, start the local server</li>
+        <li><strong>OpenAI / Anthropic / Gemini</strong> &mdash; Get an API key from the respective provider</li>
+      </ul>
+      <div class="info-box success">
+        <strong>Tip:</strong> Ollama is the fastest path &mdash; one install, one <code>ollama pull</code> command, and you're ready.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ INSTALLATION ═══════════════ -->
+<section id="installation">
+  <div class="container">
+    <h2 class="section-title">Installation</h2>
+
+    <div class="step">
+      <span class="step-number">3</span>
+      <h3>Add to Your Cargo Project</h3>
+      <p>Add ai_assistant as a dependency in your <code>Cargo.toml</code>:</p>
+      <span class="code-label toml">Cargo.toml</span>
+      <pre>[dependencies]
+ai_assistant = { path = "../ai_assistant_standalone", features = ["full"] }</pre>
+      <div class="info-box">
+        <strong>Note:</strong> The crate is not yet published on crates.io. Use a local path or git dependency.
+        The <code>full</code> feature enables all lightweight features (core, RAG, security, streaming, multi-agent, etc.).
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-number">4</span>
+      <h3>Or Build the Standalone Binaries</h3>
+      <p>You can also build the included server and CLI binaries directly:</p>
+      <span class="code-label bash">bash</span>
+      <pre># Build the HTTP server
+cargo build --release --features full --bin ai_assistant_server
+
+# Build the CLI
+cargo build --release --features full --bin ai_assistant_cli
+
+# Binaries are in target/release/</pre>
+    </div>
+
+    <h3 style="margin-top: 36px; color: var(--text-bright); font-size: 1.1rem;">Feature Flags</h3>
+    <p class="section-sub" style="margin-bottom: 16px;">
+      ai_assistant uses Cargo feature flags for modular compilation. The <code>full</code> flag includes all
+      lightweight features. Heavier features are opt-in:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Flag</th><th>Description</th><th>In <code>full</code>?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>core</td><td>Base LLM providers, config, error handling</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>rag</td><td>RAG pipeline, vector DBs, embeddings, document parsing</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>security</td><td>RBAC, PII detection, constitutional guardrails</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>multi-agent</td><td>5-role agent orchestration with shared memory</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>streaming</td><td>SSE + WebSocket streaming</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>analytics</td><td>Sentiment analysis, topic detection, session metrics</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>eval</td><td>Evaluation suite, LLM-as-judge, A/B testing</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>distributed</td><td>CRDTs, DHT Kademlia, MapReduce</td><td class="tag-yes">Yes</td></tr>
+        <tr><td>autonomous</td><td>Autonomous agent loop with 5 autonomy levels</td><td class="tag-no">No</td></tr>
+        <tr><td>scheduler</td><td>Cron scheduler + trigger system</td><td class="tag-no">No</td></tr>
+        <tr><td>butler</td><td>Environment auto-detection &amp; advisor</td><td class="tag-no">No</td></tr>
+        <tr><td>browser</td><td>CDP browser automation</td><td class="tag-no">No</td></tr>
+        <tr><td>containers</td><td>Docker-based sandboxed execution</td><td class="tag-no">No</td></tr>
+        <tr><td>distributed-network</td><td>QUIC/TLS 1.3 P2P networking</td><td class="tag-no">No</td></tr>
+        <tr><td>audio</td><td>Speech-to-text / text-to-speech</td><td class="tag-no">No</td></tr>
+        <tr><td>voice-agent</td><td>Real-time voice conversation agent</td><td class="tag-no">No</td></tr>
+        <tr><td>workflows</td><td>Event-driven workflows with DAG execution</td><td class="tag-no">No</td></tr>
+        <tr><td>a2a</td><td>Agent-to-Agent protocol</td><td class="tag-no">No</td></tr>
+        <tr><td>hitl</td><td>Human-in-the-loop approval gates</td><td class="tag-no">No</td></tr>
+        <tr><td>webrtc</td><td>WebRTC peer connections</td><td class="tag-no">No</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Selective compilation:</strong> Only include what you need.
+      For example, <code>features = ["core", "rag", "streaming"]</code> gives you LLM + RAG + streaming
+      without multi-agent, security, or analytics overhead.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FIRST CHAT ═════════════════ -->
+<section id="first-chat">
+  <div class="container">
+    <h2 class="section-title">Your First Chat</h2>
+    <p class="section-sub">
+      The simplest way to interact with an LLM through ai_assistant &mdash; in under 20 lines of Rust.
+    </p>
+
+    <span class="code-label rust">main.rs</span>
+    <pre>use ai_assistant::AiAssistant;
+
+fn main() {
+    // Create the assistant (auto-detects Ollama at localhost:11434)
+    let mut assistant = AiAssistant::new();
+
+    // Fetch available models from the provider
+    assistant.fetch_models();
+
+    // Wait for models to load
+    loop {
+        if let Some(models) = assistant.poll_models() {
+            println!("Available models: {:?}", models);
+            break;
+        }
+        std::thread::sleep(std::time::Duration::from_millis(100));
+    }
+
+    // Select a model
+    assistant.select_model("llama3.2");
+
+    // Send a message (non-streaming)
+    let response = assistant.generate("What is Rust?");
+    println!("Response: {}", response);
+}</pre>
+
+    <h3 style="margin-top: 32px; color: var(--text-bright);">Streaming Responses</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      For real-time token-by-token output, use the streaming API:
+    </p>
+
+    <span class="code-label rust">streaming.rs</span>
+    <pre>use ai_assistant::AiAssistant;
+
+fn main() {
+    let mut assistant = AiAssistant::new();
+    assistant.fetch_models();
+    // ... (wait for models, select one as above)
+
+    // Start a streaming message
+    assistant.send_message("Explain async/await in Rust");
+
+    // Poll for streaming chunks
+    loop {
+        match assistant.poll_response() {
+            Some(ai_assistant::StreamEvent::Chunk(text)) => {
+                print!("{}", text);  // Print each token as it arrives
+            }
+            Some(ai_assistant::StreamEvent::Complete(full)) => {
+                println!("\n\n--- Complete ---");
+                break;
+            }
+            Some(ai_assistant::StreamEvent::Error(e)) => {
+                eprintln!("Error: {}", e);
+                break;
+            }
+            None => {
+                std::thread::sleep(std::time::Duration::from_millis(10));
+            }
+        }
+    }
+}</pre>
+
+    <h3 style="margin-top: 32px; color: var(--text-bright);">Switching Providers</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      ai_assistant supports 13+ providers. Switch between them at runtime:
+    </p>
+
+    <span class="code-label rust">providers.rs</span>
+    <pre>use ai_assistant::{AiAssistant, ProviderType};
+
+fn main() {
+    let mut assistant = AiAssistant::new();
+
+    // Use Ollama (local, default)
+    assistant.set_provider(ProviderType::Ollama);
+    assistant.set_provider_url("http://localhost:11434");
+
+    // Or use LM Studio (local)
+    assistant.set_provider(ProviderType::LmStudio);
+    assistant.set_provider_url("http://localhost:1234");
+
+    // Or use OpenAI (cloud)
+    assistant.set_provider(ProviderType::OpenAi);
+    assistant.set_api_key("sk-...");
+
+    // Or use Anthropic (cloud)
+    assistant.set_provider(ProviderType::Anthropic);
+    assistant.set_api_key("sk-ant-...");
+
+    // All providers share the same API:
+    assistant.fetch_models();
+    // ...
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ HTTP SERVER ════════════════ -->
+<section id="server">
+  <div class="container">
+    <h2 class="section-title">HTTP Server</h2>
+    <p class="section-sub">
+      ai_assistant includes an embedded HTTP server with OpenAI-compatible endpoints.
+      Run it as a standalone service or embed it in your application.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Running the Server Binary</h3>
+    <span class="code-label bash">bash</span>
+    <pre># Build and run with default settings (port 8090)
+cargo run --release --features full --bin ai_assistant_server
+
+# Or with a config file
+cargo run --release --features full --bin ai_assistant_server -- --config config.toml
+
+# Dry-run mode (validate config without starting)
+cargo run --release --features full --bin ai_assistant_server -- --dry-run</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Test It with curl</h3>
+    <span class="code-label bash">bash</span>
+    <pre># Health check
+curl http://localhost:8090/health
+
+# Send a chat message
+curl -X POST http://localhost:8090/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is Rust?"}'
+
+# Streaming response (SSE)
+curl -X POST http://localhost:8090/chat/stream \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Explain ownership in Rust"}'
+
+# List available models
+curl http://localhost:8090/models
+
+# OpenAI-compatible endpoint (works with Open WebUI, LangChain, etc.)
+curl -X POST http://localhost:8090/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama3.2",
+    "messages": [{"role": "user", "content": "Hello!"}],
+    "stream": false
+  }'</pre>
+
+    <div class="info-box success">
+      <strong>OpenAI compatible!</strong> The <code>/v1/chat/completions</code> endpoint is a drop-in replacement.
+      Point Open WebUI, LangChain, LiteLLM, Cursor, or any OpenAI-compatible tool at
+      <code>http://localhost:8090</code> and it just works.
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Embedding the Server in Your App</h3>
+    <span class="code-label rust">embed_server.rs</span>
+    <pre>use ai_assistant::{AiAssistant, ServerConfig};
+
+fn main() {
+    let assistant = AiAssistant::new();
+    let config = ServerConfig {
+        host: "127.0.0.1".to_string(),
+        port: 8090,
+        auth: Default::default(),     // No auth by default
+        cors: Default::default(),     // CORS with wildcard origin
+        ..Default::default()
+    };
+
+    // This blocks — the server runs until killed
+    assistant.run_server_blocking(&config);
+}</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Server Configuration</h3>
+    <span class="code-label toml">config.toml</span>
+    <pre>[provider]
+type = "ollama"
+model = "llama3.2"
+
+[urls]
+ollama = "http://localhost:11434"
+
+[generation]
+temperature = 0.7
+max_history = 20
+
+[server]
+host = "127.0.0.1"
+port = 8090
+
+[server.auth]
+enabled = true
+bearer_token = "my-secret-token"
+
+[server.cors]
+allowed_origins = ["http://localhost:3000"]</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ RAG ════════════════════════ -->
+<section id="rag">
+  <div class="container">
+    <h2 class="section-title">Adding RAG (Knowledge)</h2>
+    <p class="section-sub">
+      Give your assistant domain-specific knowledge by loading documents.
+      ai_assistant supports PDF, EPUB, DOCX, HTML, Markdown, TXT, CSV, and more.
+    </p>
+
+    <span class="code-label rust">rag_example.rs</span>
+    <pre>use ai_assistant::AiAssistant;
+
+fn main() {
+    let mut assistant = AiAssistant::new();
+    // ... (configure provider and model)
+
+    // Register a knowledge document
+    assistant.register_knowledge_document(
+        "rust_guide",
+        &std::fs::read_to_string("rust_guide.md").unwrap()
+    );
+
+    // Start background indexing (embeddings + vector DB)
+    assistant.start_background_indexing();
+
+    // Wait for indexing to complete
+    loop {
+        if let Some(progress) = assistant.poll_indexing() {
+            if progress.is_complete() { break; }
+        }
+        std::thread::sleep(std::time::Duration::from_millis(100));
+    }
+
+    // Now chat with RAG context
+    let context = assistant.build_rag_context("How do lifetimes work?");
+    assistant.send_message_with_context(
+        "How do lifetimes work?",
+        &context
+    );
+
+    // Or use the automatic RAG pipeline
+    let response = assistant.generate_with_knowledge(
+        "Explain the borrow checker",
+        2000  // max knowledge tokens
+    );
+    println!("{}", response);
+}</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">RAG Tiers</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      ai_assistant implements a 5-tier RAG architecture, from simple retrieval to self-correcting:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Tier</th><th>Strategy</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>T1</td><td>Naive RAG</td><td>Simple vector similarity search</td></tr>
+        <tr><td>T2</td><td>Enhanced RAG</td><td>Reranking + hybrid search (semantic + keyword)</td></tr>
+        <tr><td>T3</td><td>Self-RAG</td><td>Self-evaluating retrieval with relevance scoring</td></tr>
+        <tr><td>T4</td><td>CRAG</td><td>Corrective RAG &mdash; detects and fixes poor retrievals</td></tr>
+        <tr><td>T5</td><td>Graph RAG / RAPTOR</td><td>Knowledge graph traversal + hierarchical summarization</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Vector DB Backends</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0 16px;">
+      Choose the vector database that fits your deployment:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Backend</th><th>Feature Flag</th><th>Best For</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>In-Memory HNSW</td><td><em>default (in rag)</em></td><td>Development, small datasets (&lt;100K docs)</td></tr>
+        <tr><td>SQLite</td><td><em>default (in rag)</em></td><td>Single-node, persistent, no external deps</td></tr>
+        <tr><td>LanceDB</td><td>vector-lancedb</td><td>High-performance local, columnar storage</td></tr>
+        <tr><td>Qdrant</td><td><em>default (in rag)</em></td><td>Production, distributed, high-scale</td></tr>
+        <tr><td>ChromaDB</td><td><em>default (in rag)</em></td><td>Simple API, Python ecosystem integration</td></tr>
+        <tr><td>pgvector</td><td>vector-pgvector</td><td>PostgreSQL teams, existing Postgres infra</td></tr>
+        <tr><td>Milvus</td><td><em>default (in rag)</em></td><td>Enterprise scale, cloud-native</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ DOCKER ═════════════════════ -->
+<section id="docker">
+  <div class="container">
+    <h2 class="section-title">Docker Deployment</h2>
+    <p class="section-sub">
+      Deploy the server in a container with a single command. The included Dockerfile uses multi-stage builds
+      for a minimal ~80 MB runtime image.
+    </p>
+
+    <span class="code-label bash">bash</span>
+    <pre># Build the Docker image
+docker build -t ai-assistant:latest .
+
+# Run with default settings
+docker run -d --name ai-assistant \
+  -p 8090:8090 \
+  -e RUST_LOG=info \
+  ai-assistant:latest
+
+# With config file and data persistence
+docker run -d --name ai-assistant \
+  -p 8090:8090 \
+  -v ./config:/app/config \
+  -v ./data:/app/data \
+  -e RUST_LOG=info \
+  -e AI_CONFIG_PATH=/app/config/config.toml \
+  ai-assistant:latest</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Docker Compose</h3>
+    <span class="code-label yaml">docker-compose.yml</span>
+    <pre>version: '3.8'
+services:
+  ai-assistant:
+    image: ai-assistant:latest
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    environment:
+      - RUST_LOG=info
+      - AI_CONFIG_PATH=/app/config/config.toml
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3</pre>
+
+    <div class="info-box warning">
+      <strong>LLM Provider access:</strong> If your Ollama or LM Studio runs on the host machine,
+      use <code>host.docker.internal</code> instead of <code>localhost</code> in the Ollama URL config
+      (e.g., <code>http://host.docker.internal:11434</code>).
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CLI ════════════════════════ -->
+<section id="cli">
+  <div class="container">
+    <h2 class="section-title">CLI Usage</h2>
+    <p class="section-sub">
+      The included CLI binary provides an interactive terminal chat interface.
+    </p>
+
+    <span class="code-label bash">bash</span>
+    <pre># Run the interactive CLI
+cargo run --features full --bin ai_assistant_cli
+
+# Or with a specific provider
+cargo run --features full --bin ai_assistant_cli -- --provider ollama --model llama3.2</pre>
+
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-top: 16px;">
+      The CLI supports model selection, conversation history, session management,
+      and all the same features as the library API.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ NEXT STEPS ═════════════════ -->
+<section id="next">
+  <div class="container">
+    <h2 class="section-title">Next Steps</h2>
+    <p class="section-sub">
+      You're up and running! Dive deeper into specific areas:
+    </p>
+
+    <div class="next-grid">
+      <a class="next-card" href="developer_guide.html">
+        <span class="icon">&#x1F4D0;</span>
+        <div class="info">
+          <h4>Developer Guide</h4>
+          <p>Architecture, modules, patterns, and advanced features in depth.</p>
+        </div>
+      </a>
+      <a class="next-card" href="api_reference.html">
+        <span class="icon">&#x1F4E1;</span>
+        <div class="info">
+          <h4>API Reference</h4>
+          <p>Every HTTP endpoint, authentication, WebSocket, and code examples.</p>
+        </div>
+      </a>
+      <a class="next-card" href="feature_matrix.html">
+        <span class="icon">&#x1F4CA;</span>
+        <div class="info">
+          <h4>Feature Matrix</h4>
+          <p>Complete status of every module, feature flag, and test count.</p>
+        </div>
+      </a>
+      <a class="next-card" href="concepts.html">
+        <span class="icon">&#x1F4D6;</span>
+        <div class="info">
+          <h4>Concepts Reference</h4>
+          <p>163 sections covering architecture, patterns, and design decisions.</p>
+        </div>
+      </a>
+      <a class="next-card" href="framework_comparison.html">
+        <span class="icon">&#x2696;</span>
+        <div class="info">
+          <h4>Framework Comparison</h4>
+          <p>How ai_assistant compares to LangChain, LlamaIndex, Haystack, and others.</p>
+        </div>
+      </a>
+      <a class="next-card" href="vector_db_comparison.html">
+        <span class="icon">&#x1F5C4;</span>
+        <div class="info">
+          <h4>Vector DB Comparison</h4>
+          <p>Choose the right vector database for your deployment scenario.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ THEME TOGGLE JS ════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+</body>
+</html>
