@@ -231,10 +231,12 @@ footer {
 <nav>
   <div class="container">
     <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#download">Download</a>
     <a href="#prerequisites">Prerequisites</a>
     <a href="#installation">Installation</a>
     <a href="#first-chat">First Chat</a>
     <a href="#server">Server</a>
+    <a href="#clients">Other Languages</a>
     <a href="#rag">RAG</a>
     <a href="#docker">Docker</a>
     <a href="#next">Next Steps</a>
@@ -248,9 +250,61 @@ footer {
   <div class="container">
     <h1>Getting Started</h1>
     <p class="tagline">
-      From zero to a working AI assistant in under 5 minutes.
-      This guide covers installation, your first chat, the HTTP server, RAG, and Docker deployment.
+      From zero to a working AI assistant in 30 seconds.
+      Download pre-built binaries, install from crates.io, or build from source.
     </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ DOWNLOAD ═════════════════ -->
+<section id="download">
+  <div class="container">
+    <h2 class="section-title">Download Pre-Built Binaries</h2>
+    <p class="section-sub">
+      The fastest way to try ai_assistant &mdash; no Rust toolchain needed.
+    </p>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin:24px 0;">
+      <a href="https://github.com/OrlandoLuque/ai_assistant/releases" target="_blank" rel="noopener"
+         style="display:inline-block; padding:12px 32px; background:var(--green); color:#fff; border-radius:8px; font-weight:600; font-size:1.05rem; text-decoration:none;">
+        Download from GitHub Releases
+      </a>
+    </div>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Download &amp; Extract</h3>
+      <p>Download the <code>.zip</code> file from the latest release and extract it anywhere.</p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>Run the CLI</h3>
+      <span class="code-label bash">terminal</span>
+      <pre>ai_assistant_cli.exe</pre>
+      <p>That's it! The CLI auto-detects your local LLM provider (Ollama, LM Studio) and starts chatting.</p>
+    </div>
+
+    <h3 style="margin-top:32px; color: var(--text-bright);">Included Binaries</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top:12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Binary</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>ai_assistant_cli</code></td><td>Interactive REPL with Butler auto-detection of local LLMs</td></tr>
+        <tr><td><code>ai_assistant_server</code></td><td>HTTP API server &mdash; OpenAI-compatible drop-in replacement</td></tr>
+        <tr><td><code>ai_gui</code></td><td>Desktop GUI with chat and .kpkg knowledge package support (WIP)</td></tr>
+        <tr><td><code>kpkg_tool</code></td><td>Create, inspect, and extract encrypted knowledge packages</td></tr>
+        <tr><td><code>ai_cluster_node</code></td><td>Distributed cluster node &mdash; QUIC mesh networking with CRDTs</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="info-box success" style="margin-top:16px;">
+      <strong>Prerequisite:</strong> You need an LLM provider running. Install
+      <a href="https://ollama.com">Ollama</a> and run <code>ollama pull llama3.2:1b</code> to get started.
+    </div>
   </div>
 </section>
 
@@ -298,11 +352,19 @@ footer {
       <h3>Add to Your Cargo Project</h3>
       <p>Add ai_assistant as a dependency in your <code>Cargo.toml</code>:</p>
       <span class="code-label toml">Cargo.toml</span>
-      <pre>[dependencies]
-ai_assistant = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
+      <pre># From crates.io (stable release):
+[dependencies]
+ai_assistant = { version = "0.1", features = ["full"] }
+
+# Or from git (latest development version):
+# ai_assistant = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
+      <p style="margin-top:8px;">Or install a binary directly from crates.io:</p>
+      <span class="code-label bash">bash</span>
+      <pre>cargo install ai_assistant --bin ai_assistant_cli --features "full,butler"
+cargo install ai_assistant --bin ai_assistant_server --features "full"</pre>
       <div class="info-box">
-        <strong>Source:</strong> The repository is at
-        <a href="https://github.com/OrlandoLuque/ai_assistant">github.com/OrlandoLuque/ai_assistant</a>.
+        <strong>Published on crates.io:</strong>
+        <a href="https://crates.io/crates/ai_assistant">crates.io/crates/ai_assistant</a>.
         The <code>full</code> feature enables all lightweight features (core, RAG, security, streaming, multi-agent, etc.).
       </div>
     </div>
@@ -565,6 +627,156 @@ bearer_token = "my-secret-token"
 
 [server.cors]
 allowed_origins = ["http://localhost:3000"]</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ OTHER LANGUAGES ══════════════ -->
+<section id="clients">
+  <div class="container">
+    <h2 class="section-title">Use from Other Languages</h2>
+    <p class="section-sub">
+      The server speaks JSON over HTTP &mdash; use it from any language. These snippets connect to
+      <code>ai_assistant_server</code> running on <code>localhost:8090</code>.
+    </p>
+
+    <h3 style="color:var(--yellow);">Python</h3>
+    <span class="code-label python">python</span>
+    <pre>import requests
+
+# Simple chat with system prompt and temperature
+r = requests.post("http://localhost:8090/chat", json={
+    "messages": [
+        {"role": "system", "content": "You are a concise assistant. Reply in one sentence."},
+        {"role": "user", "content": "What is Rust?"},
+    ],
+    "temperature": 0.3,
+})
+print(r.json()["response"])
+
+# SSE streaming
+r = requests.post("http://localhost:8090/chat/stream", json={
+    "messages": [{"role": "user", "content": "Write a haiku about code."}],
+}, stream=True)
+import json
+for line in r.iter_lines(decode_unicode=True):
+    if line.startswith("data: ") and line[6:] != "[DONE]":
+        token = json.loads(line[6:]).get("token", "")
+        print(token, end="", flush=True)</pre>
+
+    <h3 style="margin-top:28px; color:var(--yellow);">Python &mdash; OpenAI SDK</h3>
+    <span class="code-label python">pip install openai</span>
+    <pre>from openai import OpenAI
+
+# Our server is a drop-in replacement for OpenAI!
+client = OpenAI(base_url="http://localhost:8090/v1", api_key="not-needed")
+
+response = client.chat.completions.create(
+    model="llama3.2:1b",
+    messages=[
+        {"role": "system", "content": "You are a helpful coding assistant."},
+        {"role": "user", "content": "Explain pattern matching in Rust."},
+    ],
+    temperature=0.5,
+)
+print(response.choices[0].message.content)
+
+# Streaming also works!
+for chunk in client.chat.completions.create(
+    model="llama3.2:1b",
+    messages=[{"role": "user", "content": "Count to 5."}],
+    stream=True,
+):
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)</pre>
+
+    <h3 style="margin-top:28px; color:var(--green);">Node.js (18+)</h3>
+    <span class="code-label javascript">node</span>
+    <pre>// No dependencies needed — uses built-in fetch
+const r = await fetch("http://localhost:8090/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    messages: [
+      { role: "system", content: "Reply in one sentence." },
+      { role: "user", content: "What is WebAssembly?" },
+    ],
+    temperature: 0.5,
+  }),
+});
+const data = await r.json();
+console.log(data.response);
+
+// SSE streaming
+const stream = await fetch("http://localhost:8090/chat/stream", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    messages: [{ role: "user", content: "Tell me a joke." }],
+  }),
+});
+const reader = stream.body.getReader();
+const decoder = new TextDecoder();
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  for (const line of decoder.decode(value).split("\\n")) {
+    if (line.startsWith("data: ") &amp;&amp; line.slice(6) !== "[DONE]")
+      process.stdout.write(JSON.parse(line.slice(6)).token || "");
+  }
+}</pre>
+
+    <h3 style="margin-top:28px; color:var(--accent);">Go</h3>
+    <span class="code-label go">go</span>
+    <pre>body, _ := json.Marshal(map[string]interface{}{
+    "messages": []map[string]string{
+        {"role": "system", "content": "You are a Go expert."},
+        {"role": "user", "content": "What is a goroutine?"},
+    },
+    "temperature": 0.5,
+})
+resp, _ := http.Post("http://localhost:8090/chat", "application/json", bytes.NewReader(body))
+defer resp.Body.Close()
+data, _ := io.ReadAll(resp.Body)
+fmt.Println(string(data))</pre>
+
+    <h3 style="margin-top:28px; color:var(--accent2);">C# (.NET 6+)</h3>
+    <span class="code-label csharp">C#</span>
+    <pre>var client = new HttpClient { BaseAddress = new Uri("http://localhost:8090") };
+
+var response = await client.PostAsJsonAsync("/chat", new {
+    messages = new[] {
+        new { role = "system", content = "You are a .NET expert." },
+        new { role = "user", content = "What is LINQ?" },
+    },
+    temperature = 0.5,
+});
+
+var json = await response.Content.ReadAsStringAsync();
+Console.WriteLine(json);</pre>
+
+    <h3 style="margin-top:28px; color:var(--red);">Java (11+)</h3>
+    <span class="code-label java">java</span>
+    <pre>var client = HttpClient.newHttpClient();
+var body = """
+    {
+      "messages": [{"role": "user", "content": "What is a record in Java?"}],
+      "temperature": 0.5
+    }
+    """;
+
+var request = HttpRequest.newBuilder(URI.create("http://localhost:8090/chat"))
+    .header("Content-Type", "application/json")
+    .POST(HttpRequest.BodyPublishers.ofString(body))
+    .build();
+
+var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());</pre>
+
+    <div class="info-box" style="margin-top:24px;">
+      <strong>Full interactive clients:</strong>
+      See <a href="https://github.com/OrlandoLuque/ai_assistant/tree/master/examples/clients" target="_blank" rel="noopener">examples/clients/</a>
+      for runnable chat applications in Python, Node.js, Go, C#, Java, and curl.
+    </div>
   </div>
 </section>
 

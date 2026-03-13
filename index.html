@@ -302,6 +302,7 @@ footer {
 <nav>
   <div class="container">
     <span class="nav-brand">ai_assistant</span>
+    <a href="#try-it">Try It</a>
     <a href="#use-cases">Use Cases</a>
     <a href="#advantages">Advantages</a>
     <a href="#deployment">Deployment</a>
@@ -339,8 +340,154 @@ footer {
       This project compiles and passes 6,700+ tests, but it has not been validated in production
       or real-world usage. Developed iteratively with AI assistance, some modules may be incomplete,
       loosely wired, or tested only at a surface level. A comprehensive review is pending.
-      Use at your own risk. Not yet published on crates.io.
+      Use at your own risk.
     </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TRY IT ═══════════════════ -->
+<section id="try-it">
+  <div class="container">
+    <h2 class="section-title">Try It Now</h2>
+    <p class="section-sub">
+      Download pre-built binaries or install from crates.io &mdash; start chatting with your local LLM in 30 seconds.
+    </p>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin:24px 0;">
+      <a href="https://github.com/OrlandoLuque/ai_assistant/releases" target="_blank" rel="noopener"
+         style="display:inline-block; padding:12px 32px; background:var(--green); color:#fff; border-radius:8px; font-weight:600; font-size:1.05rem; text-decoration:none;">
+        Download Binaries (Windows)
+      </a>
+      <a href="https://crates.io/crates/ai_assistant" target="_blank" rel="noopener"
+         style="display:inline-block; padding:12px 32px; background:var(--accent); color:#fff; border-radius:8px; font-weight:600; font-size:1.05rem; text-decoration:none;">
+        View on crates.io
+      </a>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 20px; margin:16px 0;">
+      <code style="font-size:0.9rem; color:var(--cyan);">cargo install ai_assistant --bin ai_assistant_cli --features "full,butler"</code>
+    </div>
+
+    <div class="link-grid" style="margin-top:32px;">
+      <div class="link-card" style="border-color: var(--green);">
+        <span class="icon">&#x1F4BB;</span>
+        <div class="info">
+          <h4>ai_assistant_cli</h4>
+          <p>Interactive REPL with auto-detection. Type a question, get an answer. Supports /models, /history, /save, /load.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--accent);">
+        <span class="icon">&#x1F310;</span>
+        <div class="info">
+          <h4>ai_assistant_server</h4>
+          <p>HTTP API server &mdash; OpenAI-compatible drop-in replacement. Use from Python, Node.js, Go, C#, Java, curl, or any HTTP client.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--accent2);">
+        <span class="icon">&#x1F5BC;</span>
+        <div class="info">
+          <h4>ai_gui</h4>
+          <p>Desktop GUI with chat, model scanning, and .kpkg knowledge package support. Work in progress.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--cyan);">
+        <span class="icon">&#x1F4E6;</span>
+        <div class="info">
+          <h4>kpkg_tool</h4>
+          <p>Create, inspect, and extract encrypted knowledge packages (.kpkg) for RAG-powered conversations.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--yellow);">
+        <span class="icon">&#x1F517;</span>
+        <div class="info">
+          <h4>ai_cluster_node</h4>
+          <p>Distributed cluster node &mdash; QUIC mesh networking with CRDTs. Run multiple nodes that sync automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:40px; color:var(--text-bright);">Code Snippets</h3>
+    <p style="color:var(--text-dim); margin-bottom:16px;">Use the library directly from Rust, or connect to the server from any language.</p>
+
+    <h4 style="margin-top:24px; color:var(--cyan);">Rust &mdash; Using the Library</h4>
+    <pre style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; overflow-x:auto; font-size:0.85rem; line-height:1.5;"><code>use ai_assistant::{AiAssistant, AiConfig, AiProvider};
+
+let config = AiConfig {
+    provider: AiProvider::Ollama,
+    selected_model: "llama3.2:1b".to_string(),
+    ollama_url: "http://localhost:11434".to_string(),
+    ..Default::default()
+};
+
+let mut assistant = AiAssistant::new();
+assistant.load_config(config);
+assistant.set_system_prompt("You are a helpful assistant.");
+assistant.fetch_models();
+assistant.send_message_simple("What is Rust?".to_string());
+
+for msg in &amp;assistant.conversation {
+    println!("[{}] {}", msg.role, msg.content);
+}</code></pre>
+
+    <h4 style="margin-top:24px; color:var(--yellow);">Python &mdash; Using the Server</h4>
+    <pre style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; overflow-x:auto; font-size:0.85rem; line-height:1.5;"><code>import requests
+
+BASE = "http://localhost:8090"
+
+# Simple chat with system prompt
+r = requests.post(f"{BASE}/chat", json={
+    "messages": [
+        {"role": "system", "content": "You are a concise assistant."},
+        {"role": "user", "content": "What is Rust?"},
+    ],
+    "temperature": 0.3,
+})
+print(r.json()["response"])
+
+# Or use the OpenAI SDK — our server is a drop-in replacement!
+from openai import OpenAI
+client = OpenAI(base_url="http://localhost:8090/v1", api_key="not-needed")
+
+response = client.chat.completions.create(
+    model="llama3.2:1b",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+print(response.choices[0].message.content)</code></pre>
+
+    <h4 style="margin-top:24px; color:var(--green);">Node.js &mdash; Using the Server</h4>
+    <pre style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; overflow-x:auto; font-size:0.85rem; line-height:1.5;"><code>const r = await fetch("http://localhost:8090/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    messages: [
+      { role: "system", content: "Reply in one sentence." },
+      { role: "user", content: "What is WebAssembly?" },
+    ],
+    temperature: 0.5,
+  }),
+});
+const data = await r.json();
+console.log(data.response);</code></pre>
+
+    <h4 style="margin-top:24px; color:var(--pink);">curl</h4>
+    <pre style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; overflow-x:auto; font-size:0.85rem; line-height:1.5;"><code>curl -X POST http://localhost:8090/chat \
+  -H "Content-Type: application/json" \
+  -d '{"messages": [{"role": "user", "content": "Hello!"}]}'
+
+# OpenAI-compatible endpoint (works with Continue.dev, Cursor, LangChain...)
+curl -X POST http://localhost:8090/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model": "llama3.2:1b", "messages": [{"role": "user", "content": "Hi!"}]}'</code></pre>
+
+    <p style="margin-top:16px;">
+      <a href="https://github.com/OrlandoLuque/ai_assistant/tree/master/examples/clients" target="_blank" rel="noopener">
+        More examples (Go, C#, Java) &rarr;
+      </a>
+      &nbsp; | &nbsp;
+      <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/GETTING_STARTED.md" target="_blank" rel="noopener">
+        Full Getting Started guide &rarr;
+      </a>
+    </p>
   </div>
 </section>
 
@@ -626,7 +773,7 @@ footer {
         <span class="icon">&#x1F680;</span>
         <div class="info">
           <h4>Getting Started</h4>
-          <p>From zero to working AI assistant in 5 minutes. Installation, first chat, server, RAG, and Docker.</p>
+          <p>From zero to working AI assistant in 30 seconds. Download binaries, install from crates.io, or build from source.</p>
         </div>
       </a>
 
