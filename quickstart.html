@@ -292,6 +292,7 @@ footer {
         <tr><th>Binary</th><th>Description</th></tr>
       </thead>
       <tbody>
+        <tr><td><code>ai_cli</code></td><td>Power-user CLI with diagnostics &mdash; structured logging and diagnostic commands</td></tr>
         <tr><td><code>ai_assistant_cli</code></td><td>Interactive REPL with Butler auto-detection of local LLMs</td></tr>
         <tr><td><code>ai_assistant_server</code></td><td>HTTP API server &mdash; OpenAI-compatible drop-in replacement</td></tr>
         <tr><td><code>ai_gui</code></td><td>Desktop GUI with chat and .kpkg knowledge package support (WIP)</td></tr>
@@ -377,7 +378,10 @@ cargo install ai_assistant --bin ai_assistant_server --features "full"</pre>
       <pre># Build the HTTP server
 cargo build --release --features full --bin ai_assistant_server
 
-# Build the CLI
+# Build the power-user CLI (with diagnostic logging)
+cargo build --release --features "full,diagnostic-logging" --bin ai_cli
+
+# Build the interactive CLI
 cargo build --release --features full --bin ai_assistant_cli
 
 # Binaries are in target/release/</pre>
@@ -415,6 +419,7 @@ cargo build --release --features full --bin ai_assistant_cli
         <tr><td>a2a</td><td>Agent-to-Agent protocol</td><td class="tag-no">No</td></tr>
         <tr><td>hitl</td><td>Human-in-the-loop approval gates</td><td class="tag-no">No</td></tr>
         <tr><td>webrtc</td><td>WebRTC peer connections</td><td class="tag-no">No</td></tr>
+        <tr><td>diagnostic-logging</td><td>Structured diagnostic logging for ai_cli</td><td class="tag-no">No</td></tr>
       </tbody>
     </table>
     </div>

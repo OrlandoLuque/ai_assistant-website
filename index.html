@@ -328,16 +328,16 @@ footer {
       Just <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:0.85em;">cargo build --release</code> and deploy.
     </p>
     <div class="stat-row">
-      <div class="stat-badge"><span class="num">385K</span><span class="label">Lines of Rust</span></div>
-      <div class="stat-badge"><span class="num">315</span><span class="label">Source Files</span></div>
+      <div class="stat-badge"><span class="num">363K</span><span class="label">Lines of Rust</span></div>
+      <div class="stat-badge"><span class="num">316</span><span class="label">Source Files</span></div>
       <div class="stat-badge"><span class="num">4,892</span><span class="label">Tests</span></div>
-      <div class="stat-badge"><span class="num">22+</span><span class="label">Feature Flags</span></div>
+      <div class="stat-badge"><span class="num">54</span><span class="label">Feature Flags</span></div>
       <div class="stat-badge"><span class="num">51</span><span class="label">Examples</span></div>
       <div class="stat-badge"><span class="num">42</span><span class="label">Benchmarks</span></div>
     </div>
     <div class="experimental-banner">
       <strong>Status: Experimental</strong> &mdash;
-      This project compiles and passes 4,800+ tests, but it has not been validated in production
+      This project compiles and passes 4,892+ tests, but it has not been validated in production
       or real-world usage. Developed iteratively with AI assistance, some modules may be incomplete,
       loosely wired, or tested only at a surface level. A comprehensive review is pending.
       Use at your own risk.
@@ -369,6 +369,13 @@ footer {
     </div>
 
     <div class="link-grid" style="margin-top:32px;">
+      <div class="link-card" style="border-color: var(--pink);">
+        <span class="icon">&#x2318;</span>
+        <div class="info">
+          <h4>ai_cli</h4>
+          <p>Power-user CLI with diagnostics. Structured logging, diagnostic commands, and advanced debugging tools.</p>
+        </div>
+      </div>
       <div class="link-card" style="border-color: var(--green);">
         <span class="icon">&#x1F4BB;</span>
         <div class="info">
@@ -630,7 +637,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
           </tr>
           <tr>
             <td>Modules in one package</td>
-            <td class="highlight-col val-good">315 (one crate)</td>
+            <td class="highlight-col val-good">316 (one crate)</td>
             <td class="val-bad">10&ndash;30 separate packages</td>
             <td class="val-bad">15&ndash;40 separate packages</td>
           </tr>
