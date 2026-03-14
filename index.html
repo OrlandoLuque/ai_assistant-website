@@ -252,6 +252,7 @@ tbody tr:last-child td { border-bottom: none; }
 }
 .link-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
 .link-card .icon { font-size: 1.3rem; flex-shrink: 0; }
+.link-card .icon-img { width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; }
 .link-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
 .link-card .info p { font-size: 0.78rem; color: var(--text-dim); }
 
@@ -371,42 +372,42 @@ footer {
 
     <div class="link-grid" style="margin-top:32px;">
       <div class="link-card" style="border-color: var(--pink);">
-        <span class="icon">&#x2318;</span>
+        <img class="icon-img" src="favicons/home.svg" alt="">
         <div class="info">
           <h4>ai_cli</h4>
           <p>Power-user CLI with diagnostics. Structured logging, diagnostic commands, and advanced debugging tools.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--green);">
-        <span class="icon">&#x1F4BB;</span>
+        <img class="icon-img" src="favicons/cli.svg" alt="">
         <div class="info">
           <h4>ai_assistant_cli</h4>
           <p>Interactive REPL with auto-detection. Type a question, get an answer. Supports /models, /history, /save, /load.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--accent);">
-        <span class="icon">&#x1F310;</span>
+        <img class="icon-img" src="favicons/server.svg" alt="">
         <div class="info">
           <h4>ai_assistant_server</h4>
           <p>HTTP API server &mdash; OpenAI-compatible drop-in replacement. Use from Python, Node.js, Go, C#, Java, curl, or any HTTP client.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--accent2);">
-        <span class="icon">&#x1F5BC;</span>
+        <img class="icon-img" src="favicons/gui.svg" alt="">
         <div class="info">
           <h4>ai_gui</h4>
           <p>Desktop GUI with chat, model scanning, and .kpkg knowledge package support. Work in progress.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--cyan);">
-        <span class="icon">&#x1F4E6;</span>
+        <img class="icon-img" src="favicons/kpkg.svg" alt="">
         <div class="info">
           <h4>kpkg_tool</h4>
           <p>Create, inspect, and extract encrypted knowledge packages (.kpkg) for RAG-powered conversations.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--yellow);">
-        <span class="icon">&#x1F517;</span>
+        <img class="icon-img" src="favicons/cluster.svg" alt="">
         <div class="info">
           <h4>ai_cluster_node</h4>
           <p>Distributed cluster node &mdash; QUIC mesh networking with CRDTs. Run multiple nodes that sync automatically.</p>
@@ -780,7 +781,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
     <div class="link-grid">
 
       <a class="link-card" href="quickstart.html" style="border-color: var(--green);">
-        <span class="icon">&#x1F680;</span>
+        <img class="icon-img" src="favicons/quickstart.svg" alt="">
         <div class="info">
           <h4>Getting Started</h4>
           <p>From zero to working AI assistant in 30 seconds. Download binaries, install from crates.io, or build from source.</p>
@@ -788,7 +789,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="developer_guide.html" style="border-color: var(--accent2);">
-        <span class="icon">&#x1F4D0;</span>
+        <img class="icon-img" src="favicons/developer_guide.svg" alt="">
         <div class="info">
           <h4>Developer Guide</h4>
           <p>Architecture, modules, providers, RAG, agents, security, streaming, and configuration in depth.</p>
@@ -796,7 +797,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="api_reference.html" style="border-color: var(--cyan);">
-        <span class="icon">&#x1F4E1;</span>
+        <img class="icon-img" src="favicons/api_reference.svg" alt="">
         <div class="info">
           <h4>API Reference</h4>
           <p>Every HTTP endpoint, authentication, WebSocket, SSE streaming, and code examples (curl, Python, JS).</p>
@@ -804,7 +805,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="feature_matrix.html">
-        <span class="icon">&#x1F4CA;</span>
+        <img class="icon-img" src="favicons/feature_matrix.svg" alt="">
         <div class="info">
           <h4>Feature Matrix</h4>
           <p>Complete status of every module: implemented, tested, feature-gated. Filterable by perspective.</p>
@@ -812,7 +813,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="framework_comparison.html">
-        <span class="icon">&#x2696;</span>
+        <img class="icon-img" src="favicons/framework_comparison.svg" alt="">
         <div class="info">
           <h4>Framework Comparison</h4>
           <p>Head-to-head comparison vs. LangChain, LlamaIndex, Haystack, Semantic Kernel, and more.</p>
@@ -820,7 +821,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="concepts.html">
-        <span class="icon">&#x1F4D6;</span>
+        <img class="icon-img" src="favicons/concepts.svg" alt="">
         <div class="info">
           <h4>Concepts Reference</h4>
           <p>147 sections covering architecture, patterns, and design decisions in depth.</p>
@@ -828,7 +829,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="mcp_catalog.html">
-        <span class="icon">&#x1F50C;</span>
+        <img class="icon-img" src="favicons/mcp_catalog.svg" alt="">
         <div class="info">
           <h4>MCP Tool Catalog</h4>
           <p>Model Context Protocol tools, resources, prompts, and knowledge tools. Full MCP v2 spec with Streamable HTTP.</p>
@@ -836,7 +837,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="vector_db_comparison.html">
-        <span class="icon">&#x1F5C4;</span>
+        <img class="icon-img" src="favicons/vector_db.svg" alt="">
         <div class="info">
           <h4>Vector DB Comparison</h4>
           <p>7 backends compared: in-memory HNSW, SQLite, LanceDB, Qdrant, ChromaDB, pgvector, Milvus.</p>
@@ -844,7 +845,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
       </a>
 
       <a class="link-card" href="ai_assistant_overview.html">
-        <span class="icon">&#x1F3D7;</span>
+        <img class="icon-img" src="favicons/overview.svg" alt="">
         <div class="info">
           <h4>Technical Overview</h4>
           <p>Architecture deep-dive: module map, feature flag structure, provider system, and extension points.</p>
