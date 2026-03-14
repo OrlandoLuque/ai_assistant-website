@@ -355,17 +355,17 @@ footer {
       <span class="code-label toml">Cargo.toml</span>
       <pre># From crates.io (stable release):
 [dependencies]
-ai_assistant = { version = "0.1", features = ["full"] }
+ai_assistant_core = { version = "0.1", features = ["full"] }
 
 # Or from git (latest development version):
-# ai_assistant = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
+# ai_assistant_core = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
       <p style="margin-top:8px;">Or install a binary directly from crates.io:</p>
       <span class="code-label bash">bash</span>
-      <pre>cargo install ai_assistant --bin ai_assistant_cli --features "full,butler"
-cargo install ai_assistant --bin ai_assistant_server --features "full"</pre>
+      <pre>cargo install ai_assistant_core --bin ai_assistant_cli --features "full,butler"
+cargo install ai_assistant_core --bin ai_assistant_server --features "full"</pre>
       <div class="info-box">
         <strong>Published on crates.io:</strong>
-        <a href="https://crates.io/crates/ai_assistant">crates.io/crates/ai_assistant</a>.
+        <a href="https://crates.io/crates/ai_assistant_core">crates.io/crates/ai_assistant_core</a>.
         The <code>full</code> feature enables all lightweight features (core, RAG, security, streaming, multi-agent, etc.).
       </div>
     </div>
