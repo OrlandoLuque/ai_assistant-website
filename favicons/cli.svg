@@ -13,7 +13,7 @@
   <circle cx="27" cy="5" r="1.5" fill="#00d4aa" opacity="0.8"/>
   <circle cx="22" cy="5" r="1" fill="#00d4aa" opacity="0.6"/>
   <line x1="23" y1="5" x2="25.5" y2="5" stroke="#00d4aa" stroke-width="0.6" opacity="0.5"/>
-  <!-- Terminal prompt (CLI) -->
-  <rect x="5" y="7" width="22" height="18" rx="3" fill="none" stroke="#00d4aa" stroke-width="1.3"/>
-  <text x="8" y="19" font-family="monospace" font-size="10" font-weight="bold" fill="#00d4aa">&gt;_</text>
+  <!-- Terminal prompt (CLI) — sized to clear circuit dots -->
+  <rect x="6" y="8" width="20" height="16" rx="3" fill="none" stroke="#00d4aa" stroke-width="1.3"/>
+  <text x="9" y="19" font-family="monospace" font-size="10" font-weight="bold" fill="#00d4aa">&gt;_</text>
 </svg>

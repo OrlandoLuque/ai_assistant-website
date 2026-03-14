@@ -7,6 +7,8 @@
     <meta name="GPTBot" content="noindex, nofollow">
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicons/developer_guide.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Developer Guide &mdash; ai_assistant</title>
 <style>
@@ -1220,6 +1222,29 @@ function toggleTheme() {
   }
   requestAnimationFrame(tick);
 })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
 </script>
 </body>
 </html>
