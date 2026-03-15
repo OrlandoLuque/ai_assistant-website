@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (163 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (164 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,11 +514,11 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">163 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">164 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
-  <span class="search-count" id="searchCount">163 / 163</span>
+  <span class="search-count" id="searchCount">164 / 164</span>
   <div class="header-controls">
     <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener" style="color:#94a3b8; font-size:0.82rem; font-weight:600; margin-right:8px;">GitHub</a>
     <button class="theme-toggle" onclick="toggleTheme()">Light / Dark</button>
@@ -544,13 +544,15 @@ body {
 <a href="#concept-61" class="nav-item" data-num="61">61. RAPTOR — Recursive Abstractive Processing</a>
 <a href="#concept-109" class="nav-item" data-num="109">109. Discourse-Aware Chunking</a>
 <a href="#concept-110" class="nav-item" data-num="110">110. Maximal Marginal Relevance (MMR)</a>
-<a href="#concept-111" class="nav-item" data-num="111">111. Hierarchical RAG Router</a></div>
+<a href="#concept-111" class="nav-item" data-num="111">111. Hierarchical RAG Router</a>
+<a href="#concept-171" class="nav-item" data-num="171">171. FreshContext Mode: Stateless-by-Choice Context Composition</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Streaming<span class="chevron"></span></div>
 <div class="nav-items"><a href="#concept-9" class="nav-item" data-num="9">9. Streaming: Why Not Wait?</a>
 <a href="#concept-10" class="nav-item" data-num="10">10. Backpressure: Don&#x27;t Drown the Consumer</a>
-<a href="#concept-90" class="nav-item" data-num="90">90. Streaming Validation</a></div>
+<a href="#concept-90" class="nav-item" data-num="90">90. Streaming Validation</a>
+<a href="#concept-178" class="nav-item" data-num="178">178. Auto-Reconnection: Self-Healing Connections</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Prompt Engineering<span class="chevron"></span></div>
@@ -606,7 +608,8 @@ body {
 <a href="#concept-114" class="nav-item" data-num="114">114. Red Teaming</a>
 <a href="#concept-115" class="nav-item" data-num="115">115. Natural Language Guards</a>
 <a href="#concept-129" class="nav-item" data-num="129">129. Output Guardrails</a>
-<a href="#concept-166" class="nav-item" data-num="166">166. Emoticon &amp; Emoji Detection</a></div>
+<a href="#concept-166" class="nav-item" data-num="166">166. Emoticon &amp; Emoji Detection</a>
+<a href="#concept-177" class="nav-item" data-num="177">177. Chaos Engineering: Confidence Through Controlled Failure</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Memory &amp; Knowledge<span class="chevron"></span></div>
@@ -624,7 +627,8 @@ body {
 <a href="#concept-107" class="nav-item" data-num="107">107. Memory OS</a>
 <a href="#concept-108" class="nav-item" data-num="108">108. Memory Scheduler</a>
 <a href="#concept-130" class="nav-item" data-num="130">130. Memory Persistence</a>
-<a href="#concept-139" class="nav-item" data-num="139">139. Compressed Memory Snapshots</a></div>
+<a href="#concept-139" class="nav-item" data-num="139">139. Compressed Memory Snapshots</a>
+<a href="#concept-174" class="nav-item" data-num="174">174. Memory-Augmented Stateless Context</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Infrastructure<span class="chevron"></span></div>
@@ -658,7 +662,15 @@ body {
 <a href="#concept-145" class="nav-item" data-num="145">145. OpenAPI Export</a>
 <a href="#concept-146" class="nav-item" data-num="146">146. Server CLI Binary (ai_assistant_server)</a>
 <a href="#concept-147" class="nav-item" data-num="147">147. Criterion Benchmarks</a>
-<a href="#concept-148" class="nav-item" data-num="148">148. Feature Gating Strategy</a></div>
+<a href="#concept-148" class="nav-item" data-num="148">148. Feature Gating Strategy</a>
+<a href="#concept-172" class="nav-item" data-num="172">172. Lazy-Open Database Pattern</a>
+<a href="#concept-173" class="nav-item" data-num="173">173. Configuration Health Advisors</a>
+<a href="#concept-175" class="nav-item" data-num="175">175. Dead Letter Queue: Capturing What Can&#x27;t Be Delivered</a>
+<a href="#concept-176" class="nav-item" data-num="176">176. Bulkhead Pattern: Compartmentalized Resilience</a>
+<a href="#concept-179" class="nav-item" data-num="179">179. Adaptive Timeouts: Learning from Production Latency</a>
+<a href="#concept-180" class="nav-item" data-num="180">180. Load Shedding: Graceful Degradation Under Pressure</a>
+<a href="#concept-181" class="nav-item" data-num="181">181. The Resilience Stack: How Patterns Compose</a>
+<a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4336,6 +4348,170 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 </ul>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-150" class="related-link">150. Multi-Armed Bandit Routing</a>, <a href="#concept-36" class="related-link">36. Distributed Computing</a>, <a href="#concept-164" class="related-link">164. Butler Advisor</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-171" data-num="171" data-title="FreshContext Mode: Stateless-by-Choice Context Composition" data-category="RAG &amp; Search">
+<div class="card-header">
+<h3><span class="concept-num">171</span>FreshContext Mode: Stateless-by-Choice Context Composition</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG &amp; Search</span><span class="badge flag-feature">rag</span></div>
+</div>
+<div class="card-body"><p><strong>The fundamental idea</strong>: In a standard conversation with an LLM, every message you&#x27;ve ever sent is included in the prompt. This means as the conversation grows, less room remains for injected knowledge. FreshContext inverts this: it discards conversation history from the LLM prompt (keeping only the latest message), freeing ~54% more tokens for RAG-retrieved context. The trade-off is explicit &mdash; you sacrifice conversational continuity for deeper knowledge grounding.</p>
+<p><strong>How it works</strong>:</p>
+<ul>
+<li><strong>Conversation buffer</strong> &mdash; messages are still stored locally in <code>self.conversation</code> for GUI display, session persistence, and export. FreshContext doesn&#x27;t erase history; it just doesn&#x27;t send it.</li>
+<li><strong>Token budget redistribution</strong> &mdash; <code>calculate_available_knowledge_tokens()</code> returns <code>conversation_tokens = 0</code> in FreshContext, giving the full budget to RAG, memory, and graph context.</li>
+<li><strong>conv_ctx fallback</strong> &mdash; the archived conversation can be searched via RAG (<code>build_rag_context()</code> returns a <code>conv_ctx</code> element), so relevant past messages still appear as retrieved context rather than verbatim history.</li>
+<li><strong>Memory injection</strong> &mdash; when <code>MemoryManager</code> is enabled, a <code>--- MEMORY CONTEXT ---</code> block is appended with facts and preferences learned from prior exchanges, partially recovering session awareness.</li>
+</ul>
+<p><strong>When to use it</strong>: Document Q&amp;A, knowledge-base search, research assistants &mdash; any scenario where deep retrieval matters more than conversational flow. Not suitable for multi-turn reasoning or dialogue where prior exchanges are essential.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-6" class="related-link">6. RAG</a>, <a href="#concept-3" class="related-link">3. The Context Window</a>, <a href="#concept-19" class="related-link">19. Memory and Decay</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-172" data-num="172" data-title="Lazy-Open Database Pattern" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">172</span>Lazy-Open Database Pattern</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">rag</span></div>
+</div>
+<div class="card-body"><p><strong>The fundamental idea</strong>: Some databases (like <code>rusqlite::Connection</code>) are <code>!Send</code> &mdash; they cannot be moved between threads. But many async frameworks (MCP tool handlers, Axum handlers) require closures that are <code>Send + Sync + &#x27;static</code>. The lazy-open pattern resolves this by wrapping the database in <code>Arc&lt;Mutex&lt;Option&lt;T&gt;&gt;&gt;</code> and opening the connection inside the handler on first use, on the thread that will actually use it.</p>
+<p><strong>How it works</strong>:</p>
+<ul>
+<li><strong>Registration time</strong> &mdash; only the database path (<code>PathBuf</code>) is captured. No connection is opened. The <code>Arc&lt;Mutex&lt;Option&lt;RagDb&gt;&gt;&gt;</code> starts as <code>None</code>.</li>
+<li><strong>First invocation</strong> &mdash; the handler checks <code>lock().is_none()</code>, opens the connection, and stores it in the <code>Option</code>. Subsequent calls reuse the existing connection.</li>
+<li><strong>Thread affinity</strong> &mdash; the connection is opened on the handler&#x27;s thread, satisfying <code>rusqlite</code>&#x27;s constraint. The <code>Mutex</code> ensures only one thread accesses it at a time.</li>
+</ul>
+<p>This pattern is original to this project &mdash; not derived from an external library or known pattern. It emerged from the constraint of integrating <code>rusqlite</code> with MCP&#x27;s <code>Send + Sync + &#x27;static</code> handler requirements.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-61" class="related-link">61. MCP Protocol</a>, <a href="#concept-7" class="related-link">7. Full-Text Search: BM25 and FTS5</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-173" data-num="173" data-title="Configuration Health Advisors" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">173</span>Configuration Health Advisors</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">rag, butler</span></div>
+</div>
+<div class="card-body"><p><strong>The fundamental idea</strong>: Complex systems have many configuration knobs, and users often enable features without understanding the prerequisites. A configuration health advisor is a diagnostic API that inspects the current state and emits typed warnings about misconfiguration, missing prerequisites, or suboptimal setups &mdash; before the user encounters a runtime failure or silent degradation.</p>
+<p><strong>How it works in ai_assistant</strong>:</p>
+<ul>
+<li><strong>FreshContext Advisor</strong> &mdash; <code>fresh_context_status()</code> returns a <code>FreshContextStatus</code> struct with an effectiveness level (<code>Optimal</code>/<code>Good</code>/<code>Limited</code>/<code>Ineffective</code>) and a list of typed warnings (<code>NoRag</code>, <code>NoGraph</code>, <code>NoMemory</code>, <code>SmallBudget</code>). Each warning implements <code>Display</code> for human-readable messages.</li>
+<li><strong>Butler Advisor</strong> &mdash; <code>butler_scan()</code> returns optimization recommendations across 6 categories (provider, security, performance, features, config, models).</li>
+<li><strong>Both are library-level</strong> &mdash; they return typed data structures, not GUI widgets. GUIs consume them for display; library users call them directly from code.</li>
+</ul>
+<p><strong>Design principle</strong>: Advisors never modify configuration &mdash; they only observe and report.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-164" class="related-link">164. Butler Advisor</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-174" data-num="174" data-title="Memory-Augmented Stateless Context" data-category="Memory &amp; Knowledge">
+<div class="card-header">
+<h3><span class="concept-num">174</span>Memory-Augmented Stateless Context</h3>
+<div class="card-badges"><span class="badge badge-cat">Memory &amp; Knowledge</span><span class="badge flag-feature">rag</span></div>
+</div>
+<div class="card-body"><p><strong>The fundamental idea</strong>: FreshContext mode is deliberately stateless &mdash; it doesn&#x27;t send conversation history. But some session awareness is still valuable: knowing the user&#x27;s name, their stated preferences, facts established earlier in the conversation. The solution is to use a <code>MemoryManager</code> that automatically learns facts from each exchange and injects the most relevant ones as a compact <code>--- MEMORY CONTEXT ---</code> block alongside RAG results.</p>
+<p><strong>How it works</strong>:</p>
+<ul>
+<li><strong>Passive learning</strong> &mdash; <code>poll_response()</code> feeds both user messages and assistant responses through <code>MemoryManager::process_message()</code>, which extracts facts, preferences, and entity references.</li>
+<li><strong>Active retrieval</strong> &mdash; <code>build_memory_context(query, max_tokens)</code> searches stored memories for relevance to the current query and composes a text block within the token budget (default: 512 tokens).</li>
+<li><strong>Injection point</strong> &mdash; in FreshContext mode, the memory context is appended to the knowledge context before building the system prompt. In Conversation mode, memory is not injected (the history already provides continuity).</li>
+</ul>
+<p><strong>Why 512 tokens for memory?</strong> Memory entries are typically short (facts, preferences, entity attributes). 512 tokens can hold ~20&ndash;30 facts, which is sufficient for session context without significantly reducing RAG budget.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-171" class="related-link">171. FreshContext Mode</a>, <a href="#concept-19" class="related-link">19. Memory and Decay</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-175" data-num="175" data-title="Dead Letter Queue: Capturing What Can&#x27;t Be Delivered" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">175</span>Dead Letter Queue: Capturing What Can&#x27;t Be Delivered</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>When a message exhausts all retry attempts &mdash; whether due to persistent timeouts, rate limiting, or invalid requests &mdash; it enters the <strong>dead letter queue</strong> (DLQ). Rather than silently discarding these failures, the DLQ preserves them with rich metadata: the failure category, attempt count, error history, and timestamps. This enables <strong>selective replay</strong> &mdash; for instance, retrying all rate-limited requests once the provider recovers, or inspecting timeout patterns to diagnose systemic issues. The DLQ acts as the safety net at the bottom of the retry stack: everything the system couldn&#x27;t deliver eventually lands here for human review or automated recovery.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-20" class="related-link">20. Circuit Breakers</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-176" data-num="176" data-title="Bulkhead Pattern: Compartmentalized Resilience" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">176</span>Bulkhead Pattern: Compartmentalized Resilience</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>Named after the watertight compartments in a ship&#x27;s hull, the <strong>bulkhead pattern</strong> prevents a failure in one subsystem from flooding the entire application. Each workload type (chat, streaming, embeddings, background tasks) is allocated its own semaphore with a maximum concurrency limit. If the streaming subsystem saturates its 5-slot bulkhead, chat requests still flow through their independent 10-slot bulkhead unimpeded. The RAII <code>BulkheadPermit</code> automatically releases the slot when dropped &mdash; even during panics &mdash; ensuring resources are never permanently leaked. Combined with circuit breakers and retry, bulkheads provide the <strong>resource isolation</strong> layer in the resilience stack.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-20" class="related-link">20. Circuit Breakers</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-177" data-num="177" data-title="Chaos Engineering: Confidence Through Controlled Failure" data-category="Quality &amp; Safety">
+<div class="card-header">
+<h3><span class="concept-num">177</span>Chaos Engineering: Confidence Through Controlled Failure</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge flag-feature">chaos-testing</span></div>
+</div>
+<div class="card-body"><p>Pioneered by Netflix, chaos engineering answers the question: <em>&ldquo;Would our system survive this failure?&rdquo;</em> by deliberately injecting faults in controlled conditions. The <code>FaultInjector</code> supports several fault types &mdash; artificial latency, simulated errors, connection resets, rate limiting, partial responses, and corrupt responses &mdash; each targeted at specific providers or request patterns with configurable probability. A <strong>deterministic seed</strong> mode enables reproducible tests: given the same seed, the same sequence of faults fires every time, making chaos tests as reliable as unit tests. This shifts resilience from &ldquo;we hope it works&rdquo; to &ldquo;we&#x27;ve proven it works.&rdquo;</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-20" class="related-link">20. Circuit Breakers</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-178" data-num="178" data-title="Auto-Reconnection: Self-Healing Connections" data-category="Streaming">
+<div class="card-header">
+<h3><span class="concept-num">178</span>Auto-Reconnection: Self-Healing Connections</h3>
+<div class="card-badges"><span class="badge badge-cat">Streaming</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>Long-lived connections (WebSocket, SSE) inevitably break &mdash; network blips, server restarts, load balancer rotations. Auto-reconnection transforms a binary alive/dead state into a <strong>state machine</strong>: Connected &rarr; Disconnected &rarr; Reconnecting &rarr; Connected (or GaveUp after exhausting attempts). Each attempt uses <strong>exponential backoff with jitter</strong> to avoid thundering herd problems when many clients reconnect simultaneously. For SSE streams, <code>Last-Event-ID</code> enables <strong>checkpoint-based resumption</strong>: the client tells the server the last event it received, and the server replays everything since. This means transient disconnects are invisible to the end user.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-9" class="related-link">9. Streaming</a>, <a href="#concept-45" class="related-link">45. WebSocket Protocol</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-179" data-num="179" data-title="Adaptive Timeouts: Learning from Production Latency" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">179</span>Adaptive Timeouts: Learning from Production Latency</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>Static timeouts are a lose-lose: too short and you abort valid slow requests, too long and you waste resources waiting for dead connections. <strong>Adaptive timeouts</strong> solve this by observing actual response latencies in a lock-free ring buffer and computing percentiles (P50, P95, P99). The timeout is set to <code>percentile &times; multiplier</code> &mdash; for example, 2&times; the observed P95 &mdash; clamped between a minimum and maximum bound. As the system&#x27;s latency profile changes (during peak load, after a deployment, when a provider degrades), the timeout automatically adjusts. Three presets &mdash; conservative (3&times; P99), responsive (2&times; P95), and aggressive (1.5&times; P95) &mdash; cover most operational needs.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-20" class="related-link">20. Circuit Breakers</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-180" data-num="180" data-title="Load Shedding: Graceful Degradation Under Pressure" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">180</span>Load Shedding: Graceful Degradation Under Pressure</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>When system resources are saturated, accepting every request means degrading the experience for <em>all</em> users. <strong>Load shedding</strong> deliberately rejects or delays a fraction of requests to preserve quality of service for the remainder. The shedding decision combines multiple signals &mdash; CPU utilization, memory pressure, queue depth, and P95 latency &mdash; with request priority. Four strategies are available: <strong>PriorityBased</strong> (shed Low first, throttle Normal), <strong>Probabilistic</strong> (random shedding proportional to overload severity), <strong>OldestFirst</strong> (shed stale requests), and <strong>Adaptive</strong> (combines all signals with priority weighting). High-priority requests can be <strong>protected</strong> from shedding entirely. A cooldown period prevents oscillation between shedding and accepting.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-176" class="related-link">176. Bulkhead Pattern</a>, <a href="#concept-181" class="related-link">181. The Resilience Stack</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-181" data-num="181" data-title="The Resilience Stack: How Patterns Compose" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">181</span>The Resilience Stack: How Patterns Compose</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-feature">full</span></div>
+</div>
+<div class="card-body"><p>Individual resilience patterns are powerful, but their real strength emerges in composition. A request flows through the stack like this: (1) <strong>Load shedding</strong> evaluates system health and may reject the request before it consumes resources; (2) the <strong>bulkhead</strong> checks whether the workload compartment has capacity; (3) the <strong>circuit breaker</strong> verifies the target provider isn&#x27;t in a failure state; (4) the <strong>retry executor</strong> attempts the operation with exponential backoff; (5) if the operation succeeds, <strong>adaptive timeout</strong> records the latency; (6) if all retries fail, the request enters the <strong>dead letter queue</strong> for later replay. Meanwhile, <strong>auto-reconnection</strong> ensures the underlying connections heal themselves, and <strong>chaos testing</strong> proves the entire stack works under fire. Each layer handles a different failure mode: load shedding handles capacity, bulkheads handle isolation, circuit breakers handle provider health, retries handle transient errors, and the DLQ handles permanent failures.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-175" class="related-link">175. Dead Letter Queue</a>, <a href="#concept-176" class="related-link">176. Bulkhead</a>, <a href="#concept-177" class="related-link">177. Chaos Engineering</a>, <a href="#concept-178" class="related-link">178. Auto-Reconnection</a>, <a href="#concept-179" class="related-link">179. Adaptive Timeouts</a>, <a href="#concept-180" class="related-link">180. Load Shedding</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-182" data-num="182" data-title="API Stability with #[non_exhaustive]" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">182</span>API Stability with #[non_exhaustive]</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>Public APIs face a fundamental tension: libraries need to evolve, but changes can break downstream code. Rust&#x27;s <code>#[non_exhaustive]</code> attribute resolves this by marking types as intentionally incomplete. ai_assistant applies this attribute to <strong>454 enums</strong> and <strong>246 structs</strong> across the entire public surface, making every type safe to extend without a semver major bump.</p>
+<p><strong>For enums</strong>, <code>#[non_exhaustive]</code> forces clients to include a wildcard arm (<code>_ =&gt; {}</code>) in every <code>match</code> expression. When the library adds a new variant in a minor release, existing client code compiles without changes because the wildcard catches the new variant. Without this attribute, adding a variant would be a breaking change requiring a major version bump.</p>
+<p><strong>For structs</strong>, the attribute prevents clients from constructing values using struct literal syntax (<code>MyStruct { field1: x, field2: y }</code>). Instead, clients use <code>Default::default()</code> and then set individual fields, or use a constructor like <code>::new()</code>. This allows the library to add new fields with sensible defaults in minor releases without breaking existing construction code.</p>
+<p><strong>For traits</strong>, new methods always ship with default implementations, so existing trait implementors continue to compile. This combination — non-exhaustive types plus defaulted trait methods — means the library can grow its API surface freely while maintaining backward compatibility within a major version.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-38" class="related-link">38. Defensive Error Handling</a>, <a href="#concept-140" class="related-link">140. API Versioning</a>, <a href="#concept-148" class="related-link">148. Feature Gating Strategy</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 

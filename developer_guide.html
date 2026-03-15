@@ -287,6 +287,7 @@ footer {
         <a href="#distributed">Distributed Computing</a>
         <a href="#config">Configuration System</a>
         <a href="#errors">Error Handling</a>
+        <a href="#api-stability">API Stability</a>
         <a href="#testing">Testing</a>
         <a href="#performance">Performance &amp; Benchmarks</a>
         <a href="#deployment">Deployment</a>
@@ -301,7 +302,7 @@ footer {
     <h2 class="section-title">Architecture Overview</h2>
     <div class="prose">
       <p>
-        ai_assistant is a <strong>single Rust crate</strong> (~363K LOC, 316 source files) organized as a modular
+        ai_assistant is a <strong>single Rust crate</strong> (~389K LOC, 319 source files) organized as a modular
         library with feature-flag-based compilation. The central type is <code>AiAssistant</code>, which provides
         a unified interface to all subsystems.
       </p>
@@ -422,7 +423,7 @@ footer {
 
     <div class="info-box">
       <strong>Full module list:</strong> See the <a href="feature_matrix.html">Feature Matrix</a> for the complete list
-      of 316 source files with their feature gates and test counts.
+      of 319 source files with their feature gates and test counts.
     </div>
   </div>
 </section>
@@ -803,7 +804,7 @@ let result = session.execute_task(
 
     <div class="info-box success">
       <strong>Audit results:</strong> 5 Critical + 12 High + 14 Medium findings &mdash; all resolved.
-      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 316 files.
+      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 319 files.
     </div>
   </div>
 </section>
@@ -1022,12 +1023,95 @@ let data = std::fs::read("file.txt")
   </div>
 </section>
 
+<!-- ════════════════════════ API STABILITY ═══════════════ -->
+<section id="api-stability">
+  <div class="container">
+    <h2 class="section-title">API Stability</h2>
+    <div class="prose">
+      <p>
+        ai_assistant marks <strong>454 enums</strong> and <strong>246 structs</strong> with
+        <code>#[non_exhaustive]</code>, ensuring that the public API can evolve without
+        semver-breaking changes. This section explains the practical implications for
+        downstream code.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Matching Non-Exhaustive Enums</h3>
+    <div class="prose">
+      <p>
+        Every <code>match</code> on a library enum must include a wildcard arm. The compiler
+        enforces this for types annotated with <code>#[non_exhaustive]</code>, so your code
+        won't break when a future minor release adds new variants.
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::AiError;
+
+match error {
+    AiError::ProviderError(msg) => log::error!("provider: {msg}"),
+    AiError::ConfigError(msg)   => log::error!("config: {msg}"),
+    AiError::NetworkError(msg)  => log::error!("network: {msg}"),
+    // Required: wildcard arm catches current + future variants
+    other => log::warn!("other error: {other}"),
+}</pre>
+
+    <h3 class="sub-title">Constructing Non-Exhaustive Structs</h3>
+    <div class="prose">
+      <p>
+        Struct literal syntax (<code>MyStruct { field: value }</code>) is disallowed for
+        non-exhaustive types. Use <code>Default</code> + field assignment, or the provided
+        constructor.
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::AssistantConfig;
+
+// Option A: Default + field assignment
+let mut config = AssistantConfig::default();
+config.provider = "ollama".into();
+config.model = "llama3".into();
+
+// Option B: builder / constructor (where available)
+let config = AssistantConfig::new("ollama", "llama3");</pre>
+
+    <div class="info-box warning">
+      <strong>Do not</strong> use struct literal syntax for library types. It will fail to
+      compile because <code>#[non_exhaustive]</code> prevents external crates from listing
+      all fields.
+    </div>
+
+    <h3 class="sub-title">Trait Stability Guarantees</h3>
+    <div class="prose">
+      <p>
+        When the library adds new methods to public traits, they always ship with a
+        <strong>default implementation</strong>. This means existing trait implementors
+        continue to compile without changes. You can override the new methods when you
+        are ready, but you are never forced to.
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>// Library defines (existing trait, new method added in v0.39):
+pub trait LlmProvider {
+    fn chat(&self, messages: &[Message]) -> Result&lt;Response, AiError&gt;;
+
+    // New in v0.39 — default impl keeps existing impls compiling
+    fn supports_streaming(&self) -> bool { false }
+}</pre>
+
+    <div class="info-box">
+      <strong>Summary:</strong> Use wildcard match arms for enums, <code>Default</code> or
+      constructors for structs, and rely on default method implementations when implementing
+      library traits. These conventions let you upgrade minor versions without code changes.
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ TESTING ════════════════════ -->
 <section id="testing">
   <div class="container">
     <h2 class="section-title">Testing</h2>
     <div class="prose">
-      <p>The project maintains 4,892 tests across multiple layers:</p>
+      <p>The project maintains 6,829 tests across multiple layers:</p>
     </div>
 
     <div style="overflow-x: auto;">
