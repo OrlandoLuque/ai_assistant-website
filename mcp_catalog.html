@@ -161,6 +161,7 @@
   .category-header:hover { background: #253347; }
 
   .category-header .icon { font-size: 1.2rem; }
+  .icon-img { width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; }
 
   .category-header h2 {
     font-size: 1rem;
@@ -409,7 +410,7 @@ const CATEGORIES = [
   {
     id: 'builtin',
     name: 'Builtin Tools',
-    icon: '\u2699\uFE0F',
+    icon: '<img class="icon-img" src="favicons/tools_catalog.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Herramientas b\u00e1sicas siempre disponibles con el feature flag tools. Se registran autom\u00e1ticamente con ToolRegistry::with_builtins().',
@@ -451,7 +452,7 @@ const CATEGORIES = [
   {
     id: 'filesystem',
     name: 'Filesystem Tools',
-    icon: '\uD83D\uDCC1',
+    icon: '<img class="icon-img" src="favicons/developer_guide.svg" alt="">',
     feature: 'autonomous',
     featureInFull: false,
     desc: 'Operaciones de lectura/escritura en el sistema de archivos. Todas requieren validaci\u00f3n del SandboxValidator antes de ejecutarse.',
@@ -510,7 +511,7 @@ const CATEGORIES = [
   {
     id: 'shell',
     name: 'Shell & System Tools',
-    icon: '\uD83D\uDDA5\uFE0F',
+    icon: '<img class="icon-img" src="favicons/cli.svg" alt="">',
     feature: 'autonomous',
     featureInFull: false,
     desc: 'Ejecuci\u00f3n de comandos del sistema y herramientas de l\u00ednea de comandos. Plataforma-espec\u00edfico (cmd /C en Windows, sh -c en Unix).',
@@ -528,7 +529,7 @@ const CATEGORIES = [
   {
     id: 'git',
     name: 'Git Tools',
-    icon: '\uD83D\uDD00',
+    icon: '<img class="icon-img" src="favicons/developer_guide.svg" alt="">',
     feature: 'autonomous',
     featureInFull: false,
     desc: 'Operaciones Git de solo lectura. Ejecutan comandos git bajo el sandbox.',
@@ -556,7 +557,7 @@ const CATEGORIES = [
   {
     id: 'network',
     name: 'Network Tools',
-    icon: '\uD83C\uDF10',
+    icon: '<img class="icon-img" src="favicons/cluster.svg" alt="">',
     feature: 'autonomous',
     featureInFull: false,
     desc: 'Acceso HTTP para consultas web. Requiere validaci\u00f3n de URL por el sandbox.',
@@ -574,7 +575,7 @@ const CATEGORIES = [
   {
     id: 'browser',
     name: 'Browser Tools (CDP)',
-    icon: '\uD83C\uDF0D',
+    icon: '<img class="icon-img" src="favicons/gui.svg" alt="">',
     feature: 'browser',
     featureInFull: false,
     desc: 'Automatizaci\u00f3n de Chrome v\u00eda Chrome DevTools Protocol. Requiere Chrome/Chromium instalado. Soporta modo headless.',
@@ -635,7 +636,7 @@ const CATEGORIES = [
   {
     id: 'resources',
     name: 'MCP Resources',
-    icon: '\uD83D\uDCDA',
+    icon: '<img class="icon-img" src="favicons/vector_db.svg" alt="">',
     feature: 'rag',
     featureInFull: true,
     desc: 'Recursos expuestos v\u00eda MCP resources/list y resources/read. Permiten a clientes MCP acceder al conocimiento del asistente.',
@@ -685,7 +686,7 @@ const CATEGORIES = [
   {
     id: 'prompts',
     name: 'MCP Prompts',
-    icon: '\uD83D\uDCAC',
+    icon: '<img class="icon-img" src="favicons/concepts.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Plantillas de prompt din\u00e1micas expuestas v\u00eda MCP prompts/list y prompts/get. Generan mensajes optimizados para tareas espec\u00edficas.',
@@ -730,7 +731,7 @@ const CATEGORIES = [
   {
     id: 'protocol',
     name: 'Protocol & Transport',
-    icon: '\uD83D\uDD0C',
+    icon: '<img class="icon-img" src="favicons/mcp_catalog.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Infraestructura del protocolo MCP: servidor, cliente, transporte HTTP y formatos de parsing.',
@@ -777,7 +778,7 @@ const CATEGORIES = [
   {
     id: 'mcp-assistant-api',
     name: 'AiAssistant MCP API (v9)',
-    icon: '\uD83E\uDD16',
+    icon: '<img class="icon-img" src="favicons/home.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'v9: M\u00e9todos de conveniencia en AiAssistant para interacci\u00f3n directa con servidores MCP remotos. Integra RemoteMcpClient en la API principal del asistente.',
@@ -815,7 +816,7 @@ const CATEGORIES = [
   {
     id: 'structured-output',
     name: 'Structured Output Enforcer',
-    icon: '\uD83D\uDCCB',
+    icon: '<img class="icon-img" src="favicons/feature_matrix.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Garantiza que las respuestas del modelo cumplan un esquema JSON esperado. Incluye validaci\u00f3n, extracci\u00f3n y auto-correcci\u00f3n de outputs.',
@@ -857,7 +858,7 @@ const CATEGORIES = [
   {
     id: 'model-registry',
     name: 'Model Capability Registry',
-    icon: '\uD83E\uDDE0',
+    icon: '<img class="icon-img" src="favicons/concepts.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Registro de capacidades de modelos de IA conocidos. Permite seleccionar el modelo \u00f3ptimo seg\u00fan la tarea.',
@@ -881,7 +882,7 @@ const CATEGORIES = [
   {
     id: 'benchmarks',
     name: 'Benchmark Suite',
-    icon: '\u23F1\uFE0F',
+    icon: '<img class="icon-img" src="favicons/microscope.svg" alt="">',
     feature: 'full',
     featureInFull: true,
     desc: 'Suite de benchmarks con criterion. 6 benchmarks cubriendo las rutas cr\u00edticas del crate.',
@@ -897,7 +898,7 @@ const CATEGORIES = [
   {
     id: 'public-api',
     name: 'Public API Exports',
-    icon: '\uD83D\uDD11',
+    icon: '<img class="icon-img" src="favicons/api_reference.svg" alt="">',
     feature: 'tools',
     featureInFull: true,
     desc: 'Tipos y funciones p\u00fablicas adicionales exportados por el crate para integraci\u00f3n externa.',
@@ -932,7 +933,7 @@ const CATEGORIES = [
   {
     id: 'browser-exports',
     name: 'Browser Tools Exports',
-    icon: '\uD83C\uDF10',
+    icon: '<img class="icon-img" src="favicons/gui.svg" alt="">',
     feature: 'browser',
     featureInFull: false,
     desc: 'Tipos p\u00fablicos exportados del m\u00f3dulo browser. Ahora wired en AiAssistant via init_browser() y browser_session().',
@@ -974,7 +975,7 @@ const CATEGORIES = [
   {
     id: 'distributed-exports',
     name: 'Distributed Agents Exports',
-    icon: '\uD83C\uDF10',
+    icon: '<img class="icon-img" src="favicons/cluster.svg" alt="">',
     feature: 'distributed-agents',
     featureInFull: false,
     desc: 'Tipos p\u00fablicos del m\u00f3dulo distributed-agents. Ahora wired en AiAssistant via init_distributed_agents() y distributed_agents().',
@@ -1027,7 +1028,7 @@ const CATEGORIES = [
   {
     id: 'routing-tools',
     name: 'Advanced Routing MCP Tools',
-    icon: '\uD83D\uDEE4\uFE0F',
+    icon: '<img class="icon-img" src="favicons/agent_visualization.svg" alt="">',
     feature: null,
     featureInFull: true,
     desc: 'MCP tools para control runtime del sistema de routing avanzado (Bandit + NFA/DFA pipeline). Registrados via register_routing_tools(). v27.',

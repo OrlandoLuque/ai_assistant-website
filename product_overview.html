@@ -145,6 +145,7 @@ nav a:hover { color: var(--text-bright); text-decoration: none; background: var(
 }
 .card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .card-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.icon-img { width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; }
 .card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 6px; color: var(--text-bright); }
 .card p { font-size: 0.84rem; color: var(--text-dim); line-height: 1.55; }
 .card ul { font-size: 0.82rem; color: var(--text-dim); padding-left: 18px; margin-top: 8px; }
@@ -323,7 +324,7 @@ footer {
     <div class="card-grid">
 
       <div class="card">
-        <span class="card-icon">&#x1F4BB;</span>
+        <img class="icon-img" src="favicons/laptop.svg" alt="Icon">
         <h3>Personal AI Assistant</h3>
         <p>Run a fully private assistant on your own hardware. Connect to Ollama or LM Studio, keep all data local, pay zero cloud costs.</p>
         <ul>
@@ -335,7 +336,7 @@ footer {
       </div>
 
       <div class="card">
-        <span class="card-icon">&#x1F3E2;</span>
+        <img class="icon-img" src="favicons/vector_db.svg" alt="Icon">
         <h3>Enterprise RAG Platform</h3>
         <p>Production-grade Retrieval-Augmented Generation with 5-tier adaptive routing, 7 vector DB backends, and built-in guardrails.</p>
         <ul>
@@ -347,7 +348,7 @@ footer {
       </div>
 
       <div class="card">
-        <span class="card-icon">&#x1F310;</span>
+        <img class="icon-img" src="favicons/cluster.svg" alt="Icon">
         <h3>Distributed AI Cluster</h3>
         <p>Horizontal scaling without Redis, Kafka, or Kubernetes. Built-in CRDTs, Kademlia DHT, MapReduce, and QUIC/TLS 1.3 transport.</p>
         <ul>
@@ -359,7 +360,7 @@ footer {
       </div>
 
       <div class="card">
-        <span class="card-icon">&#x26A1;</span>
+        <img class="icon-img" src="favicons/server.svg" alt="Icon">
         <h3>AI-Powered Application Backend</h3>
         <p>Drop-in OpenAI-compatible HTTP server with SSE streaming, authentication, rate limiting, and gzip compression out of the box.</p>
         <ul>
@@ -371,7 +372,7 @@ footer {
       </div>
 
       <div class="card">
-        <span class="card-icon">&#x1F52C;</span>
+        <img class="icon-img" src="favicons/microscope.svg" alt="Icon">
         <h3>Research &amp; Evaluation</h3>
         <p>Built-in benchmark suites, multi-model comparison, ablation studies, and trajectory analysis for systematic AI research.</p>
         <ul>
@@ -536,43 +537,43 @@ footer {
     <div class="security-grid">
 
       <div class="sec-badge">
-        <span class="icon">&#x1F6E1;</span>
+        <img class="icon-img" src="favicons/shield.svg" alt="Icon">
         <h4>Constitutional AI Guardrails</h4>
         <p>Configurable input/output guardrail pipeline with streaming support. Block, warn, or redact.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F50D;</span>
+        <img class="icon-img" src="favicons/search.svg" alt="Icon">
         <h4>PII Detection</h4>
         <p>Real-time detection of emails, phones, SSNs, credit cards, and custom patterns. Auto-redaction on output.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F512;</span>
+        <img class="icon-img" src="favicons/shield.svg" alt="Icon">
         <h4>RBAC Access Control</h4>
         <p>Role-based access with MFA, CIDR IP ranges, usage limits, and time-based policies.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F510;</span>
+        <img class="icon-img" src="favicons/kpkg.svg" alt="Icon">
         <h4>AES-256-GCM Encryption</h4>
         <p>Content encryption at rest with authenticated encryption. Key management built in.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F517;</span>
+        <img class="icon-img" src="favicons/cluster.svg" alt="Icon">
         <h4>mTLS &amp; QUIC</h4>
         <p>Mutual TLS for node-to-node communication. QUIC transport with TLS 1.3 for distributed clusters.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F9EA;</span>
+        <img class="icon-img" src="favicons/test_tube.svg" alt="Icon">
         <h4>Red Teaming</h4>
         <p>Built-in adversarial testing suite. Probe your deployment for prompt injection, jailbreaks, and data leakage.</p>
       </div>
 
       <div class="sec-badge">
-        <span class="icon">&#x1F50E;</span>
+        <img class="icon-img" src="favicons/search.svg" alt="Icon">
         <h4>Security Audit</h4>
         <p>Internal security audit covering dependency review, unsafe code analysis, and supply-chain hardening. Zero unsafe blocks in application code.</p>
       </div>
@@ -591,7 +592,7 @@ footer {
     <div class="link-grid">
 
       <a class="link-card" href="quickstart.html" style="border-color: var(--green);">
-        <span class="icon">&#x1F680;</span>
+        <img class="icon-img" src="favicons/quickstart.svg" alt="Icon">
         <div class="info">
           <h4>Getting Started</h4>
           <p>From zero to working AI assistant in 5 minutes. Installation, first chat, server, RAG, and Docker.</p>
@@ -599,7 +600,7 @@ footer {
       </a>
 
       <a class="link-card" href="developer_guide.html" style="border-color: var(--accent2);">
-        <span class="icon">&#x1F4D0;</span>
+        <img class="icon-img" src="favicons/developer_guide.svg" alt="Icon">
         <div class="info">
           <h4>Developer Guide</h4>
           <p>Architecture, modules, providers, RAG, agents, security, streaming, and configuration in depth.</p>
@@ -607,7 +608,7 @@ footer {
       </a>
 
       <a class="link-card" href="api_reference.html" style="border-color: var(--cyan);">
-        <span class="icon">&#x1F4E1;</span>
+        <img class="icon-img" src="favicons/api_reference.svg" alt="Icon">
         <div class="info">
           <h4>API Reference</h4>
           <p>Every HTTP endpoint, authentication, WebSocket, SSE streaming, and code examples (curl, Python, JS).</p>
@@ -615,7 +616,7 @@ footer {
       </a>
 
       <a class="link-card" href="feature_matrix.html">
-        <span class="icon">&#x1F4CA;</span>
+        <img class="icon-img" src="favicons/feature_matrix.svg" alt="Icon">
         <div class="info">
           <h4>Feature Matrix</h4>
           <p>Complete status of every module: implemented, tested, feature-gated. Filterable by perspective.</p>
@@ -623,7 +624,7 @@ footer {
       </a>
 
       <a class="link-card" href="framework_comparison.html">
-        <span class="icon">&#x2696;</span>
+        <img class="icon-img" src="favicons/framework_comparison.svg" alt="Icon">
         <div class="info">
           <h4>Framework Comparison</h4>
           <p>Head-to-head comparison vs. LangChain, LlamaIndex, Haystack, Semantic Kernel, and more.</p>
@@ -631,7 +632,7 @@ footer {
       </a>
 
       <a class="link-card" href="concepts.html">
-        <span class="icon">&#x1F4D6;</span>
+        <img class="icon-img" src="favicons/concepts.svg" alt="Icon">
         <div class="info">
           <h4>Concepts Reference</h4>
           <p>147 sections covering architecture, patterns, and design decisions in depth.</p>
@@ -639,7 +640,7 @@ footer {
       </a>
 
       <a class="link-card" href="mcp_catalog.html">
-        <span class="icon">&#x1F50C;</span>
+        <img class="icon-img" src="favicons/mcp_catalog.svg" alt="Icon">
         <div class="info">
           <h4>MCP Tool Catalog</h4>
           <p>Model Context Protocol tools, resources, and prompts. Full MCP v2 spec with Streamable HTTP.</p>
@@ -647,7 +648,7 @@ footer {
       </a>
 
       <a class="link-card" href="vector_db_comparison.html">
-        <span class="icon">&#x1F5C4;</span>
+        <img class="icon-img" src="favicons/vector_db.svg" alt="Icon">
         <div class="info">
           <h4>Vector DB Comparison</h4>
           <p>7 backends compared: in-memory HNSW, SQLite, LanceDB, Qdrant, ChromaDB, pgvector, Milvus.</p>
@@ -655,7 +656,7 @@ footer {
       </a>
 
       <a class="link-card" href="ai_assistant_overview.html">
-        <span class="icon">&#x1F3D7;</span>
+        <img class="icon-img" src="favicons/overview.svg" alt="Icon">
         <div class="info">
           <h4>Technical Overview</h4>
           <p>Architecture deep-dive: module map, feature flag structure, provider system, and extension points.</p>

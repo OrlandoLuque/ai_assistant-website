@@ -207,6 +207,7 @@ code {
 }
 .next-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
 .next-card .icon { font-size: 1.3rem; flex-shrink: 0; }
+.icon-img { width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; }
 .next-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
 .next-card .info p { font-size: 0.78rem; color: var(--text-dim); }
 
@@ -969,42 +970,42 @@ cargo run --features full --bin ai_assistant_cli -- --provider ollama --model ll
 
     <div class="next-grid">
       <a class="next-card" href="developer_guide.html">
-        <span class="icon">&#x1F4D0;</span>
+        <img class="icon-img" src="favicons/developer_guide.svg" alt="Icon">
         <div class="info">
           <h4>Developer Guide</h4>
           <p>Architecture, modules, patterns, and advanced features in depth.</p>
         </div>
       </a>
       <a class="next-card" href="api_reference.html">
-        <span class="icon">&#x1F4E1;</span>
+        <img class="icon-img" src="favicons/api_reference.svg" alt="Icon">
         <div class="info">
           <h4>API Reference</h4>
           <p>Every HTTP endpoint, authentication, WebSocket, and code examples.</p>
         </div>
       </a>
       <a class="next-card" href="feature_matrix.html">
-        <span class="icon">&#x1F4CA;</span>
+        <img class="icon-img" src="favicons/feature_matrix.svg" alt="Icon">
         <div class="info">
           <h4>Feature Matrix</h4>
           <p>Complete status of every module, feature flag, and test count.</p>
         </div>
       </a>
       <a class="next-card" href="concepts.html">
-        <span class="icon">&#x1F4D6;</span>
+        <img class="icon-img" src="favicons/concepts.svg" alt="Icon">
         <div class="info">
           <h4>Concepts Reference</h4>
           <p>163 sections covering architecture, patterns, and design decisions.</p>
         </div>
       </a>
       <a class="next-card" href="framework_comparison.html">
-        <span class="icon">&#x2696;</span>
+        <img class="icon-img" src="favicons/framework_comparison.svg" alt="Icon">
         <div class="info">
           <h4>Framework Comparison</h4>
           <p>How ai_assistant compares to LangChain, LlamaIndex, Haystack, and others.</p>
         </div>
       </a>
       <a class="next-card" href="vector_db_comparison.html">
-        <span class="icon">&#x1F5C4;</span>
+        <img class="icon-img" src="favicons/vector_db.svg" alt="Icon">
         <div class="info">
           <h4>Vector DB Comparison</h4>
           <p>Choose the right vector database for your deployment scenario.</p>
