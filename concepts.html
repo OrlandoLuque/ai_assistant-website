@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (164 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (165 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,11 +514,11 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">164 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">165 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
-  <span class="search-count" id="searchCount">164 / 164</span>
+  <span class="search-count" id="searchCount">165 / 165</span>
   <div class="header-controls">
     <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener" style="color:#94a3b8; font-size:0.82rem; font-weight:600; margin-right:8px;">GitHub</a>
     <button class="theme-toggle" onclick="toggleTheme()">Light / Dark</button>
@@ -670,7 +670,8 @@ body {
 <a href="#concept-179" class="nav-item" data-num="179">179. Adaptive Timeouts: Learning from Production Latency</a>
 <a href="#concept-180" class="nav-item" data-num="180">180. Load Shedding: Graceful Degradation Under Pressure</a>
 <a href="#concept-181" class="nav-item" data-num="181">181. The Resilience Stack: How Patterns Compose</a>
-<a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a></div>
+<a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a>
+<a href="#concept-183" class="nav-item" data-num="183">183. Testing Infrastructure: Harness, Precision &amp; Regression</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4512,6 +4513,21 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p><strong>For traits</strong>, new methods always ship with default implementations, so existing trait implementors continue to compile. This combination — non-exhaustive types plus defaulted trait methods — means the library can grow its API surface freely while maintaining backward compatibility within a major version.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-38" class="related-link">38. Defensive Error Handling</a>, <a href="#concept-140" class="related-link">140. API Versioning</a>, <a href="#concept-148" class="related-link">148. Feature Gating Strategy</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-183" data-num="183" data-title="Testing Infrastructure: Harness, Precision &amp; Regression" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">183</span>Testing Infrastructure: Harness, Precision &amp; Regression</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>V40 overhauls the test harness with <strong>9 new CLI flags</strong>, <strong>scored precision tests</strong>, and a <strong>regression detection</strong> workflow. The goal is to move beyond pass/fail testing toward quantitative measurement of output quality, so regressions in NLP accuracy, RAG relevance, or security filtering are caught before they ship.</p>
+<p><strong>CLI flags</strong> give fine-grained control over test execution. <code>--verbose</code> / <code>-v</code> enables detailed per-test output. <code>--filter=PATTERN</code> runs only tests whose names match a substring or regex. <code>--timeout &lt;ms&gt;</code> sets a per-test deadline (default 30 000 ms). <code>--summary-only</code> suppresses individual results and prints only the aggregate report. <code>--sort=duration</code> orders results by elapsed time to surface slow tests. <code>--retry-failed &lt;N&gt;</code> re-runs failed tests up to N times to distinguish flaky failures from genuine regressions.</p>
+<p><strong>Scored precision tests</strong> use <code>run_test_scored()</code>, which returns a numeric score (0.0&ndash;1.0) instead of a boolean. Each test declares an <code>expected_min</code> threshold; the test passes only when the actual score meets or exceeds it. 15 new scored tests (E1&ndash;E15) cover NLP tasks (sentiment analysis, entity extraction, summarization coherence), RAG quality (retrieval precision, context relevance, answer grounding), security filters (PII recall, prompt-injection rejection rate), and algorithmic correctness (token-budget adherence, embedding similarity accuracy). Combined with the 16 existing precision tests, the suite totals <strong>31 scored precision tests</strong>.</p>
+<p><strong>Regression detection</strong> is driven by two complementary flags. <code>--save-baseline &lt;path&gt;</code> serializes all scored results to a JSON file, creating a snapshot of current quality. <code>--diff &lt;baseline.json&gt;</code> loads a previous baseline and compares it against the current run, producing a <code>DiffReport</code> with color-coded output: green for improvements, yellow for minor dips within the tolerance band, and red for regressions that exceed <code>--regression-threshold &lt;pct&gt;</code> (default 5%). This makes it straightforward to gate CI on quality: save a baseline after each release, diff against it in pull requests, and fail the build if any metric drops beyond the threshold.</p>
+<p><strong>REPL integration</strong> in <code>ai_assistant_cli</code> exposes three commands: <code>/test</code> runs the full harness inline, <code>/bench</code> triggers criterion benchmarks, and <code>/precision</code> runs only scored precision tests with a compact summary. All three accept the same flags as the CLI binary, so developers can iterate on quality without leaving the interactive session.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-147" class="related-link">147. Criterion Benchmarks</a>, <a href="#concept-148" class="related-link">148. Feature Gating Strategy</a>, <a href="#concept-146" class="related-link">146. Server CLI Binary</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 

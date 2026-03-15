@@ -1165,6 +1165,79 @@ cargo bench --bench core_benchmarks --features full</pre>
         <li><strong>Agents</strong> &mdash; Autonomous loop, task planning, tool execution, scheduling</li>
       </ul>
     </div>
+
+    <h3 class="sub-title">V40 &mdash; Test Harness Improvements</h3>
+    <div class="prose">
+      <p>
+        V40 extends the test harness with <strong>9 new CLI flags</strong>, a <strong>scored precision test framework</strong>,
+        and a <strong>regression detection workflow</strong> that quantifies output quality beyond pass/fail.
+      </p>
+    </div>
+
+    <h4 style="color: var(--accent); margin: 1.2rem 0 0.6rem;">New CLI Flags</h4>
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
+      <tbody>
+        <tr><td><code>--verbose</code> / <code>-v</code></td><td>Detailed per-test output with timing and scoring</td><td>off</td></tr>
+        <tr><td><code>--filter=PATTERN</code></td><td>Run only tests whose names match a substring or regex</td><td>all</td></tr>
+        <tr><td><code>--timeout &lt;ms&gt;</code></td><td>Per-test deadline in milliseconds</td><td>30000</td></tr>
+        <tr><td><code>--summary-only</code></td><td>Suppress individual results; print aggregate report only</td><td>off</td></tr>
+        <tr><td><code>--sort=duration</code></td><td>Order results by elapsed time (slowest first)</td><td>insertion order</td></tr>
+        <tr><td><code>--retry-failed &lt;N&gt;</code></td><td>Re-run failed tests up to N times to detect flaky failures</td><td>0</td></tr>
+        <tr><td><code>--save-baseline &lt;path&gt;</code></td><td>Serialize scored results to a JSON snapshot file</td><td>&mdash;</td></tr>
+        <tr><td><code>--diff &lt;baseline.json&gt;</code></td><td>Compare current run against a saved baseline</td><td>&mdash;</td></tr>
+        <tr><td><code>--regression-threshold &lt;pct&gt;</code></td><td>Max allowed quality drop (%) before flagging a regression</td><td>5</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4 style="color: var(--accent); margin: 1.2rem 0 0.6rem;">Scored Precision Tests</h4>
+    <div class="prose">
+      <p>
+        The <code>run_test_scored()</code> function returns a numeric score (0.0&ndash;1.0) instead of a boolean.
+        Each test declares an <code>expected_min</code> threshold; it passes only when the actual score meets or exceeds it.
+        V40 adds <strong>15 new scored tests</strong> (E1&ndash;E15) bringing the total to <strong>31 precision tests</strong>:
+      </p>
+      <ul>
+        <li><strong>NLP</strong> &mdash; Sentiment analysis, entity extraction, summarization coherence</li>
+        <li><strong>RAG</strong> &mdash; Retrieval precision, context relevance, answer grounding</li>
+        <li><strong>Security</strong> &mdash; PII recall, prompt-injection rejection rate</li>
+        <li><strong>Algorithmic</strong> &mdash; Token-budget adherence, embedding similarity accuracy</li>
+      </ul>
+    </div>
+
+    <h4 style="color: var(--accent); margin: 1.2rem 0 0.6rem;">Regression Detection</h4>
+    <div class="prose">
+      <p>
+        Save a quality baseline after each release with <code>--save-baseline</code>, then diff against it in pull requests
+        with <code>--diff</code>. The <code>DiffReport</code> produces color-coded output:
+        <span style="color: var(--green); font-weight: 600;">green</span> for improvements,
+        <span style="color: var(--yellow); font-weight: 600;">yellow</span> for minor dips within tolerance, and
+        <span style="color: var(--red); font-weight: 600;">red</span> for regressions exceeding the threshold.
+      </p>
+    </div>
+    <span class="code-label bash">bash</span>
+    <pre># Save a baseline after a release
+cargo run --bin ai_test_harness -- --all --save-baseline baseline-v40.json
+
+# Compare current run against the baseline in CI
+cargo run --bin ai_test_harness -- --all --diff baseline-v40.json --regression-threshold 5
+
+# Run only scored precision tests
+cargo run --bin ai_test_harness -- --filter=precision --sort=duration --verbose</pre>
+
+    <h4 style="color: var(--accent); margin: 1.2rem 0 0.6rem;">REPL Commands</h4>
+    <div class="prose">
+      <p>
+        Three new commands in <code>ai_assistant_cli</code> run tests without leaving the interactive session:
+      </p>
+      <ul>
+        <li><code>/test</code> &mdash; Run the full test harness inline (accepts all CLI flags)</li>
+        <li><code>/bench</code> &mdash; Trigger criterion benchmarks</li>
+        <li><code>/precision</code> &mdash; Run only scored precision tests with a compact summary</li>
+      </ul>
+    </div>
   </div>
 </section>
 
