@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (165 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (184 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">165 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">184 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -671,7 +671,8 @@ body {
 <a href="#concept-180" class="nav-item" data-num="180">180. Load Shedding: Graceful Degradation Under Pressure</a>
 <a href="#concept-181" class="nav-item" data-num="181">181. The Resilience Stack: How Patterns Compose</a>
 <a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a>
-<a href="#concept-183" class="nav-item" data-num="183">183. Testing Infrastructure: Harness, Precision &amp; Regression</a></div>
+<a href="#concept-183" class="nav-item" data-num="183">183. Testing Infrastructure: Harness, Precision &amp; Regression</a>
+<a href="#concept-184" class="nav-item" data-num="184">184. Graph Quality Testing</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4528,6 +4529,22 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p><strong>REPL integration</strong> in <code>ai_assistant_cli</code> exposes three commands: <code>/test</code> runs the full harness inline, <code>/bench</code> triggers criterion benchmarks, and <code>/precision</code> runs only scored precision tests with a compact summary. All three accept the same flags as the CLI binary, so developers can iterate on quality without leaving the interactive session.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-147" class="related-link">147. Criterion Benchmarks</a>, <a href="#concept-148" class="related-link">148. Feature Gating Strategy</a>, <a href="#concept-146" class="related-link">146. Server CLI Binary</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-184" data-num="184" data-title="Graph Quality Testing" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">184</span>Graph Quality Testing</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p><strong>How do you know a knowledge graph is correct?</strong> Inserting entities and relations is easy &mdash; the hard part is verifying the emergent structural properties: Are connected components identified correctly? Does PageRank converge? Are shortest paths actually shortest? Do contradiction detectors fire when values conflict across layers?</p>
+<p><strong>Graph quality testing</strong> validates three layers of graph infrastructure across 47 functional tests and 8 scored precision tests:</p>
+<p><strong>Structural quality</strong> (KnowledgeGraph, 21 tests): PageRank convergence, connected component detection, shortest path optimality, degree centrality, orphan detection, graph density. Tests verify mathematical invariants &mdash; PageRank sums to 1.0 in graphs without dangling nodes, cycle graphs produce uniform ranks, star hubs receive the highest rank.</p>
+<p><strong>Semantic quality</strong> (MultiLayerGraph, 16 tests): Cross-layer inference, contradiction detection, unified view completeness, cluster cohesion. Four graph layers (Knowledge, Internet, User, Session) must compose correctly &mdash; entities mentioned in a session and found on the internet should be linked, conflicting attribute values must trigger contradictions.</p>
+<p><strong>Pipeline quality</strong> (AgentGraph, 10 tests): Topological sort correctness (Kahn&rsquo;s algorithm), cycle detection, critical path analysis, bottleneck identification. A 5-agent linear pipeline (Ingest &rarr; Parse &rarr; Analyze &rarr; Summarize &rarr; Output) must sort correctly and identify the slowest stage as the bottleneck.</p>
+<p><strong>Scored precision tests</strong> (8 tests) quantify each property with a numeric score (0.0&ndash;1.0) against a threshold. All 8 graph precision tests achieve perfect 1.00 scores.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-183" class="related-link">183. Testing Infrastructure</a>, <a href="#concept-62" class="related-link">62. Knowledge Graph</a>, <a href="#concept-72" class="related-link">72. Multi-Layer Graph</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 

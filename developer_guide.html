@@ -1341,6 +1341,50 @@ cargo run --bin ai_test_harness -- --filter=precision --sort=duration --verbose<
   </div>
 </section>
 
+<!-- ════════════════════════ V41 ═════════════════════ -->
+<section id="graph-quality-testing">
+  <div class="container">
+    <h2 class="section-title">V41 &mdash; Graph Quality Testing</h2>
+    <div class="prose">
+      <p>V41 adds comprehensive quality validation for the three graph modules: KnowledgeGraph, MultiLayerGraph, and AgentGraph. Tests validate structural invariants, semantic correctness, and pipeline behavior using realistic scenarios.</p>
+    </div>
+
+    <h3 class="sub-title">New Harness Categories</h3>
+    <table class="prop-table">
+      <thead><tr><th>Category</th><th>Tests</th><th>Feature</th><th>Coverage</th></tr></thead>
+      <tbody>
+        <tr><td><code>graph_quality</code></td><td>21</td><td><code>rag</code></td><td>PageRank, shortest path, connected components, degree centrality, all_paths, orphan detection, density</td></tr>
+        <tr><td><code>multi_layer_graph</code></td><td>16</td><td>always</td><td>CRUD, contradictions, cross-layer inference, clustering, diff/merge, unified view</td></tr>
+        <tr><td><code>agent_graph_quality</code></td><td>10</td><td>always</td><td>Topological sort, cycle detection, DOT/Mermaid/JSON export, critical path, bottlenecks</td></tr>
+        <tr><td>Precision (graph)</td><td>8</td><td>mixed</td><td>Scored tests for all above with numeric thresholds (all scoring 1.00)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-title">Usage</h3>
+    <pre><code># KnowledgeGraph structural quality
+cargo run --bin ai_test_harness --features full -- --category=graph_quality --verbose
+
+# MultiLayerGraph semantic quality
+cargo run --bin ai_test_harness --features full -- --category=multi_layer_graph --verbose
+
+# AgentGraph pipeline quality
+cargo run --bin ai_test_harness --features full -- --category=agent_graph_quality --verbose
+
+# Scored precision tests
+cargo run --bin ai_test_harness --features full -- --category=precision --filter=PageRank --verbose</code></pre>
+
+    <h3 class="sub-title">Key Findings</h3>
+    <div class="prose">
+      <ul>
+        <li>PageRank does not normalize to 1.0 with dangling nodes (nodes with no outgoing edges)</li>
+        <li>Contradiction IDs are timestamp-based and may collide within the same second</li>
+        <li><code>agent_utilization</code> divides by wall-clock trace duration, not by sum of individual durations</li>
+        <li><code>connected_components</code> treats the graph as undirected via Union-Find</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
