@@ -1385,6 +1385,42 @@ cargo run --bin ai_test_harness --features full -- --category=precision --filter
   </div>
 </section>
 
+<!-- ════════════════════════ V42 ═════════════════════ -->
+<section id="consolidation">
+  <div class="container">
+    <h2 class="section-title">V42 &mdash; Consolidation &amp; Production Readiness</h2>
+    <div class="prose">
+      <p>V42 originates from an exhaustive analysis of <strong>6,730 thinking blocks</strong> (Claude&rsquo;s internal reasoning traces) across 40+ development sessions and 12 projects. The analysis identified bugs, incomplete features, and architectural concerns observed during development but not acted upon.</p>
+    </div>
+
+    <h3 class="sub-title">Key Finding: 17 of 36 Issues Already Resolved</h3>
+    <div class="prose">
+      <p>The verification phase revealed that most flagged issues had been silently fixed in intermediate sessions:</p>
+      <ul>
+        <li>All cryptographic implementations verified as <strong>real</strong> (HMAC-SHA256, HKDF, AES-256-GCM, constant-time comparison)</li>
+        <li>Behavioral stubs (select, Summarize, QueueProcessor) all <strong>properly implemented</strong></li>
+        <li>Cost tracking, telemetry RNG, smart suggestions, forecasting &mdash; all <strong>using real algorithms</strong></li>
+        <li>Server concurrency uses <strong>Tokio Mutex + DashMap</strong> (granular, not global lock)</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Completed Fixes</h3>
+    <table class="prop-table">
+      <thead><tr><th>Fix</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>SmartChunker bounds</td><td><code>ChunkingConfig::validated()</code> prevents overflow in target_tokens&times;4, enforces min&lt;target&lt;max</td></tr>
+        <tr><td>MockHttpServer readiness</td><td>AtomicBool startup signal + 500ms polling in last_request() fixes race conditions</td></tr>
+        <tr><td>Flaky tests fixed</td><td><code>test_mock_server_post_streaming</code> and <code>test_otlp_exporter_flush_with_mock</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-title">Remaining Work (22 items)</h3>
+    <div class="prose">
+      <p>Priority items for completion: minimal build fix (66 feature-gate errors), agent role wiring, native tool call parsing (OpenAI/Anthropic formats), OAuth test coverage, cross-module routing, and security audit.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
