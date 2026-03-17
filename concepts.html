@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (184 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (185 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">184 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">185 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -672,7 +672,8 @@ body {
 <a href="#concept-181" class="nav-item" data-num="181">181. The Resilience Stack: How Patterns Compose</a>
 <a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a>
 <a href="#concept-183" class="nav-item" data-num="183">183. Testing Infrastructure: Harness, Precision &amp; Regression</a>
-<a href="#concept-184" class="nav-item" data-num="184">184. Graph Quality Testing</a></div>
+<a href="#concept-184" class="nav-item" data-num="184">184. Graph Quality Testing</a>
+<a href="#concept-185" class="nav-item" data-num="185">185. Consolidation Audit</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4545,6 +4546,20 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p><strong>Scored precision tests</strong> (8 tests) quantify each property with a numeric score (0.0&ndash;1.0) against a threshold. All 8 graph precision tests achieve perfect 1.00 scores.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-183" class="related-link">183. Testing Infrastructure</a>, <a href="#concept-62" class="related-link">62. Knowledge Graph</a>, <a href="#concept-72" class="related-link">72. Multi-Layer Graph</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-185" data-num="185" data-title="Consolidation Audit" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">185</span>Consolidation Audit</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>In a large codebase built iteratively over dozens of sessions, some observations get lost &mdash; a bug noticed during one task but not relevant to it, a design concern raised mentally but never verbalized, an idea considered and deferred. Over time, these latent observations accumulate as invisible technical debt.</p>
+<p><strong>Consolidation auditing</strong> systematically recovers this lost knowledge by analyzing the full reasoning traces (thinking blocks) from every development session. The V42 audit analyzed <strong>6,730 thinking blocks</strong> across <strong>40+ sessions</strong> and <strong>12 projects</strong>, extracting bugs observed but not fixed, features implemented but not wired, stubs that silently degrade, and cross-project patterns.</p>
+<p>The critical insight: <strong>verification before action</strong>. Of 36 issues identified, 17 had already been silently fixed in intermediate sessions. Without verification, the audit would have produced a plan full of already-solved problems. The pattern is: mine &rarr; classify &rarr; verify &rarr; plan &rarr; implement.</p>
+<p>This approach is only possible because the development tool preserves full reasoning traces. Traditional development tools lose this signal entirely &mdash; a developer&rsquo;s mental observations during code review, debugging, or implementation vanish when they close the editor.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-183" class="related-link">183. Testing Infrastructure</a>, <a href="#concept-184" class="related-link">184. Graph Quality Testing</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 
