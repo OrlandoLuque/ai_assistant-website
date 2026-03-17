@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (185 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (187 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">185 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">187 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -673,7 +673,9 @@ body {
 <a href="#concept-182" class="nav-item" data-num="182">182. API Stability with #[non_exhaustive]</a>
 <a href="#concept-183" class="nav-item" data-num="183">183. Testing Infrastructure: Harness, Precision &amp; Regression</a>
 <a href="#concept-184" class="nav-item" data-num="184">184. Graph Quality Testing</a>
-<a href="#concept-185" class="nav-item" data-num="185">185. Consolidation Audit</a></div>
+<a href="#concept-185" class="nav-item" data-num="185">185. Consolidation Audit</a>
+<a href="#concept-186" class="nav-item" data-num="186">186. FreshContext Total Integration</a>
+<a href="#concept-187" class="nav-item" data-num="187">187. Fallback Chains</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4560,6 +4562,28 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p>This approach is only possible because the development tool preserves full reasoning traces. Traditional development tools lose this signal entirely &mdash; a developer&rsquo;s mental observations during code review, debugging, or implementation vanish when they close the editor.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-183" class="related-link">183. Testing Infrastructure</a>, <a href="#concept-184" class="related-link">184. Graph Quality Testing</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-186" data-num="186" data-title="FreshContext Total Integration" data-category="Context">
+<div class="card-header">
+<h3><span class="concept-num">186</span>FreshContext Total Integration</h3>
+<div class="card-badges"><span class="badge badge-cat">Context</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>V43 connects every available knowledge source into the FreshContext pipeline: <strong>Knowledge Graph</strong> unified view queries in the core (not just GUI), <strong>context overflow truncation</strong> at line boundaries, a <strong>bilingual reference resolver</strong> (EN+ES) for back-references like &ldquo;option 3&rdquo; or &ldquo;esa lista&rdquo;, and <strong>auto-list tracking</strong> in LLM responses. The result: FreshContext mode assembles prompts from RAG + Graph + Memory + Resolved References.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-185" class="related-link">185. Consolidation Audit</a>, <a href="#concept-62" class="related-link">62. Knowledge Graph</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-187" data-num="187" data-title="Fallback Chains" data-category="Resilience">
+<div class="card-header">
+<h3><span class="concept-num">187</span>Fallback Chains</h3>
+<div class="card-badges"><span class="badge badge-cat">Resilience</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>Every subsystem that can fail now has at least one fallback: <strong>guardrail pipeline</strong> catches panicking guards via <code>catch_unwind</code>, <strong>SQLite databases</strong> use WAL mode + 5s busy_timeout for lock contention, <strong>reference resolution</strong> escalates from tracked lists &rarr; conversation archive &rarr; memory &rarr; RAG, and <strong>context composition</strong> degrades gracefully when knowledge sources return empty.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-181" class="related-link">181. Resilience Stack</a>, <a href="#concept-186" class="related-link">186. FreshContext Total Integration</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 
