@@ -21,6 +21,6 @@
   <circle cx="14" cy="10" r="1" fill="#ffbd2e"/>
   <circle cx="18" cy="10" r="1" fill="#28c840"/>
   <!-- Chat bubble inside -->
-  <rect x="9" y="14" width="10" height="3.5" rx="2" fill="#e879f9" opacity="0.7"/>
-  <rect x="15" y="18.5" width="10" height="3.5" rx="2" fill="#6366f1" opacity="0.7"/>
+  <rect x="8.5" y="14" width="10" height="3.5" rx="2" fill="#e879f9" opacity="0.7"/>
+  <rect x="14.5" y="18.5" width="10" height="3.5" rx="2" fill="#6366f1" opacity="0.7"/>
 </svg>
