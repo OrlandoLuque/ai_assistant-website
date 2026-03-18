@@ -1421,6 +1421,127 @@ cargo run --bin ai_test_harness --features full -- --category=precision --filter
   </div>
 </section>
 
+<!-- ════════════════════════ V43 ═════════════════════ -->
+<section id="v43-freshcontext">
+  <div class="container">
+    <h2 class="section-title">V43 &mdash; FreshContext Total Integration &amp; Fallback Chains</h2>
+    <div class="prose">
+      <p>V43 connects every available knowledge source into the FreshContext pipeline and adds systematic fallback chains across all subsystems that can fail.</p>
+    </div>
+
+    <h3 class="sub-title">FreshContext Integration</h3>
+    <div class="prose">
+      <ul>
+        <li>Knowledge Graph unified view query moved from GUI to core <code>build_rag_context()</code></li>
+        <li>Context overflow truncation at line boundaries when knowledge exceeds budget</li>
+        <li>Bilingual reference resolver (EN+ES): ordinals, cardinals, topic disambiguation</li>
+        <li>Auto-list tracking in LLM responses (numbered, bulleted, lettered)</li>
+        <li>Reference resolver integrated into <code>send_message()</code> with <code>--- RESOLVED REFERENCES ---</code> injection</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Fallback Chains</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Guardrails:</strong> <code>catch_unwind</code> on each guard, skip on panic</li>
+        <li><strong>SQLite (RAG + Knowledge Graph):</strong> WAL mode + 5s <code>busy_timeout</code></li>
+        <li><strong>Reference resolution:</strong> TrackedLists &rarr; conversation archive &rarr; memory &rarr; RAG &rarr; None</li>
+        <li><strong>Context composition:</strong> degrades gracefully when knowledge sources return empty</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Testing</h3>
+    <div class="prose">
+      <p>18 tests in <code>fallback_resilience</code> category covering all fallback paths:</p>
+    </div>
+    <pre>cargo run --bin ai_test_harness --features full -- --category=fallback_resilience --verbose</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ V44 ═════════════════════ -->
+<section id="v44-procedural-memory">
+  <div class="container">
+    <h2 class="section-title">V44 &mdash; Procedural Memory Integration</h2>
+    <div class="prose">
+      <p>Wires the existing <code>ProceduralStore</code> into the conversation pipeline so workflow procedures are automatically injected into the system prompt and outcomes are tracked.</p>
+    </div>
+
+    <h3 class="sub-title">Procedural Memory</h3>
+    <div class="prose">
+      <ul>
+        <li><code>ProceduralStore.find_relevant()</code> &mdash; keyword match with min ratio (30%), min confidence (0.1), max results</li>
+        <li><code>build_procedural_context()</code> &mdash; formats matching procedures as <code>--- WORKFLOW GUIDELINES ---</code> with token budget (500)</li>
+        <li>Injected in all 5 <code>send_message*</code> variants after memory context, before resolved references</li>
+        <li>Outcome tracking in <code>poll_response</code> updates confidence via <code>ProcedureEvolver</code></li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">CRUD API</h3>
+    <div class="code-label rust">Rust</div>
+    <pre>let mut ai = AiAssistant::new();
+ai.enable_procedural_memory(50);
+
+ai.add_procedure(Procedure {
+    id: "deploy".to_string(),
+    name: "Deploy Rust App".to_string(),
+    condition: "deploy rust production".to_string(),
+    steps: vec!["cargo test".into(), "cargo build --release".into(), "deploy".into()],
+    confidence: 0.9,
+    ..Default::default() // success_count, failure_count, created_from, tags
+});
+
+// Matching procedures auto-injected when user says "deploy the rust app"
+let found = ai.find_procedures("deploy rust application");
+
+// Persistence
+ai.save_procedures(Path::new("procedures.json")).unwrap();
+ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
+
+    <h3 class="sub-title">Testing</h3>
+    <div class="prose">
+      <p>10 unit tests covering CRUD, persistence, context formatting, <code>find_relevant</code> filtering:</p>
+    </div>
+    <pre>cargo test --features "full,autonomous,scheduler" --lib procedural</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ V45 ═════════════════════ -->
+<section id="v45-import-export-multiuser">
+  <div class="container">
+    <h2 class="section-title">V45 &mdash; Import/Export/Defaults + Multi-User Isolation</h2>
+    <div class="prose">
+      <p>V45 adds portability and multi-tenancy to the procedural memory and persistence layers.</p>
+    </div>
+
+    <h3 class="sub-title">Procedure Import/Export</h3>
+    <div class="prose">
+      <ul>
+        <li>Versioned procedure libraries with metadata, definitions, and confidence baselines</li>
+        <li>Two import strategies: <strong>merge</strong> (keep higher-confidence duplicates) and <strong>replace</strong> (overwrite all)</li>
+        <li>Version conflicts resolved by semantic version + last-modified timestamp comparison</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Multi-User Isolation</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Private</strong> scope &mdash; visible only to the owning user, encrypted at rest with user-specific keys</li>
+        <li><strong>Shared</strong> scope &mdash; visible to all users in a workspace, concurrent writes via CRDTs</li>
+        <li><strong>Replicated</strong> scope &mdash; synchronized across distributed nodes via the existing sync protocol</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Additional Features</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Unified SQLite Persistence:</strong> single database with schema versioning via <code>PRAGMA user_version</code>, write-through caching, WAL mode</li>
+        <li><strong>Disk Spill Buffers:</strong> streaming overflow to disk when in-memory buffers exceed threshold, transparent read API</li>
+        <li><strong>Session Recovery:</strong> cascading format detection (JSON &rarr; JSONL &rarr; MessagePack &rarr; compressed) for interrupted sessions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">

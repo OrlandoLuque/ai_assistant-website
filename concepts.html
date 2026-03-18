@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (187 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (193 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">187 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">193 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -675,7 +675,13 @@ body {
 <a href="#concept-184" class="nav-item" data-num="184">184. Graph Quality Testing</a>
 <a href="#concept-185" class="nav-item" data-num="185">185. Consolidation Audit</a>
 <a href="#concept-186" class="nav-item" data-num="186">186. FreshContext Total Integration</a>
-<a href="#concept-187" class="nav-item" data-num="187">187. Fallback Chains</a></div>
+<a href="#concept-187" class="nav-item" data-num="187">187. Fallback Chains</a>
+<a href="#concept-188" class="nav-item" data-num="188">188. Procedural Memory</a>
+<a href="#concept-189" class="nav-item" data-num="189">189. Unified SQLite Persistence</a>
+<a href="#concept-190" class="nav-item" data-num="190">190. Disk Spill Buffers</a>
+<a href="#concept-191" class="nav-item" data-num="191">191. Session Recovery</a>
+<a href="#concept-192" class="nav-item" data-num="192">192. Multi-User Isolation</a>
+<a href="#concept-193" class="nav-item" data-num="193">193. Procedure Import/Export</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4584,6 +4590,79 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-body"><p>Every subsystem that can fail now has at least one fallback: <strong>guardrail pipeline</strong> catches panicking guards via <code>catch_unwind</code>, <strong>SQLite databases</strong> use WAL mode + 5s busy_timeout for lock contention, <strong>reference resolution</strong> escalates from tracked lists &rarr; conversation archive &rarr; memory &rarr; RAG, and <strong>context composition</strong> degrades gracefully when knowledge sources return empty.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-181" class="related-link">181. Resilience Stack</a>, <a href="#concept-186" class="related-link">186. FreshContext Total Integration</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-188" data-num="188" data-title="Procedural Memory" data-category="Memory">
+<div class="card-header">
+<h3><span class="concept-num">188</span>Procedural Memory</h3>
+<div class="card-badges"><span class="badge badge-cat">Memory</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>Teaching an AI assistant <em>how</em> to perform tasks &mdash; not just <em>what</em> it knows. <strong>Procedural memory</strong> stores named workflow procedures (condition, steps, tags) and automatically injects the most relevant ones into the system prompt when the user&rsquo;s query matches.</p>
+<p><code>ProceduralStore.find_relevant()</code> performs keyword matching with configurable min ratio (30%) and min confidence (0.1). Matched procedures are formatted as <code>--- WORKFLOW GUIDELINES ---</code> with a 500-token budget and injected after memory context but before resolved references.</p>
+<p><strong>Confidence evolution</strong>: each procedure tracks <code>success_count</code> and <code>failure_count</code>. After the LLM responds, <code>ProcedureEvolver</code> updates confidence based on outcomes &mdash; procedures that consistently help get promoted, those that don&rsquo;t get demoted below the injection threshold.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-65" class="related-link">65. Advanced Memory Types</a>, <a href="#concept-93" class="related-link">93. Self-Evolving Procedures (MemRL)</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-189" data-num="189" data-title="Unified SQLite Persistence" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">189</span>Unified SQLite Persistence</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>All persistent state &mdash; procedural memory, session data, user preferences &mdash; converges on a <strong>single SQLite database</strong> with schema versioning. On first open the schema auto-migrates via <code>PRAGMA user_version</code>, so adding new tables or columns never requires manual intervention.</p>
+<p><strong>Write-through caching</strong>: the in-memory store is the primary data structure; SQLite is the durable backing store. Writes go to both; reads come from memory. This gives sub-microsecond reads with crash-safe persistence. WAL mode + <code>busy_timeout(5000)</code> handles concurrent access from multiple threads.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-130" class="related-link">130. Memory Persistence</a>, <a href="#concept-172" class="related-link">172. Lazy-Open Database Pattern</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-190" data-num="190" data-title="Disk Spill Buffers" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">190</span>Disk Spill Buffers</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>Streaming responses from LLMs can exceed available memory when buffered for post-processing. <strong>Disk spill buffers</strong> solve this by keeping a configurable in-memory buffer and transparently overflowing to a temporary file on disk when the buffer grows beyond the threshold.</p>
+<p>The API is transparent: consumers read from the buffer the same way regardless of whether data is in memory or on disk. On completion, the temp file is cleaned up automatically. This pattern is critical for long-running autonomous agent sessions where token counts can reach millions.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-134" class="related-link">134. SSE Streaming</a>, <a href="#concept-135" class="related-link">135. Response Compression</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-191" data-num="191" data-title="Session Recovery" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">191</span>Session Recovery</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>When a session is interrupted (crash, network loss, user restart), <strong>session recovery</strong> reconstructs the conversation state from persisted data. The key challenge is format detection: sessions may have been saved as JSON, JSONL journal, MessagePack, or compressed variants.</p>
+<p><strong>Cascading format detection</strong> tries each deserializer in order (JSON &rarr; JSONL &rarr; MessagePack &rarr; compressed), falling back gracefully until one succeeds. Combined with the unified SQLite store, this means a user can always resume from the last committed state, even if the process crashed mid-write.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-34" class="related-link">34. Event-Log Sessions (JSONL Journal)</a>, <a href="#concept-189" class="related-link">189. Unified SQLite Persistence</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-192" data-num="192" data-title="Multi-User Isolation" data-category="Security">
+<div class="card-header">
+<h3><span class="concept-num">192</span>Multi-User Isolation</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>When multiple users share a single ai_assistant instance (e.g., via the HTTP server), their data must be isolated. <strong>Multi-user isolation</strong> defines three memory scopes: <strong>Private</strong> (visible only to the owning user), <strong>Shared</strong> (visible to all users in a workspace), and <strong>Replicated</strong> (synchronized across distributed nodes).</p>
+<p>Each scope has its own namespace in the SQLite store and its own access control rules. Private memories are encrypted at rest with user-specific keys. Shared memories support concurrent writes via CRDTs. Replicated memories use the existing distributed sync protocol to maintain consistency across nodes.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-46" class="related-link">46. Access Control</a>, <a href="#concept-44" class="related-link">44. Content Encryption</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-193" data-num="193" data-title="Procedure Import/Export" data-category="Memory">
+<div class="card-header">
+<h3><span class="concept-num">193</span>Procedure Import/Export</h3>
+<div class="card-badges"><span class="badge badge-cat">Memory</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>Procedural knowledge should be <strong>portable</strong>. Procedure import/export enables versioned procedure libraries that can be shared between instances, teams, or published as reusable workflow packs.</p>
+<p>Exported libraries include version metadata, procedure definitions, and confidence baselines. On import, the system supports two strategies: <strong>merge</strong> (combine with existing procedures, keeping the higher-confidence version of duplicates) and <strong>replace</strong> (overwrite all procedures from the library). Version conflicts are resolved by comparing semantic version + last-modified timestamps.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-188" class="related-link">188. Procedural Memory</a>, <a href="#concept-27" class="related-link">27. Knowledge Packages (KPKG)</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 
