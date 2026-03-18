@@ -255,7 +255,7 @@ footer {
     <h1>Getting Started</h1>
     <p class="tagline">
       From zero to a working AI assistant in 30 seconds.
-      Download pre-built binaries, install from crates.io, or build from source.
+      Download pre-built binaries or build from source. A basic providers-only package is also on crates.io.
     </p>
   </div>
 </section>
@@ -355,22 +355,24 @@ footer {
     <div class="step">
       <span class="step-number">3</span>
       <h3>Add to Your Cargo Project</h3>
-      <p>Add ai_assistant as a dependency in your <code>Cargo.toml</code>:</p>
+      <p>Add <code>ai_assistant_core</code> as a dependency in your <code>Cargo.toml</code>:</p>
       <span class="code-label toml">Cargo.toml</span>
-      <pre># From crates.io (stable release):
+      <pre># From git (full project — all features):
 [dependencies]
-ai_assistant_core = { version = "0.1", features = ["full"] }
+ai_assistant_core = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }
 
-# Or from git (latest development version):
-# ai_assistant_core = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["full"] }</pre>
-      <p style="margin-top:8px;">Or install a binary directly from crates.io:</p>
+# Or from crates.io (basic providers only):
+# ai_assistant_core = { version = "0.1", features = ["full"] }</pre>
+      <p style="margin-top:8px;">Or install a binary directly:</p>
       <span class="code-label bash">bash</span>
       <pre>cargo install ai_assistant_core --bin ai_assistant_cli --features "full,butler"
 cargo install ai_assistant_core --bin ai_assistant_server --features "full"</pre>
-      <div class="info-box">
-        <strong>Published on crates.io:</strong>
-        <a href="https://crates.io/crates/ai_assistant_core">crates.io/crates/ai_assistant_core</a>.
-        The <code>full</code> feature enables all lightweight features (core, RAG, security, streaming, multi-agent, etc.).
+      <div class="info-box" style="border-left: 3px solid var(--yellow);">
+        <strong>Important:</strong> The
+        <a href="https://crates.io/crates/ai_assistant_core">crates.io package</a>
+        contains <strong>basic LLM provider integration only</strong>.
+        The full project (390K+ LoC &mdash; RAG, multi-agent, distributed, autonomous, security, etc.)
+        is available from the <a href="https://github.com/OrlandoLuque/ai_assistant">GitHub repository</a>.
       </div>
     </div>
 
