@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0f0c29"/>
-      <stop offset="50%" stop-color="#302b63"/>
-      <stop offset="100%" stop-color="#24243e"/>
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#162033"/>
     </linearGradient>
   </defs>
   <rect width="32" height="32" rx="6" fill="url(#bg)"/>
   <!-- AI circuit dots -->
-  <circle cx="5" cy="27" r="1.5" fill="#00d4aa" opacity="0.8"/>
-  <circle cx="10" cy="27" r="1" fill="#00d4aa" opacity="0.6"/>
-  <line x1="6.5" y1="27" x2="9" y2="27" stroke="#00d4aa" stroke-width="0.6" opacity="0.5"/>
-  <circle cx="27" cy="5" r="1.5" fill="#00d4aa" opacity="0.8"/>
-  <circle cx="22" cy="5" r="1" fill="#00d4aa" opacity="0.6"/>
-  <line x1="23" y1="5" x2="25.5" y2="5" stroke="#00d4aa" stroke-width="0.6" opacity="0.5"/>
+  <circle cx="5" cy="27" r="1.5" fill="#6366f1" opacity="0.8"/>
+  <circle cx="10" cy="27" r="1" fill="#6366f1" opacity="0.6"/>
+  <line x1="6.5" y1="27" x2="9" y2="27" stroke="#6366f1" stroke-width="0.6" opacity="0.5"/>
+  <circle cx="27" cy="5" r="1.5" fill="#6366f1" opacity="0.8"/>
+  <circle cx="22" cy="5" r="1" fill="#6366f1" opacity="0.6"/>
+  <line x1="23" y1="5" x2="25.5" y2="5" stroke="#6366f1" stroke-width="0.6" opacity="0.5"/>
   <!-- Plug/connector (MCP Catalog) -->
   <!-- Plug body -->
-  <rect x="11" y="10" width="10" height="8" rx="2" fill="none" stroke="#00d4aa" stroke-width="1.5"/>
+  <rect x="11" y="10" width="10" height="8" rx="2" fill="none" stroke="#6366f1" stroke-width="1.5"/>
   <!-- Prongs -->
-  <line x1="14" y1="18" x2="14" y2="23" stroke="#00d4aa" stroke-width="2" stroke-linecap="round"/>
-  <line x1="18" y1="18" x2="18" y2="23" stroke="#00d4aa" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="18" x2="14" y2="23" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+  <line x1="18" y1="18" x2="18" y2="23" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
   <!-- Connection waves -->
-  <path d="M11 8 C13 6 15 9 16 7" fill="none" stroke="#7c6cf0" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
-  <path d="M16 7 C17 9 19 6 21 8" fill="none" stroke="#7c6cf0" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
+  <path d="M11 8 C13 6 15 9 16 7" fill="none" stroke="#a78bfa" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
+  <path d="M16 7 C17 9 19 6 21 8" fill="none" stroke="#a78bfa" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
   <!-- Ground prong -->
-  <line x1="16" y1="18" x2="16" y2="25" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="16" y1="18" x2="16" y2="25" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/>
 </svg>

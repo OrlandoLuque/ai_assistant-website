@@ -14,12 +14,12 @@
   <circle cx="22" cy="5" r="1" fill="#6366f1" opacity="0.6"/>
   <line x1="23" y1="5" x2="25.5" y2="5" stroke="#6366f1" stroke-width="0.6" opacity="0.5"/>
   <!-- Cluster mesh -->
-  <line x1="16" y1="8" x2="8" y2="16" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
-  <line x1="16" y1="8" x2="24" y2="16" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
-  <line x1="16" y1="8" x2="16" y2="24" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
-  <line x1="8" y1="16" x2="24" y2="16" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
-  <line x1="8" y1="16" x2="16" y2="24" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
-  <line x1="24" y1="16" x2="16" y2="24" stroke="#818cf8" stroke-width="0.8" opacity="0.6"/>
+  <line x1="16" y1="8" x2="8" y2="16" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
+  <line x1="16" y1="8" x2="24" y2="16" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
+  <line x1="16" y1="8" x2="16" y2="24" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
+  <line x1="8" y1="16" x2="24" y2="16" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
+  <line x1="8" y1="16" x2="16" y2="24" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
+  <line x1="24" y1="16" x2="16" y2="24" stroke="#2dd4bf" stroke-width="0.8" opacity="0.6"/>
   <!-- Nodes as server boxes -->
   <rect x="13" y="5" width="6" height="5" rx="1.5" fill="#6366f1"/>
   <rect x="5" y="13.5" width="6" height="5" rx="1.5" fill="#6366f1"/>

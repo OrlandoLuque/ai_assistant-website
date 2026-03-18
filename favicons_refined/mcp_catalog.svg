@@ -21,8 +21,8 @@
   <line x1="14" y1="18" x2="14" y2="23" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
   <line x1="18" y1="18" x2="18" y2="23" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
   <!-- Connection waves -->
-  <path d="M11 8 C13 6 15 9 16 7" fill="none" stroke="#818cf8" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
-  <path d="M16 7 C17 9 19 6 21 8" fill="none" stroke="#818cf8" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
+  <path d="M11 8 C13 6 15 9 16 7" fill="none" stroke="#a78bfa" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
+  <path d="M16 7 C17 9 19 6 21 8" fill="none" stroke="#a78bfa" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
   <!-- Ground prong -->
   <line x1="16" y1="18" x2="16" y2="25" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/>
 </svg>

@@ -20,9 +20,9 @@
   <!-- Lens highlight -->
   <path d="M11 11 C12 9.5 14 9 15.5 9.5" fill="none" stroke="white" stroke-width="0.8" opacity="0.4" stroke-linecap="round"/>
   <!-- AI sparkle inside lens -->
-  <circle cx="14" cy="14" r="1" fill="#818cf8"/>
-  <line x1="14" y1="11.5" x2="14" y2="12.5" stroke="#818cf8" stroke-width="0.6" stroke-linecap="round"/>
-  <line x1="14" y1="15.5" x2="14" y2="16.5" stroke="#818cf8" stroke-width="0.6" stroke-linecap="round"/>
-  <line x1="11.5" y1="14" x2="12.5" y2="14" stroke="#818cf8" stroke-width="0.6" stroke-linecap="round"/>
-  <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#818cf8" stroke-width="0.6" stroke-linecap="round"/>
+  <circle cx="14" cy="14" r="1" fill="#38bdf8"/>
+  <line x1="14" y1="11.5" x2="14" y2="12.5" stroke="#38bdf8" stroke-width="0.6" stroke-linecap="round"/>
+  <line x1="14" y1="15.5" x2="14" y2="16.5" stroke="#38bdf8" stroke-width="0.6" stroke-linecap="round"/>
+  <line x1="11.5" y1="14" x2="12.5" y2="14" stroke="#38bdf8" stroke-width="0.6" stroke-linecap="round"/>
+  <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#38bdf8" stroke-width="0.6" stroke-linecap="round"/>
 </svg>
