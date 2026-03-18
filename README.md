@@ -1,4 +1,4 @@
-<!-- Required Notice: Copyright (c) 2026 Orlando Jose Luque Moraira (Lander) -->
+cla<!-- Required Notice: Copyright (c) 2026 Orlando Jose Luque Moraira (Lander) -->
 
 # ai_assistant — Website
 
