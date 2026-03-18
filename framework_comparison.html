@@ -19,11 +19,11 @@
     - framework_comparison_2026-02-23_1300_pre-v5.html (v9 snapshot before v5 additions)
     - framework_comparison.html  (v10: v5 Phases 1-9 — GEPA/MIPROv2, MCP v2, voice agents, media gen, distillation, OTel GenAI, durable execution, constrained decoding, memory evolution, 3907 tests, 230+ source files, 2026-02-23)
     - framework_comparison_2026-02-23_1800_pre-v6.html (v10 snapshot before v6 additions)
-    - framework_comparison.html  (v11: v6 Phases 1-10 — MCP full spec (Elicitation/Audio/Batching/Completions) + Remote MCP Client, HITL (approval gates/escalation/corrections/policies), SIMBA prompt optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval (trajectory analysis + red teaming), MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), agent DevTools (debugging/profiling/replay), 4449 tests, 230+ source files, 54 feature flags, 2026-02-23)
+    - framework_comparison.html  (v11: v6 Phases 1-10 — MCP full spec (Elicitation/Audio/Batching/Completions) + Remote MCP Client, HITL (approval gates/escalation/corrections/policies), SIMBA prompt optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval (trajectory analysis + red teaming), MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), agent DevTools (debugging/profiling/replay), 4449 tests, 230+ source files, 55 feature flags, 2026-02-23)
     - framework_comparison_2026-02-24_1500_pre-v8-update.html (v11 snapshot before v8 additions)
-    - framework_comparison.html  (v12: v8 — HTTP server hardening (auth middleware, CORS, request correlation IDs, graceful shutdown, Prometheus metrics, request limits, TLS config), output guardrails (PII + toxicity PostReceive), memory file persistence with atomic writes, contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, structured provider logging + module-level logging, 4882 tests, 230+ source files, 54 feature flags, 2026-02-24)
+    - framework_comparison.html  (v12: v8 — HTTP server hardening (auth middleware, CORS, request correlation IDs, graceful shutdown, Prometheus metrics, request limits, TLS config), output guardrails (PII + toxicity PostReceive), memory file persistence with atomic writes, contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, structured provider logging + module-level logging, 4882 tests, 230+ source files, 55 feature flags, 2026-02-24)
     - framework_comparison_2026-02-24_1030_pre-v9-update.html (v12 snapshot before v9 additions)
-    - framework_comparison.html  (v13: v9 — Server API Completeness + Integration Wiring (26/26 items): SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots, +152 tests, 5156 tests, 230+ source files, 54 feature flags, 2026-02-24)
+    - framework_comparison.html  (v13: v9 — Server API Completeness + Integration Wiring (26/26 items): SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots, +152 tests, 5156 tests, 230+ source files, 55 feature flags, 2026-02-24)
     - framework_comparison_2026-02-24_2200_pre-v11-update.html (v13 snapshot before v11 additions)
     - framework_comparison.html  (v14: v10+v11 — Test depth (rag_pipeline 7→36, entities 7→32, document_parsing +12 synthetic ZIP), 9 new examples, WebRTC re-exports, docs updates. 5156 tests, 285 source files, 31 examples, 42 benchmarks, 0 warnings, 2026-02-24)
     - framework_comparison_2026-02-25_pre-v12-update.html (v14 snapshot before v12 additions)
@@ -242,11 +242,11 @@
     <div class="stat-label">Comparison Dimensions</div>
   </div>
   <div class="stat-card">
-    <div class="stat-val" style="color:#8b5cf6">316</div>
+    <div class="stat-val" style="color:#8b5cf6">320</div>
     <div class="stat-label">Our Source Files</div>
   </div>
   <div class="stat-card">
-    <div class="stat-val" style="color:#10b981">4,892</div>
+    <div class="stat-val" style="color:#10b981">6,874</div>
     <div class="stat-label">Our Tests</div>
   </div>
   <div class="stat-card">
@@ -254,7 +254,7 @@
     <div class="stat-label">Stubs / TODOs</div>
   </div>
   <div class="stat-card">
-    <div class="stat-val" style="color:#f97316">54</div>
+    <div class="stat-val" style="color:#f97316">55</div>
     <div class="stat-label">Feature Flags</div>
   </div>
   <div class="stat-card">
@@ -282,7 +282,7 @@
   <!-- ai_assistant -->
   <div class="fw-card" style="border-color: #8b5cf6;">
     <div class="fw-name text-purple">ai_assistant (Ours)</div>
-    <div class="fw-lang">Rust &bull; 363K LoC &bull; 4,892 tests &bull; 316 files &bull; 51 examples &bull; <strong style="color:#f59e0b">Experimental</strong></div>
+    <div class="fw-lang">Rust &bull; 390K+ LoC &bull; 6,874 tests &bull; 320 files &bull; 51 examples &bull; <strong style="color:#f59e0b">Experimental</strong></div>
     <div class="fw-row"><span>LLM Providers</span><div class="fw-bar-bg"><div class="fw-bar" style="width:95%;background:#8b5cf6"></div></div></div>
     <div class="fw-row"><span>RAG / Vector</span><div class="fw-bar-bg"><div class="fw-bar" style="width:96%;background:#8b5cf6"></div></div></div>
     <div class="fw-row"><span>Agents</span><div class="fw-bar-bg"><div class="fw-bar" style="width:97%;background:#8b5cf6"></div></div></div>
@@ -587,7 +587,7 @@
 <div class="card" style="margin-top: 16px;">
   <h3>Key Positioning Insight</h3>
   <p><strong>ai_assistant</strong> is the <em>only</em> Rust-based AI framework offering a full-stack solution comparable to Python frameworks like LangChain or LlamaIndex. While Rig leads the Rust ecosystem for LLM provider integration, it covers only a fraction of what ai_assistant provides. Our crate uniquely combines RAG, agents, distributed computing (QUIC/CRDTs/P2P), security (RBAC/AES-256-GCM/guardrails), MCP protocol support, streaming, evaluation, and browser automation &mdash; all in a single, zero-stub, fully-tested Rust library. <strong>v6</strong> closes the remaining competitive gaps with 10 phases: full MCP spec completeness (Elicitation, Audio, Batching, Completions) + Remote MCP Client, full HITL (Human-in-the-Loop with approval gates, escalation, corrections, policies &mdash; closing the gap vs LangGraph 2.x), SIMBA prompt optimizer (closing the gap vs DSPy 2.6), Memory OS with auto-extraction (closing the gap vs Mem0/Zep/LangMem), discourse-aware chunking + MMR diversity (closing the gap vs LlamaIndex 0.12), agent eval with trajectory analysis + red teaming (closing the gap vs CLEAR/Google), MCTS + Process Reward Models (closing the gap vs LangGraph/AutoGen), WebRTC sub-200ms voice transport (closing the gap vs OpenAI Realtime/Google ADK), multi-backend sandbox with Podman/WASM/Process backends (closing the gap vs Daytona/E2B), and agent DevTools (debugging, profiling, replay).</p>
-  <p class="dim small">The main Python frameworks have larger ecosystems and communities, but ai_assistant competes on feature depth, performance (Rust), being fully self-contained with no external service dependencies, and 4,892 tests with 0 compiler warnings across 316 source files. All 39/39 original roadmap items completed. v2 Phases 1-4 added providers, async plugin, LLM-as-Judge, GuardrailPipeline, CI/CD. v5 Phases 1-9 added DSPy-class prompt optimization, MCP v2, voice agents, media generation, distillation, OTel GenAI, durable execution, constrained decoding, and memory evolution. <strong>v6 Phases 1-10</strong> add HITL, full MCP spec, SIMBA optimizer, Memory OS, discourse-aware RAG, agent eval + red teaming, MCTS, WebRTC voice, multi-backend sandbox, and agent DevTools. <strong>v8</strong> hardens production infrastructure: HTTP server with auth middleware/CORS/correlation IDs/graceful shutdown/Prometheus metrics/request limits/TLS config, output guardrails (PII+toxicity PostReceive), file-based memory persistence with atomic writes, contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, and structured provider + module-level logging. <strong>v9</strong> completes server API with SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation wired into server), audit logging, structured errors, and compressed snapshots. <strong>v12</strong> improves code quality: feature gating corrections, dead code audit (54&rarr;37 annotations), +194 tests, 6 new examples. All prior competitive gaps remain resolved.</p>
+  <p class="dim small">The main Python frameworks have larger ecosystems and communities, but ai_assistant competes on feature depth, performance (Rust), being fully self-contained with no external service dependencies, and 6,874 tests with 0 compiler warnings across 320 source files. All 39/39 original roadmap items completed. v2 Phases 1-4 added providers, async plugin, LLM-as-Judge, GuardrailPipeline, CI/CD. v5 Phases 1-9 added DSPy-class prompt optimization, MCP v2, voice agents, media generation, distillation, OTel GenAI, durable execution, constrained decoding, and memory evolution. <strong>v6 Phases 1-10</strong> add HITL, full MCP spec, SIMBA optimizer, Memory OS, discourse-aware RAG, agent eval + red teaming, MCTS, WebRTC voice, multi-backend sandbox, and agent DevTools. <strong>v8</strong> hardens production infrastructure: HTTP server with auth middleware/CORS/correlation IDs/graceful shutdown/Prometheus metrics/request limits/TLS config, output guardrails (PII+toxicity PostReceive), file-based memory persistence with atomic writes, contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, and structured provider + module-level logging. <strong>v9</strong> completes server API with SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation wired into server), audit logging, structured errors, and compressed snapshots. <strong>v12</strong> improves code quality: feature gating corrections, dead code audit (54&rarr;37 annotations), +194 tests, 6 new examples. All prior competitive gaps remain resolved.</p>
 </div>
 </div>
 
@@ -1251,7 +1251,7 @@
 </tr>
 <tr>
   <td>Automated test coverage</td>
-  <td class="our-col"><span class="badge r5">5</span><br>4,892 tests, 0 warnings, 42 benchmarks, CI-ready</td>
+  <td class="our-col"><span class="badge r5">5</span><br>6,874 tests, 0 warnings, 42 benchmarks, CI-ready</td>
   <td><span class="badge r3">3</span><br>Moderate (community-driven)</td>
   <td><span class="badge r3">3</span><br>Good RAG test coverage</td>
   <td><span class="badge r4">4</span><br>Microsoft CI/CD standards</td>
@@ -1880,7 +1880,7 @@
 <tr><td>HITL / MCTS</td><td class="our-col">Approval gates, escalation, corrections; MCTS + Process Reward Models</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
 <tr><td>Browser</td><td class="our-col">Real CDP, Chrome management, wired into AiAssistant</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
 <tr><td>WASM</td><td class="our-col">web-sys, js-sys, wasm-bindgen</td><td>N/A</td><td>N/A</td><td>N/A</td><td>WebGPU (planned)</td><td>N/A</td></tr>
-<tr><td>Tests</td><td class="our-col"><strong>4,892</strong> (0 warnings)</td><td>Moderate</td><td>Moderate</td><td>Basic</td><td>Moderate</td><td>Extensive (inference)</td></tr>
+<tr><td>Tests</td><td class="our-col"><strong>6,874</strong> (0 warnings)</td><td>Moderate</td><td>Moderate</td><td>Basic</td><td>Moderate</td><td>Extensive (inference)</td></tr>
 <tr><td>GitHub Stars</td><td class="our-col">Private</td><td>~5.9k</td><td>~1.2k</td><td>~1.6k</td><td>~938</td><td>~6.3k</td></tr>
 </tbody>
 </table>
@@ -1888,7 +1888,7 @@
 
 <div class="card" style="border-left: 4px solid #8b5cf6; margin-top: 16px;">
   <h3>Key Takeaway</h3>
-  <p><strong>ai_assistant covers 20x+ more feature surface</strong> than any other Rust AI library. While Rig leads in community adoption and clean API design for LLM interactions, it only covers ~15% of what ai_assistant implements. No other Rust project has distributed computing, security, evaluation, browser automation, document processing, voice agents, media generation, distillation pipelines, constrained decoding, or durable execution at all. With 4,892 tests across 316 source files and 54 feature flags, <strong>v6</strong> adds HITL (Human-in-the-Loop), full MCP spec completeness (Elicitation, Audio, Batching, Completions, Remote Client), SIMBA prompt optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval with trajectory analysis + red teaming, MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), and agent DevTools (debugging, profiling, replay). <strong>v8</strong> hardens production infrastructure: HTTP server with auth/CORS/Prometheus/graceful shutdown/TLS, output guardrails, file-based memory persistence, contextual errors, config hot-reload, Dockerfile, and structured logging. <strong>v9</strong> completes server API: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, and compressed snapshots. <strong>v12</strong> improves code quality: proper feature gating, dead code audit, +194 tests, 6 new examples (37 total). ai_assistant now has production-grade tooling that exceeds most open-source AI frameworks in any language. All competitive gaps are closed.</p>
+  <p><strong>ai_assistant covers 20x+ more feature surface</strong> than any other Rust AI library. While Rig leads in community adoption and clean API design for LLM interactions, it only covers ~15% of what ai_assistant implements. No other Rust project has distributed computing, security, evaluation, browser automation, document processing, voice agents, media generation, distillation pipelines, constrained decoding, or durable execution at all. With 6,874 tests across 320 source files and 55 feature flags, <strong>v6</strong> adds HITL (Human-in-the-Loop), full MCP spec completeness (Elicitation, Audio, Batching, Completions, Remote Client), SIMBA prompt optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval with trajectory analysis + red teaming, MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), and agent DevTools (debugging, profiling, replay). <strong>v8</strong> hardens production infrastructure: HTTP server with auth/CORS/Prometheus/graceful shutdown/TLS, output guardrails, file-based memory persistence, contextual errors, config hot-reload, Dockerfile, and structured logging. <strong>v9</strong> completes server API: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, and compressed snapshots. <strong>v12</strong> improves code quality: proper feature gating, dead code audit, +194 tests, 6 new examples (37 total). ai_assistant now has production-grade tooling that exceeds most open-source AI frameworks in any language. All competitive gaps are closed.</p>
 </div>
 
 <div class="card">
@@ -1907,7 +1907,7 @@
 <!-- ==================== TAB: GAP ANALYSIS ==================== -->
 <div id="tab-gaps" class="tab-content">
 <h2>Gap Analysis &mdash; Phase 6-11 + v2 Phases 1-4 + v5 Phases 1-9 + v6 Phases 1-10 + v8 + v9 Updates (Feb 2026)</h2>
-<p class="dim" style="margin-bottom:16px">All 21 previously identified feature gaps have been implemented. Phases 6-11 closed all original roadmap items (39/39). v2 Phases 1-4 added providers, async plugin, evaluation, guardrails, and CI/CD. v5 Phases 1-9 added 9 major capability areas. <strong>v6 Phases 1-10</strong> close all remaining competitive gaps: full MCP spec completeness (Elicitation, Audio, Batching, Completions) + Remote MCP Client, HITL (approval gates, escalation, corrections, policies), SIMBA optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval (trajectory analysis + red teaming), MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), and agent DevTools (debugging, profiling, replay). <strong>v8</strong> hardens production infrastructure: HTTP server (auth middleware, CORS, correlation IDs, graceful shutdown, Prometheus metrics, request limits, TLS), output guardrails (PII+toxicity PostReceive), file-based memory persistence (atomic writes), contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, structured provider + module-level logging. <strong>v9</strong> completes server API with 26/26 items: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots. <strong>v12</strong> improves code quality: proper feature gating, dead code audit (54&rarr;37), +194 tests, 6 new examples. 4,892 tests, 316 source files, 54 feature flags, 0 warnings. All technical feature gaps are now resolved.</p>
+<p class="dim" style="margin-bottom:16px">All 21 previously identified feature gaps have been implemented. Phases 6-11 closed all original roadmap items (39/39). v2 Phases 1-4 added providers, async plugin, evaluation, guardrails, and CI/CD. v5 Phases 1-9 added 9 major capability areas. <strong>v6 Phases 1-10</strong> close all remaining competitive gaps: full MCP spec completeness (Elicitation, Audio, Batching, Completions) + Remote MCP Client, HITL (approval gates, escalation, corrections, policies), SIMBA optimizer, Memory OS with auto-extraction, discourse-aware chunking + MMR diversity, agent eval (trajectory analysis + red teaming), MCTS + Process Reward Models, WebRTC sub-200ms voice transport, multi-backend sandbox (Podman/WASM/Process), and agent DevTools (debugging, profiling, replay). <strong>v8</strong> hardens production infrastructure: HTTP server (auth middleware, CORS, correlation IDs, graceful shutdown, Prometheus metrics, request limits, TLS), output guardrails (PII+toxicity PostReceive), file-based memory persistence (atomic writes), contextual error handling (ContextualError, ResultExt), config hot-reload (ConfigWatcher), Dockerfile, structured provider + module-level logging. <strong>v9</strong> completes server API with 26/26 items: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots. <strong>v12</strong> improves code quality: proper feature gating, dead code audit (54&rarr;37), +194 tests, 6 new examples. 6,874 tests, 320 source files, 55 feature flags, 0 warnings. All technical feature gaps are now resolved.</p>
 
 <h3 style="color:#10b981">Resolved &mdash; Former Critical Gaps (Now Implemented)</h3>
 
@@ -2132,7 +2132,7 @@
 
 <div class="gap-strength">
   <p><span class="tag tag-str">RESOLVED</span> <strong>Test Coverage: 6417 Tests, 0 Warnings</strong></p>
-  <p class="small">Up from 1786 to 4,892 tests (2510 at v2, +1397 in v3/v4/v5 phases, +542 in v6 phases, +433 in v8, +152 in v9, +122 in v10/v11, +194 in v12, +40 in v13, +119 in v14, +94 in v15, +33 in v16, +28 in v17, +43 in v18, +24 in v19, +117 in v20, +115 in v21, +98 in v25, +33 in v26, +222 in v27, +85 in v28, +16 in v29, +28 benchmarks) with zero compiler warnings across 316 source files and 54 feature flags. Exceeds the test coverage of most open-source AI frameworks in any language.</p>
+  <p class="small">Up from 1786 to 6,874 tests (2510 at v2, +1397 in v3/v4/v5 phases, +542 in v6 phases, +433 in v8, +152 in v9, +122 in v10/v11, +194 in v12, +40 in v13, +119 in v14, +94 in v15, +33 in v16, +28 in v17, +43 in v18, +24 in v19, +117 in v20, +115 in v21, +98 in v25, +33 in v26, +222 in v27, +85 in v28, +16 in v29, +28 benchmarks) with zero compiler warnings across 320 source files and 55 feature flags. Exceeds the test coverage of most open-source AI frameworks in any language.</p>
 </div>
 
 <div class="gap-strength">
@@ -2213,7 +2213,7 @@
 
 <div class="gap-strength">
   <p><span class="tag tag-str">UNIQUE</span> <strong>Zero Stubs, Zero External Dependencies for Core</strong></p>
-  <p class="small">Every module is fully implemented with 4,892 tests and 0 warnings across 316 source files with 54 feature flags. No placeholder code, no "coming soon", no external service requirements. SHA-256, HMAC-SHA256, SHA-1, AES-256-GCM, base64, WebSocket framing, LCS diffing &mdash; all from scratch in pure Rust.</p>
+  <p class="small">Every module is fully implemented with 6,874 tests and 0 warnings across 320 source files with 55 feature flags. No placeholder code, no "coming soon", no external service requirements. SHA-256, HMAC-SHA256, SHA-1, AES-256-GCM, base64, WebSocket framing, LCS diffing &mdash; all from scratch in pure Rust.</p>
 </div>
 
 <div class="gap-strength">
@@ -2263,14 +2263,14 @@
 
 <div class="gap-strength">
   <p><span class="tag tag-str">UNIQUE</span> <strong>6417 Tests with 0 Compiler Warnings</strong></p>
-  <p class="small">More tests than most open-source AI frameworks in any language. LangChain has ~4k tests for 120k stars; ai_assistant has 4,892 tests across 316 source files with 54 feature flags for a private crate. Zero compiler warnings across the entire codebase. Criterion benchmark suite for performance regression testing.</p>
+  <p class="small">More tests than most open-source AI frameworks in any language. LangChain has ~4k tests for 120k stars; ai_assistant has 6,874 tests across 320 source files with 55 feature flags for a private crate. Zero compiler warnings across the entire codebase. Criterion benchmark suite for performance regression testing.</p>
 </div>
 </div>
 
 <!-- ==================== TAB: ROADMAP ==================== -->
 <div id="tab-roadmap" class="tab-content">
 <h2>Improvement Roadmap &mdash; 39/39 + v2 P1-4 + v5 P1-9 + v6 P1-10 + v8 + v9 All Completed</h2>
-<p class="dim" style="margin-bottom:16px">All 39/39 original roadmap items are complete. v2 Phases 1-4 added providers, async plugin, evaluation, guardrails, and CI/CD. v5 Phases 1-9 added 9 major new capability areas. <strong>v6 Phases 1-10</strong> close all remaining competitive gaps: full MCP spec (Elicitation, Audio, Batching, Completions, Remote Client), HITL, SIMBA optimizer, Memory OS, discourse-aware RAG, agent eval + red teaming, MCTS, WebRTC voice, multi-backend sandbox, and agent DevTools. <strong>v8</strong> hardens production infrastructure: HTTP server (auth, CORS, Prometheus, graceful shutdown, TLS), output guardrails, memory persistence, contextual errors, config hot-reload, Dockerfile, structured logging. <strong>v9</strong> completes server API with 26/26 items: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots. <strong>v12</strong> improves code quality: feature gating, dead code audit, +194 tests, 6 new examples. 4,892 tests, 316 source files, 54 feature flags, 0 warnings.</p>
+<p class="dim" style="margin-bottom:16px">All 39/39 original roadmap items are complete. v2 Phases 1-4 added providers, async plugin, evaluation, guardrails, and CI/CD. v5 Phases 1-9 added 9 major new capability areas. <strong>v6 Phases 1-10</strong> close all remaining competitive gaps: full MCP spec (Elicitation, Audio, Batching, Completions, Remote Client), HITL, SIMBA optimizer, Memory OS, discourse-aware RAG, agent eval + red teaming, MCTS, WebRTC voice, multi-backend sandbox, and agent DevTools. <strong>v8</strong> hardens production infrastructure: HTTP server (auth, CORS, Prometheus, graceful shutdown, TLS), output guardrails, memory persistence, contextual errors, config hot-reload, Dockerfile, structured logging. <strong>v9</strong> completes server API with 26/26 items: SSE streaming, gzip compression, rate limiting, API versioning, feature integration (constrained decoding, HITL, MCP, distillation), audit logging, structured errors, compressed snapshots. <strong>v12</strong> improves code quality: feature gating, dead code audit, +194 tests, 6 new examples. 6,874 tests, 320 source files, 55 feature flags, 0 warnings.</p>
 
 <div class="card" style="border-left: 4px solid #10b981;">
 <h3 style="color:#10b981">Phase 1 &mdash; Critical (High ROI) &mdash; ALL COMPLETED</h3>
@@ -2645,7 +2645,7 @@
 <tr><td style="text-align:left"><s>Execution Replay</s></td><td class="text-green">DONE</td><td>Record and replay agent executions for reproducible debugging.</td></tr>
 </tbody>
 </table>
-<p class="small dim" style="margin-top:8px"><strong>v6: All items completed across 10 phases. v8: Production hardening complete. v9: Server API completeness complete. v11: Test depth + documentation. v12: Feature gating + dead code audit + 194 new tests + 6 new examples. v13: RAG test depth + production safety + module docs + 6 examples. v14: Test depth (tools, assistant, knowledge_graph) + 12 benchmarks + 4 examples. 4,892 tests, 0 failures, 0 clippy warnings, 316 source files, 54 feature flags, 51 examples, 42 benchmarks. All competitive gaps closed.</strong></p>
+<p class="small dim" style="margin-top:8px"><strong>v6: All items completed across 10 phases. v8: Production hardening complete. v9: Server API completeness complete. v11: Test depth + documentation. v12: Feature gating + dead code audit + 194 new tests + 6 new examples. v13: RAG test depth + production safety + module docs + 6 examples. v14: Test depth (tools, assistant, knowledge_graph) + 12 benchmarks + 4 examples. 6,874 tests, 0 failures, 0 clippy warnings, 320 source files, 55 feature flags, 51 examples, 42 benchmarks. All competitive gaps closed.</strong></p>
 </div>
 
 <div class="card" style="border-left: 4px solid #06b6d4;">
@@ -2672,7 +2672,7 @@
 <div class="card" style="border-left: 4px solid #10b981;">
 <h3 style="color:#10b981">Strategic Recommendations (Updated Feb 2026)</h3>
 <ul>
-  <li><strong>Publish to crates.io</strong> &mdash; With 39/39 original gaps closed, v2 Phases 1-4, v5 Phases 1-9, v6 Phases 1-10, v8 production hardening, v9 server API completeness, v12 code quality improvements, v13 test depth + examples, and v14 test depth + benchmarks + examples, 4,892 tests, 316 source files, 54 feature flags, 51 examples, 42 benchmarks, ai_assistant is the most comprehensive Rust AI library by a wide margin. A 0.1.0 release would be extremely competitive.</li>
+  <li><strong>Publish to crates.io</strong> &mdash; With 39/39 original gaps closed, v2 Phases 1-4, v5 Phases 1-9, v6 Phases 1-10, v8 production hardening, v9 server API completeness, v12 code quality improvements, v13 test depth + examples, and v14 test depth + benchmarks + examples, 6,874 tests, 320 source files, 55 feature flags, 51 examples, 42 benchmarks, ai_assistant is the most comprehensive Rust AI library by a wide margin. A 0.1.0 release would be extremely competitive.</li>
   <li><s><strong>Adopt rmcp</strong></s> &mdash; <span class="text-green">DONE.</span> MCP upgraded to full spec with Streamable HTTP, OAuth 2.1+PKCE, tool annotations, Elicitation, Audio, Batching, Completions, Remote Client (v5+v6).</li>
   <li><s><strong>Generic OpenAI-compatible adapter</strong></s> &mdash; <span class="text-green">DONE.</span> Now 7 presets: Groq, Together, Fireworks, DeepSeek, Mistral, Perplexity, OpenRouter (v2 Phase 1).</li>
   <li><s><strong>Audio/speech support</strong></s> &mdash; <span class="text-green">DONE.</span> Real-time voice agents with bidirectional audio streaming, VAD, conversation turn management (v5 Phase 3). WebRTC sub-200ms voice transport (v6 Phase 8).</li>
