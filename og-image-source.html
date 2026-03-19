@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { width: 1200px; height: 630px; background: #0f172a; display: flex; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; }
-.logo { width: 480px; height: 630px; display: flex; align-items: center; justify-content: center; }
-.logo svg { transform: scale(2.2); }
-.content { flex: 1; padding: 100px 60px 60px 20px; display: flex; flex-direction: column; justify-content: center; }
+body { width: 1200px; height: 630px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; position: relative; }
+.bg-text { position: absolute; font-size: 90px; font-weight: 700; color: #253348; letter-spacing: 4px; white-space: nowrap; user-select: none; top: 61%; left: 66%; transform: translate(-50%, -50%); z-index: 0; }
+.logo { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.logo svg { transform: scale(5.5) translateY(19.75px); }
+.content { display: none; }
 h1 { color: #e2e8f0; font-size: 48px; font-weight: 400; margin-bottom: 8px; }
 .tagline { color: #6366f1; font-size: 24px; margin-bottom: 24px; }
 .desc { color: #94a3b8; font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
@@ -25,6 +26,7 @@ h1 { color: #e2e8f0; font-size: 48px; font-weight: 400; margin-bottom: 8px; }
 <body>
 <div class="bar-top"></div>
 <div class="bar-bottom"></div>
+<div class="bg-text">ai_assistant</div>
 
 <div class="logo">
 <svg width="200" height="160" viewBox="0 0 200 160" fill="none">
@@ -36,7 +38,7 @@ h1 { color: #e2e8f0; font-size: 48px; font-weight: 400; margin-bottom: 8px; }
 <polygon points="52,28 82,44 82,72 52,88 22,72 22,44" fill="#6366f1" opacity=".2" stroke="#6366f1" stroke-width="1.2"/>
 <polygon points="42,32 70,48 70,72 42,88 14,72 14,48" fill="#6366f1" opacity=".4" stroke="#818cf8" stroke-width="1.8"/>
 <circle cx="42" cy="64" r="14" fill="#6366f1" filter="url(#g33)" opacity=".5"/>
-<text x="42" y="74" text-anchor="middle" font-family="monospace" font-size="14" font-weight="700" fill="#fff">ai</text>
+<text x="42" y="69" text-anchor="middle" font-family="monospace" font-size="14" font-weight="700" fill="#fff">ai</text>
 <path d="M70,48 Q86,32 102,22 Q120,12 136,18 Q144,24 138,28 Q130,32 136,36 Q146,42 154,36 Q164,28 174,32" stroke="url(#lg33)" stroke-width="1.8" fill="none" opacity=".5" stroke-linecap="round"/>
 <circle cx="102" cy="22" r="2.2" fill="#e879f9" opacity=".45"/><circle cx="136" cy="18" r="1.8" fill="#c084fc" opacity=".38"/><circle cx="138" cy="28" r="1.5" fill="#c084fc" opacity=".3"/><circle cx="154" cy="36" r="1.2" fill="#a78bfa" opacity=".25"/>
 <path d="M136,18 Q142,10 146,14 Q146,20 142,18" stroke="#e879f9" stroke-width=".7" fill="none" opacity=".25"/>
