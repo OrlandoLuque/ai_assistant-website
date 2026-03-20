@@ -1542,6 +1542,53 @@ ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ V46 ═════════════════════ -->
+<section id="v46-provider-service-mode">
+  <div class="container">
+    <h2 class="section-title">V46 &mdash; Provider Service Mode</h2>
+    <div class="prose">
+      <p>V46 turns <code>ai_assistant_core</code> into an OpenAI-compatible proxy for local LLMs, making any machine a shared inference endpoint.</p>
+    </div>
+
+    <h3 class="sub-title">Key Components</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>OpenAI-compatible proxy:</strong> translates between local model protocols and the OpenAI chat completions API</li>
+        <li><strong>NAT traversal:</strong> automatic reachability via STUN, UPnP, and NAT-PMP &mdash; no manual port forwarding required</li>
+        <li>Any OpenAI-compatible client can use the local model transparently</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ V47 ═════════════════════ -->
+<section id="v47-distributed-log-correlation">
+  <div class="container">
+    <h2 class="section-title">V47 &mdash; Distributed Log Correlation</h2>
+    <div class="prose">
+      <p>V47 adds end-to-end distributed tracing and log aggregation across nodes.</p>
+    </div>
+
+    <h3 class="sub-title">Core Types</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>TraceContext:</strong> propagates <code>trace_id</code> across distributed nodes for end-to-end request tracing</li>
+        <li><strong>DistributedLogEntry:</strong> unified log format combining <code>trace_id</code> + <code>node_id</code> + <code>span_id</code> + <code>level</code></li>
+        <li><strong>LogCollector:</strong> merges remote logs from multiple nodes into a time-sorted view</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title">Export &amp; Policy</h3>
+    <div class="prose">
+      <ul>
+        <li>Configurable sharing policy controls which log levels and categories are shared between nodes</li>
+        <li>Export formats for aggregated log data</li>
+        <li>13 tests covering trace propagation, log merging, and policy enforcement</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">

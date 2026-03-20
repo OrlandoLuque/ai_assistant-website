@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (193 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (195 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">193 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">195 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -681,7 +681,9 @@ body {
 <a href="#concept-190" class="nav-item" data-num="190">190. Disk Spill Buffers</a>
 <a href="#concept-191" class="nav-item" data-num="191">191. Session Recovery</a>
 <a href="#concept-192" class="nav-item" data-num="192">192. Multi-User Isolation</a>
-<a href="#concept-193" class="nav-item" data-num="193">193. Procedure Import/Export</a></div>
+<a href="#concept-193" class="nav-item" data-num="193">193. Procedure Import/Export</a>
+<a href="#concept-194" class="nav-item" data-num="194">194. Provider Service Mode</a>
+<a href="#concept-195" class="nav-item" data-num="195">195. Distributed Log Correlation</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4663,6 +4665,30 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p>Exported libraries include version metadata, procedure definitions, and confidence baselines. On import, the system supports two strategies: <strong>merge</strong> (combine with existing procedures, keeping the higher-confidence version of duplicates) and <strong>replace</strong> (overwrite all procedures from the library). Version conflicts are resolved by comparing semantic version + last-modified timestamps.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-188" class="related-link">188. Procedural Memory</a>, <a href="#concept-27" class="related-link">27. Knowledge Packages (KPKG)</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-194" data-num="194" data-title="Provider Service Mode" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">194</span>Provider Service Mode</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p><code>ai_assistant_core</code> can serve as an <strong>OpenAI-compatible proxy</strong> for local LLMs, exposing them over the network with full API compatibility. This turns any machine running a local model into a shared inference endpoint.</p>
+<p>NAT traversal is handled automatically via <strong>STUN</strong>, <strong>UPnP</strong>, and <strong>NAT-PMP</strong>, allowing the service to be reachable from external networks without manual port forwarding. The proxy translates between the local model&rsquo;s native protocol and the OpenAI chat completions API, enabling any OpenAI-compatible client to use the local model transparently.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-169" class="related-link">169. OpenAI-Compatible API &amp; Enrichment Pipeline</a>, <a href="#concept-40" class="related-link">40. P2P Networking</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-195" data-num="195" data-title="Distributed Log Correlation" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">195</span>Distributed Log Correlation</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p><strong>TraceContext</strong> propagates a <code>trace_id</code> across distributed nodes, enabling end-to-end request tracing. <strong>DistributedLogEntry</strong> unifies the log format by combining <code>trace_id</code>, <code>node_id</code>, <code>span_id</code>, and <code>level</code> into a single structured record.</p>
+<p><strong>LogCollector</strong> merges remote logs from multiple nodes into a time-sorted view, providing a coherent picture of distributed operations. A configurable <strong>sharing policy</strong> controls which log levels and categories are shared between nodes, balancing observability with privacy and bandwidth.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-126" class="related-link">126. Request Correlation IDs</a>, <a href="#concept-36" class="related-link">36. Distributed Computing</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 
