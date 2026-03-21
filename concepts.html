@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (197 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (198 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">197 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">198 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -685,7 +685,8 @@ body {
 <a href="#concept-194" class="nav-item" data-num="194">194. Provider Service Mode</a>
 <a href="#concept-195" class="nav-item" data-num="195">195. Distributed Log Correlation</a>
 <a href="#concept-196" class="nav-item" data-num="196">196. Cache Policies</a>
-<a href="#concept-197" class="nav-item" data-num="197">197. Distributed Systems Hardening</a></div>
+<a href="#concept-197" class="nav-item" data-num="197">197. Distributed Systems Hardening</a>
+<a href="#concept-198" class="nav-item" data-num="198">198. Distributed MapReduce</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4715,6 +4716,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p><strong>Hinted handoff</strong> stores writes destined for temporarily unavailable nodes and replays them on recovery. <strong>Reputation routing</strong> scores peers by historical reliability and latency, preferring well-behaved nodes. <strong>NAT traversal integration</strong> unifies STUN/UPnP/NAT-PMP probing into the distributed bootstrap sequence, ensuring reachability without manual configuration.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-36" class="related-link">36. Distributed Computing</a>, <a href="#concept-40" class="related-link">40. P2P Networking</a>, <a href="#concept-194" class="related-link">194. Provider Service Mode</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-198" data-num="198" data-title="Distributed MapReduce" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">198</span>Distributed MapReduce</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-distributed">distributed</span></div>
+</div>
+<div class="card-body"><p>MapReduce splits computation into two phases: <strong>map</strong> transforms each input chunk into key-value pairs, <strong>reduce</strong> aggregates all values for the same key. The challenge in Rust is that closures cannot be serialized across the network &mdash; they capture local memory references with no meaning on another machine.</p>
+<p>The solution is <strong>MapWorkerRegistry</strong>: each node registers the same map/reduce functions under a shared <code>job_id</code>. When a <code>MapTask</code> arrives from the coordinator, the receiving node looks up the function by ID and executes it locally. The coordinator splits chunks across itself and remote peers using round-robin allocation, processes its share locally with rayon, and merges all results for shuffle + reduce. If no peers are available, it falls back to local-only execution.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-36" class="related-link">36. Distributed Computing</a>, <a href="#concept-197" class="related-link">197. Distributed Systems Hardening</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 

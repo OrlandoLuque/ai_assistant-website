@@ -1630,6 +1630,32 @@ ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ V50 ═════════════════════ -->
+<section id="v50-distributed-mapreduce">
+  <div class="container">
+    <h2 class="section-title">V50 &mdash; Distributed MapReduce</h2>
+    <div class="prose">
+      <p>V50 transforms MapReduce from local-only execution to actual distributed computation across network nodes.</p>
+    </div>
+
+    <h3 class="sub-title">The Challenge</h3>
+    <div class="prose">
+      <p>Rust closures capture local state and <strong>cannot be serialized</strong> across the network. The solution is <code>MapWorkerRegistry</code>: each participating node registers the same map/reduce functions under a shared <code>job_id</code>. When a <code>MapTask</code> arrives, the receiving node looks up the function by ID and executes it locally.</p>
+    </div>
+
+    <h3 class="sub-title">New Capabilities</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>MapWorkerRegistry:</strong> register/lookup map and reduce functions by job_id across nodes</li>
+        <li><strong>execute_distributed_with_results():</strong> splits chunks between local node (rayon) and remote peers, merges results, runs shuffle + reduce</li>
+        <li><strong>Self as worker:</strong> the coordinator always processes its share locally, even when remote peers are available</li>
+        <li><strong>Graceful fallback:</strong> if no remote peers are available, all chunks are processed locally (identical to pre-V50 behavior)</li>
+        <li><strong>Round-robin allocation:</strong> chunks are distributed evenly across all available workers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
