@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (195 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (197 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">195 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">197 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -683,7 +683,9 @@ body {
 <a href="#concept-192" class="nav-item" data-num="192">192. Multi-User Isolation</a>
 <a href="#concept-193" class="nav-item" data-num="193">193. Procedure Import/Export</a>
 <a href="#concept-194" class="nav-item" data-num="194">194. Provider Service Mode</a>
-<a href="#concept-195" class="nav-item" data-num="195">195. Distributed Log Correlation</a></div>
+<a href="#concept-195" class="nav-item" data-num="195">195. Distributed Log Correlation</a>
+<a href="#concept-196" class="nav-item" data-num="196">196. Cache Policies</a>
+<a href="#concept-197" class="nav-item" data-num="197">197. Distributed Systems Hardening</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4689,6 +4691,30 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <p><strong>LogCollector</strong> merges remote logs from multiple nodes into a time-sorted view, providing a coherent picture of distributed operations. A configurable <strong>sharing policy</strong> controls which log levels and categories are shared between nodes, balancing observability with privacy and bandwidth.</p>
 </div>
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-126" class="related-link">126. Request Correlation IDs</a>, <a href="#concept-36" class="related-link">36. Distributed Computing</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-196" data-num="196" data-title="Cache Policies" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">196</span>Cache Policies</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div>
+</div>
+<div class="card-body"><p>All caching stores enforce <strong>bounded growth</strong> through configurable policies. <strong>LRU</strong> (least-recently-used) and <strong>LFU</strong> (least-frequently-used) eviction strategies prevent unbounded memory consumption by automatically removing the least valuable entries when the cache reaches its configured maximum size.</p>
+<p>Each store exposes a <code>max_size</code> parameter and enforces it on every insertion. The eviction audit spans embedding caches, prompt caches, RAG chunk caches, and tool-result caches, ensuring consistent bounded behaviour across the entire library.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-189" class="related-link">189. Unified SQLite Persistence</a>, <a href="#concept-190" class="related-link">190. Disk Spill Buffers</a></div>
+<a href="#top" class="back-to-top">Back to top</a>
+</article>
+
+<article class="concept-card" id="concept-197" data-num="197" data-title="Distributed Systems Hardening" data-category="Infrastructure">
+<div class="card-header">
+<h3><span class="concept-num">197</span>Distributed Systems Hardening</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-distributed">distributed</span></div>
+</div>
+<div class="card-body"><p>A comprehensive hardening pass across the distributed subsystem. <strong>Version tracking</strong> adds protocol-version negotiation between nodes. <strong>Replica management</strong> tracks per-key replica sets with configurable replication factors. <strong>Failure classification</strong> distinguishes transient from permanent errors to guide retry logic.</p>
+<p><strong>Hinted handoff</strong> stores writes destined for temporarily unavailable nodes and replays them on recovery. <strong>Reputation routing</strong> scores peers by historical reliability and latency, preferring well-behaved nodes. <strong>NAT traversal integration</strong> unifies STUN/UPnP/NAT-PMP probing into the distributed bootstrap sequence, ensuring reachability without manual configuration.</p>
+</div>
+<div class="related-concepts"><strong>Related:</strong> <a href="#concept-36" class="related-link">36. Distributed Computing</a>, <a href="#concept-40" class="related-link">40. P2P Networking</a>, <a href="#concept-194" class="related-link">194. Provider Service Mode</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
 

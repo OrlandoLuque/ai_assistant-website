@@ -1589,6 +1589,47 @@ ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ V48 ═════════════════════ -->
+<section id="v48-cache-policies">
+  <div class="container">
+    <h2 class="section-title">V48 &mdash; Cache Policies Audit</h2>
+    <div class="prose">
+      <p>V48 audits every caching store in the library and enforces bounded growth with configurable eviction policies.</p>
+    </div>
+
+    <h3 class="sub-title">Key Changes</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Bounded caches:</strong> every store now enforces a <code>max_size</code> parameter, preventing unbounded memory growth</li>
+        <li><strong>LRU / LFU eviction:</strong> least-recently-used and least-frequently-used strategies remove the least valuable entries on overflow</li>
+        <li>Consistent policy applied across embedding caches, prompt caches, RAG chunk caches, and tool-result caches</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ V49 ═════════════════════ -->
+<section id="v49-distributed-systems-hardening">
+  <div class="container">
+    <h2 class="section-title">V49 &mdash; Distributed Systems Hardening</h2>
+    <div class="prose">
+      <p>V49 hardens the distributed subsystem with version negotiation, replica management, failure classification, and automatic NAT traversal.</p>
+    </div>
+
+    <h3 class="sub-title">New Capabilities</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Version tracking:</strong> protocol-version negotiation between nodes ensures compatibility across upgrades</li>
+        <li><strong>Replica management:</strong> per-key replica sets with configurable replication factors</li>
+        <li><strong>Failure classification:</strong> distinguishes transient from permanent errors to guide retry logic</li>
+        <li><strong>Hinted handoff:</strong> stores writes for temporarily unavailable nodes, replays them on recovery</li>
+        <li><strong>Reputation routing:</strong> scores peers by historical reliability and latency, preferring well-behaved nodes</li>
+        <li><strong>NAT traversal integration:</strong> unified STUN/UPnP/NAT-PMP probing in the distributed bootstrap sequence</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
