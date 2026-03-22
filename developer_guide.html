@@ -1656,6 +1656,46 @@ ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ V53 ═════════════════════ -->
+<section id="v53-search-providers-web-gui">
+  <div class="container">
+    <h2 class="section-title">V53 &mdash; SearchProviders + Web Search GUI</h2>
+    <div class="prose">
+      <p>V53 adds 4 new search providers, web search in the GUI, and completes Block D tool consolidation.</p>
+    </div>
+    <h3 class="sub-title">New Capabilities</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>Google Custom Search:</strong> API-based provider with configurable CX engine ID</li>
+        <li><strong>Bing Web Search:</strong> Azure Cognitive Services API integration</li>
+        <li><strong>SerpAPI:</strong> Unified search API supporting Google, Bing, Yahoo engines</li>
+        <li><strong>Tavily:</strong> AI-optimized search with content extraction</li>
+        <li><strong>GUI Web Search tab:</strong> DuckDuckGo search integrated into ai_gui with async thread+channel</li>
+        <li><strong>Block D complete:</strong> <code>tool_use</code> and <code>function_calling</code> modules deleted (0 consumers), <code>unified_tools</code> is canonical</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ V54 ═════════════════════ -->
+<section id="v54-memory-rag-convenience">
+  <div class="container">
+    <h2 class="section-title">V54 &mdash; MemoryManager + RAG Convenience API</h2>
+    <div class="prose">
+      <p>V54 removes artificial restrictions on memory injection and adds convenience methods for RAG.</p>
+    </div>
+    <h3 class="sub-title">Changes</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>MemoryManager in both modes:</strong> Memory context (episodic, entities, preferences) now injected in Conversation mode too, not just FreshContext</li>
+        <li><strong>send_message_with_rag():</strong> Auto-builds RAG context internally before sending &mdash; callers don&rsquo;t need to manage RAG manually</li>
+        <li><strong>generate_sync_with_rag():</strong> Synchronous version of the same convenience</li>
+        <li><strong>Block D final:</strong> Deleted <code>tool_use.rs</code> and <code>function_calling.rs</code> (&minus;1,423 LOC, 0 consumers)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
