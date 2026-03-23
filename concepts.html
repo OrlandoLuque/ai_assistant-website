@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (198 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (209 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">198 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">209 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -686,7 +686,18 @@ body {
 <a href="#concept-195" class="nav-item" data-num="195">195. Distributed Log Correlation</a>
 <a href="#concept-196" class="nav-item" data-num="196">196. Cache Policies</a>
 <a href="#concept-197" class="nav-item" data-num="197">197. Distributed Systems Hardening</a>
-<a href="#concept-198" class="nav-item" data-num="198">198. Distributed MapReduce</a></div>
+<a href="#concept-198" class="nav-item" data-num="198">198. Distributed MapReduce</a>
+<a href="#concept-199" class="nav-item" data-num="199">199. Adaptive Context Budget</a>
+<a href="#concept-200" class="nav-item" data-num="200">200. LLM Context Compression</a>
+<a href="#concept-201" class="nav-item" data-num="201">201. Strategy Bandit (UCB1)</a>
+<a href="#concept-202" class="nav-item" data-num="202">202. Shareable RAG Tiers</a>
+<a href="#concept-203" class="nav-item" data-num="203">203. Emotion Detection</a>
+<a href="#concept-204" class="nav-item" data-num="204">204. Expressive TTS</a>
+<a href="#concept-205" class="nav-item" data-num="205">205. Neural Voice Codec</a>
+<a href="#concept-206" class="nav-item" data-num="206">206. Tool Safety Profiles</a>
+<a href="#concept-207" class="nav-item" data-num="207">207. Filesystem Rollback</a>
+<a href="#concept-208" class="nav-item" data-num="208">208. Knowledge Auto-Reindex</a>
+<a href="#concept-209" class="nav-item" data-num="209">209. Storage Context</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4730,6 +4741,72 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="related-concepts"><strong>Related:</strong> <a href="#concept-36" class="related-link">36. Distributed Computing</a>, <a href="#concept-197" class="related-link">197. Distributed Systems Hardening</a></div>
 <a href="#top" class="back-to-top">Back to top</a>
 </article>
+
+<article class="concept-card" id="concept-199" data-num="199" data-title="Adaptive Context Budget Allocation" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">199</span>Adaptive Context Budget Allocation</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div></div>
+<div class="card-body"><p>Replaces hardcoded token limits per source with a unified system that merges items from all sources (RAG, Memory, Procedural, References, KnowledgeGraph) and packs them by relevance score. No source is privileged &mdash; the most relevant items win.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-200" data-num="200" data-title="LLM Context Compression" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">200</span>LLM-Assisted Context Compression</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div></div>
+<div class="card-body"><p>When context exceeds the budget, a secondary LLM compresses it. Each item carries its retrieval score &mdash; the compressor can preserve high-score items verbatim while aggressively compressing borderline ones. Also performs domain-aware filtering (the &ldquo;Mordor vs Alps&rdquo; problem).</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-201" data-num="201" data-title="Strategy Bandit (UCB1)" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">201</span>Multi-Armed Bandit for Strategy Selection</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div></div>
+<div class="card-body"><p>A UCB1 bandit learns which context overflow strategy works best. Each arm is a strategy (truncation, extractive, LLM compression). Rewards come from response quality feedback. The bandit balances exploration vs exploitation, converging on the optimal strategy over time.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-202" data-num="202" data-title="Shareable RAG Tiers" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">202</span>Shareable RAG Tier Definitions</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span><span class="badge flag-rag">rag</span></div></div>
+<div class="card-body"><p>RAG tiers are data (JSON), not code. Users create custom tiers with 8 configurable dimensions, export them as files, and share between instances. A TierStore manages builtin + custom tiers with import/export.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-203" data-num="203" data-title="Emotion Detection" data-category="Voice">
+<div class="card-header"><h3><span class="concept-num">203</span>Emotion Detection from Audio</h3>
+<div class="card-badges"><span class="badge badge-cat">Voice</span><span class="badge flag-core">audio</span></div></div>
+<div class="card-body"><p>Detects emotional state from audio or text (12 categories, confidence, intensity). Supports ONNX models (emotion2vec, SenseVoice) and keyword heuristic fallback. Detected emotion is injected into the LLM prompt and used to adapt TTS tone.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-204" data-num="204" data-title="Expressive TTS" data-category="Voice">
+<div class="card-header"><h3><span class="concept-num">204</span>Expressive Text-to-Speech</h3>
+<div class="card-badges"><span class="badge badge-cat">Voice</span><span class="badge flag-core">audio</span></div></div>
+<div class="card-body"><p>TTS with emotion control. OpenAI gpt-4o-mini-tts accepts natural language instructions. ElevenLabs v3 uses audio tags (<code>[sigh]</code>, <code>[excited]</code>). Azure uses SSML prosody tags. Automatically adapted based on detected user emotion.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-205" data-num="205" data-title="Neural Voice Codec" data-category="Voice">
+<div class="card-header"><h3><span class="concept-num">205</span>Neural Voice Codec</h3>
+<div class="card-badges"><span class="badge badge-cat">Voice</span><span class="badge flag-core">audio</span></div></div>
+<div class="card-body"><p>Encodes speech into compact token representations (1-24 kbps vs 64 kbps raw). Enables voice transmission at 10x lower bandwidth, plus voice modification in transit, speaker anonymization, and emotion injection during decoding.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-206" data-num="206" data-title="Tool Safety Profiles" data-category="Agents">
+<div class="card-header"><h3><span class="concept-num">206</span>Tool Safety Profiles</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents</span><span class="badge flag-core">autonomous</span></div></div>
+<div class="card-body"><p>Every tool declares its safety characteristics: interruptible, has_side_effects, reversible, snapshot_before, timeout, heartbeat, dry_run. Four presets: read_only, destructive_reversible, destructive_irreversible, long_running.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-207" data-num="207" data-title="Filesystem Rollback" data-category="Agents">
+<div class="card-header"><h3><span class="concept-num">207</span>Filesystem Snapshot Rollback</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents</span><span class="badge flag-core">autonomous</span></div></div>
+<div class="card-body"><p>Cross-platform file rollback using an internal trash directory (not OS-dependent). Snapshots capture state before destructive operations. LIFO compensation reverses an entire agent iteration (Saga pattern). Supports write, delete, rename, copy, append, chmod, create.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-208" data-num="208" data-title="Knowledge Auto-Reindex" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">208</span>Knowledge Auto-Reindexing</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span><span class="badge flag-rag">rag</span></div></div>
+<div class="card-body"><p>Monitors indexed knowledge source files for changes on disk. When a document is modified, triggers re-indexing of that specific file. Configurable polling, extension filters, and exclude paths.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-209" data-num="209" data-title="Storage Context" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">209</span>Unified Storage Context</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div></div>
+<div class="card-body"><p>Single object coordinating persistence of all subsystems. Atomic JSON writes for crash safety. DirtyFlags track which subsystems changed; drain_writes() flushes only dirty ones. Called in shutdown handlers and error paths to guarantee no data loss. Inspired by LlamaIndex&rsquo;s StorageContext.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
 </main>
