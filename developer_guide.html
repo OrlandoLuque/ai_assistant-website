@@ -1731,6 +1731,46 @@ ai.load_procedures(Path::new("procedures.json"), 50).unwrap();</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ V57 ═════════════════════ -->
+<section id="v57-agent-interruption">
+  <div class="container">
+    <h2 class="section-title">V57 &mdash; Agent Interruption &amp; Safety</h2>
+    <div class="prose">
+      <p>V57 adds safety infrastructure for agent tool execution and file rollback.</p>
+    </div>
+    <h3 class="sub-title">Tool Safety Profiles</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>ToolSafetyProfile:</strong> classifies tools as read-only, destructive-reversible, destructive-irreversible, or long-running</li>
+        <li><strong>SnapshotStore:</strong> cross-platform file rollback (write, delete, rename, copy, append, chmod, create)</li>
+        <li><strong>rollback_iteration():</strong> LIFO compensation of entire agent iteration</li>
+        <li><strong>KnowledgeWatcher:</strong> auto-detect when indexed documents change on disk</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ V58 ═════════════════════ -->
+<section id="v58-storage-context">
+  <div class="container">
+    <h2 class="section-title">V58 &mdash; StorageContext Persistence</h2>
+    <div class="prose">
+      <p>Unified persistence coordinator inspired by LlamaIndex&rsquo;s StorageContext pattern.</p>
+    </div>
+    <h3 class="sub-title">Features</h3>
+    <div class="prose">
+      <ul>
+        <li><strong>StorageContext:</strong> single object coordinating persistence of all subsystems</li>
+        <li><strong>Atomic writes:</strong> temp file + rename for crash safety</li>
+        <li><strong>DirtyFlags:</strong> per-subsystem change tracking, only flush what changed</li>
+        <li><strong>drain_writes():</strong> guarantee for shutdown/error paths (no data loss)</li>
+        <li><strong>StrategyBandit persistence:</strong> learned strategy preferences survive restart</li>
+        <li><strong>RagTierStore persistence:</strong> custom tier definitions survive restart</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ FOOTER ═════════════════════ -->
 <footer>
   <div class="container">
