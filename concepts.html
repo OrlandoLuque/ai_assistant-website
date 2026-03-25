@@ -707,7 +707,9 @@ body {
 <a href="#concept-216" class="nav-item" data-num="216">216. Distributed RAG</a>
 <a href="#concept-217" class="nav-item" data-num="217">217. ICE NAT Traversal</a>
 <a href="#concept-218" class="nav-item" data-num="218">218. Browser Security Policy</a>
-<a href="#concept-219" class="nav-item" data-num="219">219. Tool Permission Categories</a></div>
+<a href="#concept-219" class="nav-item" data-num="219">219. Tool Permission Categories</a>
+<a href="#concept-220" class="nav-item" data-num="220">220. Agent Methodology</a>
+<a href="#concept-221" class="nav-item" data-num="221">221. Quality Gates & Review Triggers</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4876,6 +4878,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">219</span>Tool Permission Categories</h3>
 <div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
 <div class="card-body"><p>14 fine-grained categories beyond read/write: Execute, Delete, Create, Admin, Network, Filesystem, CredentialAccess, UserImpersonation, CostIncurring, DataExfiltration, PersistentStateModification, PrivilegeEscalation. Critical categories require explicit approval.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-220" data-num="220" data-title="Agent Methodology" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">220</span>Agent Methodology</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Defines HOW an autonomous agent approaches tasks. <code>AgentMethodology</code> bundles: TaskApproach (PlanFirst/ActFirst/Iterative), ReasoningStrategy (ChainOfThought/StepBack/Reflection/Direct), PlanningPolicy, ReviewPolicy, RecoveryStrategy (Retry/AlternativeTool/AskUser/Abort/Cascade), CommunicationStyle, RiskTolerance, WorkflowProtocol (6 phases: ANALYZE→PLAN→VALIDATE→EXECUTE→REVIEW→CONCLUDE), and ReviewTriggers. Four presets: Careful, Balanced, Fast, Research. Serializable as JSON for sharing between users.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-221" data-num="221" data-title="Quality Gates & Review Triggers" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">221</span>Quality Gates &amp; Review Triggers</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p><code>QualityGate</code> defines pass/fail checks between workflow phases: OutputNotEmpty, ContainsKeywords, NoErrors, CostWithinBudget, TimeWithinLimit, LlmJudge. On failure: Retry, AskUser, Abort, or ContinueWithWarning. <code>ReviewTriggers</code> define 8 conditions that force a review cycle: after N iterations, after milestone, after tool failure, after cost threshold, after time threshold, on user interrupt, and periodic self-check. Wired into <code>AutonomousAgent</code> via <code>should_review_now()</code>.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>

@@ -302,7 +302,7 @@ footer {
     <h2 class="section-title">Architecture Overview</h2>
     <div class="prose">
       <p>
-        ai_assistant is a <strong>single Rust crate</strong> (~389K LOC, 319 source files) organized as a modular
+        ai_assistant is a <strong>single Rust crate</strong> (~386K LOC, 338 source files) organized as a modular
         library with feature-flag-based compilation. The central type is <code>AiAssistant</code>, which provides
         a unified interface to all subsystems.
       </p>
@@ -423,7 +423,7 @@ footer {
 
     <div class="info-box">
       <strong>Full module list:</strong> See the <a href="feature_matrix.html">Feature Matrix</a> for the complete list
-      of 319 source files with their feature gates and test counts.
+      of 338 source files with their feature gates and test counts.
     </div>
   </div>
 </section>
@@ -753,6 +753,200 @@ let result = session.execute_task(
         Agents can be triggered by time, events, or custom conditions.
       </p>
     </div>
+
+    <h3 class="sub-title">Agent Definition (JSON/TOML)</h3>
+    <div class="prose">
+      <p>
+        <code>AgentDefinition</code> is the declarative format for agent configuration. It defines
+        the agent's identity, tools, memory, and guardrails — loadable from JSON or TOML files.
+      </p>
+    </div>
+    <span class="code-label json">json</span>
+    <pre>{
+  "agent": {
+    "name": "security-auditor",
+    "role": "Analyst",
+    "system_prompt": "You are a security auditor...",
+    "temperature": 0.2
+  },
+  "tools": [
+    { "name": "read_file", "needs_approval": false },
+    { "name": "write_file", "needs_approval": true, "timeout_ms": 30000 }
+  ],
+  "memory": { "memory_type": "episodic", "max_episodes": 100 },
+  "guardrails": {
+    "block_pii": true,
+    "max_turns": 50,
+    "forbidden_patterns": ["rm -rf", "DROP TABLE"]
+  }
+}</pre>
+    <div class="prose">
+      <p>
+        Convert to runtime agent via <code>AgentPool::from_definition(&amp;def, tool_registry)</code>.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Agent Policy (Permissions)</h3>
+    <div class="prose">
+      <p>
+        <code>AgentPolicy</code> controls <em>what</em> an agent can do: filesystem access, shell commands,
+        internet, MCP servers, cost limits, and runtime limits.
+      </p>
+    </div>
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Preset</th><th>Autonomy</th><th>Internet</th><th>Cost Limit</th><th>Approval</th></tr></thead>
+      <tbody>
+        <tr><td><code>::paranoid()</code></td><td>Paranoid</td><td>Disabled</td><td>$0.10</td><td>Everything</td></tr>
+        <tr><td><code>::default()</code></td><td>Normal</td><td>SearchOnly</td><td>$1.00</td><td>High risk+</td></tr>
+        <tr><td><code>::autonomous()</code></td><td>Autonomous</td><td>Full</td><td>$10.00</td><td>Critical only</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>let policy = AgentPolicyBuilder::new()
+    .autonomy(AutonomyLevel::Normal)
+    .internet(InternetMode::SearchOnly)
+    .allow_path("/home/user/project")
+    .deny_command("rm")
+    .max_cost(5.0)         // $5 USD
+    .max_runtime_secs(600) // 10 minutes
+    .require_approval_above(RiskLevel::High)
+    .build();</pre>
+
+    <h3 class="sub-title">Agent Profiles (Pre-made)</h3>
+    <div class="prose">
+      <p>
+        <code>ProfileRegistry::with_defaults()</code> provides 8 agent profiles, 4 conversation profiles,
+        and 3 workflow profiles ready to use.
+      </p>
+    </div>
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Profile</th><th>Internet</th><th>Key Tools</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>coding-assistant</td><td>SearchOnly</td><td>filesystem, shell, git</td><td>Software development</td></tr>
+        <tr><td>research-agent</td><td>Full</td><td>read-only FS, web search</td><td>Information gathering</td></tr>
+        <tr><td>devops-agent</td><td>Full</td><td>docker, k8s, terraform</td><td>Infrastructure automation</td></tr>
+        <tr><td>data-analyst</td><td>SearchOnly</td><td>python, data tools</td><td>Data analysis</td></tr>
+        <tr><td>code-reviewer</td><td>Disabled</td><td>read-only FS, git</td><td>Code review</td></tr>
+        <tr><td>sysadmin</td><td>Disabled</td><td>systemctl, monitoring</td><td>System administration</td></tr>
+        <tr><td>paranoid</td><td>Disabled</td><td>none (approval for all)</td><td>Maximum safety</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="prose">
+      <p>
+        <strong>Workflow profiles:</strong> <code>code-review-pipeline</code> (Analyze→Review→Suggest→Report),
+        <code>research-report</code> (Search→Analyze→Synthesize→Write),
+        <code>bug-fix</code> (Reproduce→Diagnose→Fix→Test→Commit).
+      </p>
+    </div>
+
+    <h3 class="sub-title">Agent Methodology</h3>
+    <div class="prose">
+      <p>
+        <code>AgentMethodology</code> defines <em>how</em> an agent approaches tasks — separate from what tools it has.
+        It controls the task approach (PlanFirst / ActFirst / Iterative), reasoning strategy
+        (ChainOfThought / StepBack / Reflection / Direct), planning policy, review policy,
+        recovery strategy, communication style, and risk tolerance.
+      </p>
+      <p>
+        The <code>WorkflowProtocol</code> defines 6 phases — ANALYZE → PLAN → VALIDATE → EXECUTE → REVIEW → CONCLUDE —
+        each with <code>PhaseConfig { enabled, mandatory, max_duration_secs }</code>.
+        <code>ReviewTriggers</code> define 8 conditions that force a review cycle (iteration count, milestone,
+        tool failure, cost threshold, time threshold, user interrupt, periodic self-check).
+        <code>QualityGate</code> checks gate progress between phases (OutputNotEmpty, CostWithinBudget, LlmJudge, etc.).
+      </p>
+    </div>
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Preset</th><th>Approach</th><th>Phases</th><th>Review</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>Careful</td><td>PlanFirst</td><td>All mandatory</td><td>Every phase</td><td>Conservative</td></tr>
+        <tr><td>Balanced</td><td>Iterative</td><td>Execute mandatory</td><td>At milestones</td><td>Balanced</td></tr>
+        <tr><td>Fast</td><td>ActFirst</td><td>Execute only</td><td>On failure only</td><td>Bold</td></tr>
+        <tr><td>Research</td><td>PlanFirst</td><td>All mandatory</td><td>Every phase</td><td>Conservative</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Sandbox Validator (Runtime Enforcement)</h3>
+    <div class="prose">
+      <p>
+        <code>SandboxValidator</code> sits between the agent and every action, validating against the
+        <code>AgentPolicy</code> and maintaining a complete audit trail. Every tool call, file access,
+        and network request passes through the sandbox before execution.
+      </p>
+      <p>
+        Risk levels: <strong>Safe &lt; Low &lt; Medium &lt; High &lt; Critical</strong>.
+        Actions above the configured threshold require user approval.
+        All decisions are logged with <code>AuditEntry</code> (timestamp, action, decision, risk level).
+      </p>
+    </div>
+
+    <h3 class="sub-title">Browser Policy</h3>
+    <div class="prose">
+      <p>
+        <code>BrowserPolicy</code> controls browser automation security: URL validation (SSRF protection,
+        domain allowlist/blocklist, private IP blocking), JavaScript permission levels
+        (Disabled / ReadOnly / Mutating / Full), and interaction controls (cookies, forms, downloads).
+        16 dangerous JS patterns are detected and blocked based on the permission level.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Building an Agent (Full Example)</h3>
+    <span class="code-label rust">rust</span>
+    <pre>// Layer 1: Policy — WHAT it can do
+let policy = AgentPolicyBuilder::new()
+    .autonomy(AutonomyLevel::Normal)
+    .internet(InternetMode::SearchOnly)
+    .allow_path("/data")
+    .max_cost(5.0)
+    .build();
+
+// Layer 2: Methodology — HOW it works
+let methodology = AgentMethodology::careful();
+
+// Layer 3: Build runtime agent
+let agent = AutonomousAgent::builder("auditor", response_gen)
+    .system_prompt("You are a security auditor...")
+    .policy(policy)
+    .methodology(methodology)
+    .max_iterations(100)
+    .tool_registry(tools)
+    .with_knowledge_provider(rag_provider)
+    .with_interaction_manager(interaction)
+    .build();
+
+// Run
+let result = agent.run("Analyze the codebase for vulnerabilities")?;</pre>
+
+    <h3 class="sub-title">Multi-Agent Orchestration</h3>
+    <div class="prose">
+      <p>
+        <code>MultiAgentSession</code> orchestrates multiple agents working on a shared task.
+        Each agent has its own policy and methodology. They share a <code>TaskBoard</code> for
+        coordination and an <code>InteractionManager</code> for user communication.
+      </p>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>let mut session = MultiAgentSession::new("code-review");
+
+// Agent 1: Careful reviewer
+let reviewer = AutonomousAgent::builder("reviewer", gen.clone())
+    .policy(AgentPolicy::default())
+    .methodology(AgentMethodology::research())
+    .build();
+
+// Agent 2: Fast fixer
+let fixer = AutonomousAgent::builder("fixer", gen.clone())
+    .policy(AgentPolicy::autonomous())
+    .methodology(AgentMethodology::fast())
+    .build();
+
+session.add_agent("reviewer", reviewer);
+session.add_agent("fixer", fixer);</pre>
   </div>
 </section>
 
@@ -763,7 +957,7 @@ let result = session.execute_task(
     <div class="prose">
       <p>
         Security is built into every layer, not bolted on. The crate has been through a comprehensive
-        security audit (31 findings, all resolved).
+        security audit (300+ attack vectors catalogued and mitigated across multi-pass exhaustive audits).
       </p>
     </div>
 
@@ -804,7 +998,7 @@ let result = session.execute_task(
 
     <div class="info-box success">
       <strong>Audit results:</strong> 5 Critical + 12 High + 14 Medium findings &mdash; all resolved.
-      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 319 files.
+      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 338 files.
     </div>
   </div>
 </section>
@@ -1111,14 +1305,14 @@ pub trait LlmProvider {
   <div class="container">
     <h2 class="section-title">Testing</h2>
     <div class="prose">
-      <p>The project maintains 6,829 tests across multiple layers:</p>
+      <p>The project maintains 7,082 tests across multiple layers:</p>
     </div>
 
     <div style="overflow-x: auto;">
     <table class="doc-table">
       <thead><tr><th>Category</th><th>Count</th><th>Command</th></tr></thead>
       <tbody>
-        <tr><td>Unit tests (all features)</td><td>~6,578</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
+        <tr><td>Unit tests (all features)</td><td>~7,082</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
         <tr><td>Integration tests</td><td>38</td><td><code>cargo test --features full --test '*'</code></td></tr>
         <tr><td>Test harness (CLI)</td><td>~436</td><td><code>cargo run --bin ai_test_harness -- --all</code></td></tr>
         <tr><td>Distributed networking</td><td>115</td><td><code>cargo test --features "full,distributed-network" --lib</code></td></tr>
