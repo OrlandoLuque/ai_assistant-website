@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (209 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (217 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">209 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">217 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -697,7 +697,15 @@ body {
 <a href="#concept-206" class="nav-item" data-num="206">206. Tool Safety Profiles</a>
 <a href="#concept-207" class="nav-item" data-num="207">207. Filesystem Rollback</a>
 <a href="#concept-208" class="nav-item" data-num="208">208. Knowledge Auto-Reindex</a>
-<a href="#concept-209" class="nav-item" data-num="209">209. Storage Context</a></div>
+<a href="#concept-209" class="nav-item" data-num="209">209. Storage Context</a>
+<a href="#concept-210" class="nav-item" data-num="210">210. Config Locking</a>
+<a href="#concept-211" class="nav-item" data-num="211">211. Integrity Verification</a>
+<a href="#concept-212" class="nav-item" data-num="212">212. Learning Freeze</a>
+<a href="#concept-213" class="nav-item" data-num="213">213. Network Egress Policy</a>
+<a href="#concept-214" class="nav-item" data-num="214">214. P2P Trust Levels</a>
+<a href="#concept-215" class="nav-item" data-num="215">215. Semantic Deduplication</a>
+<a href="#concept-216" class="nav-item" data-num="216">216. Distributed RAG</a>
+<a href="#concept-217" class="nav-item" data-num="217">217. ICE NAT Traversal</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4806,6 +4814,54 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">209</span>Unified Storage Context</h3>
 <div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge flag-core">core</span></div></div>
 <div class="card-body"><p>Single object coordinating persistence of all subsystems. Atomic JSON writes for crash safety. DirtyFlags track which subsystems changed; drain_writes() flushes only dirty ones. Called in shutdown handlers and error paths to guarantee no data loss. Inspired by LlamaIndex&rsquo;s StorageContext.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-210" data-num="210" data-title="Configuration Locking" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">210</span>Configuration Locking</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Prevents runtime modification of security-critical settings. Eight lockable sections with audit log and authentication requirements. Prevents agents/plugins from disabling guardrails.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-211" data-num="211" data-title="Integrity Verification" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">211</span>Integrity Verification</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Checksums of persisted files verified on load. Detects tampering by malware, rogue agents, or filesystem manipulation. Combined with ConfigLock for defense-in-depth.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-212" data-num="212" data-title="Learning Freeze" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">212</span>Learning Freeze</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Freeze any of 8 learning subsystems independently. Frozen subsystems serve queries but reject updates. Prevents poisoning during import and ensures deterministic behavior.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-213" data-num="213" data-title="Network Egress Policy" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">213</span>Network Egress Policy</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Controls outbound HTTP requests. Three modes: permissive, restrictive (blocks private IPs), paranoid (default-deny whitelist). Prevents SSRF against cloud metadata and internal services.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-214" data-num="214" data-title="P2P Trust Levels" data-category="Distributed">
+<div class="card-header"><h3><span class="concept-num">214</span>P2P Trust Levels and Message Authorization</h3>
+<div class="card-badges"><span class="badge badge-cat">Distributed</span></div></div>
+<div class="card-body"><p>Peers have trust levels (Probation&rarr;Normal&rarr;Trusted&rarr;Admin) determining allowed message types. Whitelist/blacklist admission control with auto-ban on low reputation.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-215" data-num="215" data-title="Semantic Deduplication" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">215</span>Semantic Deduplication with Nuance Preservation</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span></div></div>
+<div class="card-body"><p>Three-level dedup: identical (&gt;98%) eliminated, similar with nuances (85-98%) merged by LLM preserving differences, distinct (&lt;85%) kept. Batched LLM calls for efficiency.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-216" data-num="216" data-title="Distributed RAG" data-category="Distributed">
+<div class="card-header"><h3><span class="concept-num">216</span>Distributed RAG Knowledge Sharing</h3>
+<div class="card-badges"><span class="badge badge-cat">Distributed</span></div></div>
+<div class="card-body"><p>Documents scoped as Private (local) or Shared (distributed via DHT). Shared chunks replicated with TTL and refresh. Queries merge local + distributed results with deduplication.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-217" data-num="217" data-title="ICE NAT Traversal" data-category="Distributed">
+<div class="card-header"><h3><span class="concept-num">217</span>ICE NAT Traversal</h3>
+<div class="card-badges"><span class="badge badge-cat">Distributed</span></div></div>
+<div class="card-body"><p>Unifies STUN, TURN, and direct probing. Candidates gathered, connectivity checks rank pairs, best route selected. TURN relay fallback for symmetric/carrier-grade NAT.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
