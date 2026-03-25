@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (217 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (219 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">217 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">219 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -705,7 +705,9 @@ body {
 <a href="#concept-214" class="nav-item" data-num="214">214. P2P Trust Levels</a>
 <a href="#concept-215" class="nav-item" data-num="215">215. Semantic Deduplication</a>
 <a href="#concept-216" class="nav-item" data-num="216">216. Distributed RAG</a>
-<a href="#concept-217" class="nav-item" data-num="217">217. ICE NAT Traversal</a></div>
+<a href="#concept-217" class="nav-item" data-num="217">217. ICE NAT Traversal</a>
+<a href="#concept-218" class="nav-item" data-num="218">218. Browser Security Policy</a>
+<a href="#concept-219" class="nav-item" data-num="219">219. Tool Permission Categories</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4862,6 +4864,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">217</span>ICE NAT Traversal</h3>
 <div class="card-badges"><span class="badge badge-cat">Distributed</span></div></div>
 <div class="card-body"><p>Unifies STUN, TURN, and direct probing. Candidates gathered, connectivity checks rank pairs, best route selected. TURN relay fallback for symmetric/carrier-grade NAT.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-218" data-num="218" data-title="Browser Security Policy" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">218</span>Browser Security Policy</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>Granular browser automation control: URL scheme whitelist (blocks file://, data:, javascript://), SSRF protection (private IPs, cloud metadata), JS permission levels (ReadOnly blocks fetch/WebSocket/cookie/clipboard/ServiceWorker). Domain allow/blocklists, form submission approval, download control.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-219" data-num="219" data-title="Tool Permission Categories" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">219</span>Tool Permission Categories</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>14 fine-grained categories beyond read/write: Execute, Delete, Create, Admin, Network, Filesystem, CredentialAccess, UserImpersonation, CostIncurring, DataExfiltration, PersistentStateModification, PrivilegeEscalation. Critical categories require explicit approval.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
