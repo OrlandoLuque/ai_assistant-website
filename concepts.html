@@ -714,7 +714,14 @@ body {
 <a href="#concept-223" class="nav-item" data-num="223">223. Cancellation Propagation</a>
 <a href="#concept-224" class="nav-item" data-num="224">224. Extended RAG Features</a>
 <a href="#concept-225" class="nav-item" data-num="225">225. MCP Task Management</a>
-<a href="#concept-226" class="nav-item" data-num="226">226. MCP Home Automation</a></div>
+<a href="#concept-226" class="nav-item" data-num="226">226. MCP Home Automation</a>
+<a href="#concept-227" class="nav-item" data-num="227">227. Universal Event System</a>
+<a href="#concept-228" class="nav-item" data-num="228">228. MQTT Home Backend</a>
+<a href="#concept-229" class="nav-item" data-num="229">229. OpenHAB Home Backend</a>
+<a href="#concept-230" class="nav-item" data-num="230">230. CoAP Backend (IoT)</a>
+<a href="#concept-231" class="nav-item" data-num="231">231. Custom IoT Device Registry</a>
+<a href="#concept-232" class="nav-item" data-num="232">232. mDNS Auto-Discovery</a>
+<a href="#concept-233" class="nav-item" data-num="233">233. Home Automation Security</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4925,6 +4932,48 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">226</span>MCP Home Automation</h3>
 <div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
 <div class="card-body"><p>10 MCP tools for smart home control via <code>HomeBackend</code> trait: list/get devices, turn on/off/toggle, generic service calls (climate.set_temperature, cover.set_position, etc.), scenes, automations. Primary: <code>HomeAssistantBackend</code> (REST API). Supports all device types: lights, switches, sensors, climate/HVAC, covers, fans, locks, media players. Security: SSRF protection, path traversal prevention, domain/service validation.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-227" data-num="227" data-title="Universal Event System" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">227</span>Universal Event System</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Subscribe to 8 event sources: webhooks (IFTTT/Zapier), RSS feeds, web scraping (price drops), calendar (iCal), MQTT, WebSocket, REST polling, email (IMAP). Each rule defines action (PromptLlm/Notify/Both), filters, and prompt template. Events sanitized against prompt injection. Runaway loop prevention: max 10 auto-prompts/min.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-228" data-num="228" data-title="MQTT Home Backend" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">228</span>MQTT Home Backend</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Direct device control via MQTT broker (Zigbee2MQTT, Tasmota, HA Discovery). DeviceRegistry for auto-discovered devices. TLS-by-default, topic injection prevention, SSRF protection, rate limiting (10 cmd/min/device).</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-229" data-num="229" data-title="OpenHAB Home Backend" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">229</span>OpenHAB Home Backend</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Device control via OpenHAB REST API. Item type mapping (Switch, Dimmer, Number, Contact, Rollershutter). Command mapping (ON/OFF/TOGGLE/UP/DOWN). Scene and automation detection via tags.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-230" data-num="230" data-title="CoAP Backend (IoT)" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">230</span>CoAP Backend (IoT)</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Lightweight UDP protocol (RFC 7252) for constrained IoT devices. GET/PUT with confirmable messages and exponential backoff retransmission. OBSERVE for real-time sensor subscriptions. Separate <code>coap</code> feature flag.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-231" data-num="231" data-title="Custom IoT Device Registry" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">231</span>Custom IoT Device Registry</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Register arbitrary IoT devices at runtime. State sources: MQTT, webhook inbound, REST polling. Command targets: MQTT publish, REST POST. Threshold alerts (Above/Below/Equals/Changed) with configurable cooldown and action.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-232" data-num="232" data-title="mDNS Auto-Discovery" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">232</span>mDNS Auto-Discovery</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>Scans LAN for Home Assistant, OpenHAB, and MQTT brokers via mDNS/Zeroconf. Discovery-only: never auto-connects (mDNS spoofing defense). User must validate before connecting.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-233" data-num="233" data-title="Home Automation Security" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">233</span>Home Automation Security</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>51 attack vectors across 11 iterations. Critical: event prompts never auto-execute tools, runaway loop prevention, privilege escalation defense. SSRF on all URLs, TLS-by-default for MQTT, topic injection prevention, credential protection via SecureString, CommandRateLimiter, ConfigSection::HomeAutomation lockable.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
