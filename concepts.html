@@ -721,7 +721,9 @@ body {
 <a href="#concept-230" class="nav-item" data-num="230">230. CoAP Backend (IoT)</a>
 <a href="#concept-231" class="nav-item" data-num="231">231. Custom IoT Device Registry</a>
 <a href="#concept-232" class="nav-item" data-num="232">232. mDNS Auto-Discovery</a>
-<a href="#concept-233" class="nav-item" data-num="233">233. Home Automation Security</a></div>
+<a href="#concept-233" class="nav-item" data-num="233">233. Home Automation Security</a>
+<a href="#concept-234" class="nav-item" data-num="234">234. Precise Tokenization</a>
+<a href="#concept-235" class="nav-item" data-num="235">235. Topic-Aware RAG Relevance</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4974,6 +4976,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">233</span>Home Automation Security</h3>
 <div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
 <div class="card-body"><p>51 attack vectors across 11 iterations. Critical: event prompts never auto-execute tools, runaway loop prevention, privilege escalation defense. SSRF on all URLs, TLS-by-default for MQTT, topic injection prevention, credential protection via SecureString, CommandRateLimiter, ConfigSection::HomeAutomation lockable.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-234" data-num="234" data-title="Precise Tokenization" data-category="Core">
+<div class="card-header"><h3><span class="concept-num">234</span>Precise Tokenization</h3>
+<div class="card-badges"><span class="badge badge-cat">Core</span></div></div>
+<div class="card-body"><p>Model-aware token counting: <code>TokenPrecision</code> (Approximate ±15% / BPE ±10% / Precise ±1%). Dynamic response reserve (20%/15%/10%). <code>ProviderTokenCounter</code> dispatches per model. Optional <code>precise-tokens</code> feature for tiktoken (OpenAI exact). All budget calculations use model-aware counting.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-235" data-num="235" data-title="Topic-Aware RAG Relevance" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">235</span>Topic-Aware RAG Relevance</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span></div></div>
+<div class="card-body"><p>Solves "keyword-relevant but topic-irrelevant" problem. 5 new features: <code>topic_matching</code> (Jaccard, zero cost), <code>autocut</code> (score gap detection), <code>topic_matching_llm</code> (batched classifier), <code>self_query_filter</code> (extract filters from query), <code>chunk_granular_scoring</code> (ChunkRAG sentence-level). Novel: lightweight pre-filter without LLM.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
