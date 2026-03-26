@@ -950,6 +950,56 @@ session.add_agent("fixer", fixer);</pre>
   </div>
 </section>
 
+<!-- ════════════════════════ HOME AUTOMATION ═══════════════════ -->
+<section id="home-automation">
+  <div class="container">
+    <h2 class="section-title">Home Automation &amp; IoT</h2>
+    <div class="prose">
+      <p>
+        The <code>home-automation</code> feature provides 14 MCP tools for controlling smart home
+        devices across 4 backends, plus a universal event system for subscribing to any data source.
+      </p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table class="doc-table">
+      <thead><tr><th>Backend</th><th>Protocol</th><th>Devices</th><th>Feature Flag</th></tr></thead>
+      <tbody>
+        <tr><td>Home Assistant</td><td>REST API</td><td>All (300+ integrations)</td><td><code>home-automation</code></td></tr>
+        <tr><td>MQTT Direct</td><td>MQTT 3.1.1</td><td>Zigbee2MQTT, Tasmota, HA Discovery</td><td><code>home-automation</code></td></tr>
+        <tr><td>OpenHAB</td><td>REST API</td><td>Switch, Dimmer, Number, Contact, Roller</td><td><code>home-automation</code></td></tr>
+        <tr><td>CoAP</td><td>UDP (RFC 7252)</td><td>Industrial sensors, constrained IoT</td><td><code>coap</code></td></tr>
+        <tr><td>Custom</td><td>MQTT/REST/Webhook</td><td>Any user-defined device</td><td><code>home-automation</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 class="sub-title">Universal Event System</h3>
+    <div class="prose">
+      <p>
+        Subscribe to 8 event sources: <strong>webhooks</strong> (IFTTT, Zapier, GitHub),
+        <strong>RSS/Atom feeds</strong>, <strong>web scraping</strong> (price drops, availability),
+        <strong>calendar</strong> (iCal reminders), <strong>MQTT topics</strong>,
+        <strong>WebSocket</strong> streams, <strong>REST API polling</strong>, and
+        <strong>email</strong> (IMAP). Each subscription defines an action:
+        prompt the LLM, notify the user, or both. Security: prompt injection defense,
+        runaway loop prevention (max 10 auto-prompts/minute), event prompts never execute tool calls.
+      </p>
+    </div>
+
+    <h3 class="sub-title">Security (51 Attack Vectors)</h3>
+    <div class="prose">
+      <p>
+        Comprehensive audit with 51 identified attack vectors across 11 iterations.
+        Key defenses: SSRF on all URLs, MQTT topic injection blocking, TLS-by-default,
+        device command rate limiting (10/min/device, 60/min global),
+        event prompt sanitization, RBAC for device access, ConfigLock for home config,
+        SecureString for all credentials, mDNS discovery-only (never auto-connect).
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ SECURITY ═══════════════════ -->
 <section id="security">
   <div class="container">
