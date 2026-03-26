@@ -712,7 +712,9 @@ body {
 <a href="#concept-221" class="nav-item" data-num="221">221. Quality Gates & Review Triggers</a>
 <a href="#concept-222" class="nav-item" data-num="222">222. Rate Limit Strategy</a>
 <a href="#concept-223" class="nav-item" data-num="223">223. Cancellation Propagation</a>
-<a href="#concept-224" class="nav-item" data-num="224">224. Extended RAG Features</a></div>
+<a href="#concept-224" class="nav-item" data-num="224">224. Extended RAG Features</a>
+<a href="#concept-225" class="nav-item" data-num="225">225. MCP Task Management</a>
+<a href="#concept-226" class="nav-item" data-num="226">226. MCP Home Automation</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4911,6 +4913,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">224</span>Extended RAG Features</h3>
 <div class="card-badges"><span class="badge badge-cat">RAG</span></div></div>
 <div class="card-body"><p>5 new features in <code>RagFeatures</code> (28→33): <code>semantic_dedup_fusion</code> (LLM chunk fusion, from Thorough), <code>distributed_search</code> (DHT peers, from Graph), <code>context_budget_allocation</code> (score-based token distribution, from Enhanced), <code>fresh_context</code> (discard history for knowledge, from Enhanced), <code>emotion_aware</code> (emotion-biased retrieval, from Thorough). All tier presets and the egui widget updated.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-225" data-num="225" data-title="MCP Task Management" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">225</span>MCP Task Management</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>8 MCP tools for personal task management: create, list (filter/sort), get, update, complete, delete (soft-delete with 30-day rollback), undelete, and FTS5 search. SQLite-backed with input validation (title length, tag sanitization, date format). Auto-purge of expired soft-deleted tasks.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-226" data-num="226" data-title="MCP Home Automation" data-category="Tools">
+<div class="card-header"><h3><span class="concept-num">226</span>MCP Home Automation</h3>
+<div class="card-badges"><span class="badge badge-cat">Tools</span></div></div>
+<div class="card-body"><p>10 MCP tools for smart home control via <code>HomeBackend</code> trait: list/get devices, turn on/off/toggle, generic service calls (climate.set_temperature, cover.set_position, etc.), scenes, automations. Primary: <code>HomeAssistantBackend</code> (REST API). Supports all device types: lights, switches, sensors, climate/HVAC, covers, fans, locks, media players. Security: SSRF protection, path traversal prevention, domain/service validation.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
