@@ -709,7 +709,10 @@ body {
 <a href="#concept-218" class="nav-item" data-num="218">218. Browser Security Policy</a>
 <a href="#concept-219" class="nav-item" data-num="219">219. Tool Permission Categories</a>
 <a href="#concept-220" class="nav-item" data-num="220">220. Agent Methodology</a>
-<a href="#concept-221" class="nav-item" data-num="221">221. Quality Gates & Review Triggers</a></div>
+<a href="#concept-221" class="nav-item" data-num="221">221. Quality Gates & Review Triggers</a>
+<a href="#concept-222" class="nav-item" data-num="222">222. Rate Limit Strategy</a>
+<a href="#concept-223" class="nav-item" data-num="223">223. Cancellation Propagation</a>
+<a href="#concept-224" class="nav-item" data-num="224">224. Extended RAG Features</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4890,6 +4893,24 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">221</span>Quality Gates &amp; Review Triggers</h3>
 <div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
 <div class="card-body"><p><code>QualityGate</code> defines pass/fail checks between workflow phases: OutputNotEmpty, ContainsKeywords, NoErrors, CostWithinBudget, TimeWithinLimit, LlmJudge. On failure: Retry, AskUser, Abort, or ContinueWithWarning. <code>ReviewTriggers</code> define 8 conditions that force a review cycle: after N iterations, after milestone, after tool failure, after cost threshold, after time threshold, on user interrupt, and periodic self-check. Wired into <code>AutonomousAgent</code> via <code>should_review_now()</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-222" data-num="222" data-title="Rate Limit Strategy" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">222</span>Rate Limit Strategy</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p><code>RateLimitStrategy</code> controls behavior on HTTP 429: <strong>Retry</strong> (exponential backoff, default), <strong>WaitForReset</strong> (wait for retry-after duration), <strong>AskUser</strong> (callback with Wait/RetryNow/SwitchProvider/Abort), <strong>ImmediateFallback</strong> (skip to next provider). Preset <code>RetryConfig::patient()</code> waits up to 5 minutes. The <code>retry-after</code> header is parsed automatically.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-223" data-num="223" data-title="Cancellation Propagation" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">223</span>Cancellation Propagation</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span></div></div>
+<div class="card-body"><p>End-to-end cancellation across all subsystems. Partial responses saved to conversation with <code>[... response interrupted]</code> for continuation. HTTP endpoints cancel upstream LLM on client disconnect. <code>MapReduceJob.cancel()</code> stops rayon workers between chunks. P2P protocol includes <code>CancelTask</code>/<code>CancelAck</code> messages. <code>DistributedRagConfig</code> adds query timeout and cancellable flag.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-224" data-num="224" data-title="Extended RAG Features" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">224</span>Extended RAG Features</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span></div></div>
+<div class="card-body"><p>5 new features in <code>RagFeatures</code> (28→33): <code>semantic_dedup_fusion</code> (LLM chunk fusion, from Thorough), <code>distributed_search</code> (DHT peers, from Graph), <code>context_budget_allocation</code> (score-based token distribution, from Enhanced), <code>fresh_context</code> (discard history for knowledge, from Enhanced), <code>emotion_aware</code> (emotion-biased retrieval, from Thorough). All tier presets and the egui widget updated.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
