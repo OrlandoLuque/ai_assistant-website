@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4338ca"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="mic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f0ff"/>
+      <stop offset="100%" style="stop-color:#c4b5fd"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#bg)" stroke="#6366f1" stroke-width="2"/>
+  <!-- Microphone body -->
+  <rect x="50" y="28" width="28" height="42" rx="14" fill="url(#mic)"/>
+  <!-- Microphone arc (holder) -->
+  <path d="M 42 58 Q 42 82 64 82 Q 86 82 86 58" fill="none" stroke="#e0e7ff" stroke-width="4" stroke-linecap="round"/>
+  <!-- Stand -->
+  <line x1="64" y1="82" x2="64" y2="96" stroke="#e0e7ff" stroke-width="4" stroke-linecap="round"/>
+  <!-- Base -->
+  <line x1="50" y1="96" x2="78" y2="96" stroke="#e0e7ff" stroke-width="4" stroke-linecap="round"/>
+  <!-- Sound waves (right) -->
+  <path d="M 90 48 Q 96 56 96 64 Q 96 72 90 80" fill="none" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M 96 42 Q 104 54 104 64 Q 104 74 96 86" fill="none" stroke="#a5b4fc" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <!-- AI indicator dot -->
+  <circle cx="64" cy="46" r="4" fill="#22d3ee" opacity="0.9"/>
+</svg>
