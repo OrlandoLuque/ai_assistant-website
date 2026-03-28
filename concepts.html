@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (219 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (241 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">219 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">241 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -723,7 +723,13 @@ body {
 <a href="#concept-232" class="nav-item" data-num="232">232. mDNS Auto-Discovery</a>
 <a href="#concept-233" class="nav-item" data-num="233">233. Home Automation Security</a>
 <a href="#concept-234" class="nav-item" data-num="234">234. Precise Tokenization</a>
-<a href="#concept-235" class="nav-item" data-num="235">235. Topic-Aware RAG Relevance</a></div>
+<a href="#concept-235" class="nav-item" data-num="235">235. Topic-Aware RAG Relevance</a>
+<a href="#concept-236" class="nav-item" data-num="236">236. Audio Effect Chain</a>
+<a href="#concept-237" class="nav-item" data-num="237">237. Voice Cloning</a>
+<a href="#concept-238" class="nav-item" data-num="238">238. Speaker Diarization</a>
+<a href="#concept-239" class="nav-item" data-num="239">239. Audio Model Registry</a>
+<a href="#concept-240" class="nav-item" data-num="240">240. ai_virtual_mic App</a>
+<a href="#concept-241" class="nav-item" data-num="241">241. Agent Voice Mode</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -4988,6 +4994,42 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">235</span>Topic-Aware RAG Relevance</h3>
 <div class="card-badges"><span class="badge badge-cat">RAG</span></div></div>
 <div class="card-body"><p>Solves "keyword-relevant but topic-irrelevant" problem. 5 new features: <code>topic_matching</code> (Jaccard, zero cost), <code>autocut</code> (score gap detection), <code>topic_matching_llm</code> (batched classifier), <code>self_query_filter</code> (extract filters from query), <code>chunk_granular_scoring</code> (ChunkRAG sentence-level). Novel: lightweight pre-filter without LLM.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-236" data-num="236" data-title="Audio Effect Chain" data-category="Audio">
+<div class="card-header"><h3><span class="concept-num">236</span>Audio Effect Chain &amp; Speaker Verification</h3>
+<div class="card-badges"><span class="badge badge-cat">Audio</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p><code>AudioEffectChain</code>: ordered pipeline of effects (NoiseGate, AGC, AEC NLMS, Compressor, Reverb). <code>MfccSpeakerVerifier</code>: pure-Rust MFCC (13 coefficients, ~85% accuracy). <code>SpeakerGate</code>: multi-profile enrollment, owner-only mode.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-237" data-num="237" data-title="Voice Cloning" data-category="Audio">
+<div class="card-header"><h3><span class="concept-num">237</span>Voice Cloning Infrastructure</h3>
+<div class="card-badges"><span class="badge badge-cat">Audio</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p><code>VoiceCloneProvider</code> trait with <code>ElevenLabsCloneProvider</code> (cloud, Instant Voice Clone) and <code>XttsCloneProvider</code> (local Coqui XTTS v2). Enrollment quality assessment (duration, RMS, silence). Fallback chain: cloned &rarr; configured &rarr; default.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-238" data-num="238" data-title="Speaker Diarization" data-category="Audio">
+<div class="card-header"><h3><span class="concept-num">238</span>Speaker Diarization</h3>
+<div class="card-badges"><span class="badge badge-cat">Audio</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p><code>SpeakerDiarizer</code>: auto-detect distinct speakers without enrollment via MFCC cluster comparison with rolling mean. Name learning: <code>extract_self_introduction()</code> detects "soy X" / "I'm X" (10+ patterns EN/ES) and binds diarization labels to real names.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-239" data-num="239" data-title="Audio Model Registry" data-category="Audio">
+<div class="card-header"><h3><span class="concept-num">239</span>Audio Model Registry</h3>
+<div class="card-badges"><span class="badge badge-cat">Audio</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p><code>AudioModelRegistry</code>: catalog of Whisper STT, Piper TTS, XTTS v2 models. Download with progress + SHA-256 verification. Platform-appropriate storage. GUI panel with install/delete/select.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-240" data-num="240" data-title="ai_virtual_mic App" data-category="Application">
+<div class="card-header"><h3><span class="concept-num">240</span>ai_virtual_mic Application</h3>
+<div class="card-badges"><span class="badge badge-cat">Application</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p>Desktop GUI (egui) with 5 modes: Monitor, Passthrough, Transform, Direct, Agent. cpal &rarr; ringbuf &rarr; effects &rarr; pipeline &rarr; output. Discord AI preset, latency calculator, diarization, model catalog, config persistence.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-241" data-num="241" data-title="Agent Voice Mode" data-category="Agents">
+<div class="card-header"><h3><span class="concept-num">241</span>Agent Mode &mdash; Voice AI Participant</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents</span><span class="badge badge-ver">V67</span></div></div>
+<div class="card-body"><p>Voice AI in conversations: configurable name ("Luna"), <code>respond_only_when_addressed</code>, <code>wait_for_silence</code>. Real STT &rarr; mood &rarr; AiAssistant (RAG) &rarr; TTS with mood. Diarization labels resolved to names. 4 connection modes: Local, Remote Node, Direct, Custom.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>

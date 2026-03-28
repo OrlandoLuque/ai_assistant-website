@@ -1126,6 +1126,81 @@ const CATEGORIES = [
       },
     ]
   },
+  {
+    id: 'voice',
+    name: 'Voice & Speaker Tools',
+    icon: '<img class="icon-img" src="favicons_refined/virtual_mic.svg" alt="">',
+    feature: 'audio',
+    featureInFull: false,
+    desc: 'Speaker enrollment, identification, diarization, and voice cloning via MCP. Requires audio feature flag.',
+    items: [
+      { name: 'voice_enroll_speaker', type: 'tool',
+        desc: 'Enroll a speaker from base64-encoded PCM16 audio',
+        params: [
+          { name: 'audio_base64', type: 'string', required: true, desc: 'Base64-encoded PCM16 audio at 16kHz' },
+          { name: 'name', type: 'string', required: true, desc: 'Speaker name' },
+          { name: 'is_owner', type: 'boolean', required: false, desc: 'Whether this is the device owner' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Enrolls speaker into SpeakerGate. Returns speaker_id. Requires at least 1s of clear speech.'
+      },
+      { name: 'voice_identify_speaker', type: 'tool',
+        desc: 'Identify a speaker from an audio sample',
+        params: [
+          { name: 'audio_base64', type: 'string', required: true, desc: 'Base64-encoded PCM16 audio at 16kHz' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Returns identification result: Identified (name, confidence), Unknown, or NoProfiles.'
+      },
+      { name: 'voice_list_speakers', type: 'tool',
+        desc: 'List all enrolled speaker profiles',
+        params: [],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Returns array of {name, is_owner, embeddings_count} for each enrolled speaker.'
+      },
+      { name: 'voice_remove_speaker', type: 'tool',
+        desc: 'Remove a speaker profile by name',
+        params: [
+          { name: 'name', type: 'string', required: true, desc: 'Speaker name to remove' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Destructive: removes the profile permanently.'
+      },
+      { name: 'voice_gate_config', type: 'tool',
+        desc: 'Configure SpeakerGate: only_owner and allow_unknown modes',
+        params: [
+          { name: 'only_owner', type: 'boolean', required: false, desc: 'Only allow owner to pass' },
+          { name: 'allow_unknown', type: 'boolean', required: false, desc: 'Allow unrecognized speakers' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Controls gate behavior for audio filtering by speaker identity.'
+      },
+      { name: 'voice_clone_create', type: 'tool',
+        desc: 'Create a cloned voice from audio samples (ElevenLabs/XTTS)',
+        params: [
+          { name: 'audio_base64', type: 'string', required: true, desc: 'Base64-encoded PCM16 audio (min 3s)' },
+          { name: 'name', type: 'string', required: true, desc: 'Name for the cloned voice' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Creates a voice clone via configured provider. Returns voice_id for synthesis.'
+      },
+      { name: 'voice_clone_synthesize', type: 'tool',
+        desc: 'Synthesize speech using a cloned voice',
+        params: [
+          { name: 'text', type: 'string', required: true, desc: 'Text to synthesize' },
+          { name: 'voice_id', type: 'string', required: true, desc: 'Cloned voice ID from voice_clone_create' }
+        ],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Returns base64-encoded audio of the synthesized speech.'
+      },
+      { name: 'voice_clone_list', type: 'tool',
+        desc: 'List all cloned voice profiles',
+        params: [],
+        module: 'mcp_voice_tools.rs',
+        notes: 'Returns array of {voice_id, name, provider, quality_score}.'
+      },
+    ]
+  },
 ];
 
 // ============================================================
