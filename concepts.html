@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (243 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (245 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">243 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">245 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -731,7 +731,9 @@ body {
 <a href="#concept-240" class="nav-item" data-num="240">240. ai_virtual_mic App</a>
 <a href="#concept-241" class="nav-item" data-num="241">241. Agent Voice Mode</a>
 <a href="#concept-242" class="nav-item" data-num="242">242. LLM Enhancement Infra</a>
-<a href="#concept-243" class="nav-item" data-num="243">243. LLM-Enhanced Pipeline</a></div>
+<a href="#concept-243" class="nav-item" data-num="243">243. LLM-Enhanced Pipeline</a>
+<a href="#concept-244" class="nav-item" data-num="244">244. LLM Caching & Progressive</a>
+<a href="#concept-245" class="nav-item" data-num="245">245. Multilingual Heuristics</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -5044,6 +5046,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">243</span>LLM-Enhanced Pipeline (17 Modules)</h3>
 <div class="card-badges"><span class="badge badge-cat">Pipeline</span><span class="badge badge-ver">V68</span></div></div>
 <div class="card-body"><p>17 modules with optional LLM: compaction (summarize), entities (NER), intent, query expansion, quality scoring, topics, model selection, guardrails (defense-in-depth), RAG tier, chunking, KG enrichment, procedure evolution, speaker intent, home automation, task decomposition, sentiment trend, multi-agent consensus. All default OFF, zero cost unless enabled.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-244" data-num="244" data-title="LLM Caching & Progressive Enhancement" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">244</span>LLM Response Caching &amp; Progressive Enhancement</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge badge-ver">V69</span></div></div>
+<div class="card-body"><p><code>CachedLlmEnhancer</code> wraps any enhancer with FNV-1a hash cache + TTL. <code>should_enhance()</code> skips LLM if heuristic confidence &ge; 0.85. <code>batch_generate()</code> combines N prompts in 1 call. <code>EnhancementCostTracker</code> records per-module usage.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-245" data-num="245" data-title="Multilingual Heuristics" data-category="NLP">
+<div class="card-header"><h3><span class="concept-num">245</span>Multilingual Heuristics &amp; Enhanced Emotion</h3>
+<div class="card-badges"><span class="badge badge-cat">NLP</span><span class="badge badge-ver">V69</span></div></div>
+<div class="card-body"><p>Spanish support for entities, intents, emotions. Enhanced emotion: !!! boost, ??? boost, CAPS detection, 12-emoji map, negation handling. Opinion + Chitchat intents populated. Embedding-based topic clustering without LLM.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
