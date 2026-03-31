@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (245 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (247 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">245 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">247 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -733,7 +733,9 @@ body {
 <a href="#concept-242" class="nav-item" data-num="242">242. LLM Enhancement Infra</a>
 <a href="#concept-243" class="nav-item" data-num="243">243. LLM-Enhanced Pipeline</a>
 <a href="#concept-244" class="nav-item" data-num="244">244. LLM Caching & Progressive</a>
-<a href="#concept-245" class="nav-item" data-num="245">245. Multilingual Heuristics</a></div>
+<a href="#concept-245" class="nav-item" data-num="245">245. Multilingual Heuristics</a>
+<a href="#concept-246" class="nav-item" data-num="246">246. Setup Module</a>
+<a href="#concept-247" class="nav-item" data-num="247">247. ai_setup CLI & GUI</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -5058,6 +5060,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">245</span>Multilingual Heuristics &amp; Enhanced Emotion</h3>
 <div class="card-badges"><span class="badge badge-cat">NLP</span><span class="badge badge-ver">V69</span></div></div>
 <div class="card-body"><p>Spanish support for entities, intents, emotions. Enhanced emotion: !!! boost, ??? boost, CAPS detection, 12-emoji map, negation handling. Opinion + Chitchat intents populated. Embedding-based topic clustering without LLM.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-246" data-num="246" data-title="Setup Module" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">246</span>Setup &amp; Management Module</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge badge-ver">V70</span></div></div>
+<div class="card-body"><p>5 sub-modules: <code>prereq</code> (Butler-based detection + platform install commands), <code>config_ops</code> (show/get/set/diff/export/import with hot-reload classification), <code>docker_ops</code> (CLI wrapper for build/compose/status/logs), <code>node_manager</code> (start/stop with PID + health), <code>backup</code> (gzip archive with path traversal protection).</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-247" data-num="247" data-title="ai_setup CLI & GUI" data-category="Application">
+<div class="card-header"><h3><span class="concept-num">247</span>ai_setup CLI &amp; GUI</h3>
+<div class="card-badges"><span class="badge badge-cat">Application</span><span class="badge badge-ver">V70</span></div></div>
+<div class="card-body"><p>CLI: 14 subcommands (init wizard, check, validate, config ops, Docker mgmt, backup/restore, install prerequisites). GUI: egui 6-tab desktop app (Setup/Config/Nodes/Docker/Models/Backup). Both share <code>src/setup/</code> module. Init wizard uses Butler scan for auto-config.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
