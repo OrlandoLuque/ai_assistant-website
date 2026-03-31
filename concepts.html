@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (241 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (243 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">241 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">243 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -729,7 +729,9 @@ body {
 <a href="#concept-238" class="nav-item" data-num="238">238. Speaker Diarization</a>
 <a href="#concept-239" class="nav-item" data-num="239">239. Audio Model Registry</a>
 <a href="#concept-240" class="nav-item" data-num="240">240. ai_virtual_mic App</a>
-<a href="#concept-241" class="nav-item" data-num="241">241. Agent Voice Mode</a></div>
+<a href="#concept-241" class="nav-item" data-num="241">241. Agent Voice Mode</a>
+<a href="#concept-242" class="nav-item" data-num="242">242. LLM Enhancement Infra</a>
+<a href="#concept-243" class="nav-item" data-num="243">243. LLM-Enhanced Pipeline</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -5030,6 +5032,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">241</span>Agent Mode &mdash; Voice AI Participant</h3>
 <div class="card-badges"><span class="badge badge-cat">Agents</span><span class="badge badge-ver">V67</span></div></div>
 <div class="card-body"><p>Voice AI in conversations: configurable name ("Luna"), <code>respond_only_when_addressed</code>, <code>wait_for_silence</code>. Real STT &rarr; mood &rarr; AiAssistant (RAG) &rarr; TTS with mood. Diarization labels resolved to names. 4 connection modes: Local, Remote Node, Direct, Custom.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-242" data-num="242" data-title="LLM Enhancement Infrastructure" data-category="Infrastructure">
+<div class="card-header"><h3><span class="concept-num">242</span>LLM Enhancement Infrastructure</h3>
+<div class="card-badges"><span class="badge badge-cat">Infrastructure</span><span class="badge badge-ver">V68</span></div></div>
+<div class="card-body"><p><code>LlmEnhancer</code> trait: uniform interface for optional LLM calls across 17 modules. Pattern: heuristic baseline (always works) + optional LLM enhancement via <code>build_*_prompt()</code> + <code>parse_*_response()</code>. <code>prompt_wrap()</code> security. <code>MockLlm</code> + <code>FailingMockLlm</code> for testing.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-243" data-num="243" data-title="LLM-Enhanced Pipeline" data-category="Pipeline">
+<div class="card-header"><h3><span class="concept-num">243</span>LLM-Enhanced Pipeline (17 Modules)</h3>
+<div class="card-badges"><span class="badge badge-cat">Pipeline</span><span class="badge badge-ver">V68</span></div></div>
+<div class="card-body"><p>17 modules with optional LLM: compaction (summarize), entities (NER), intent, query expansion, quality scoring, topics, model selection, guardrails (defense-in-depth), RAG tier, chunking, KG enrichment, procedure evolution, speaker intent, home automation, task decomposition, sentiment trend, multi-agent consensus. All default OFF, zero cost unless enabled.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
