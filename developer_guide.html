@@ -302,7 +302,7 @@ footer {
     <h2 class="section-title">Architecture Overview</h2>
     <div class="prose">
       <p>
-        ai_assistant is a <strong>single Rust crate</strong> (~386K LOC, 338 source files) organized as a modular
+        ai_assistant is a <strong>single Rust crate</strong> (~410K LOC, 360 source files) organized as a modular
         library with feature-flag-based compilation. The central type is <code>AiAssistant</code>, which provides
         a unified interface to all subsystems.
       </p>
@@ -423,7 +423,7 @@ footer {
 
     <div class="info-box">
       <strong>Full module list:</strong> See the <a href="feature_matrix.html">Feature Matrix</a> for the complete list
-      of 338 source files with their feature gates and test counts.
+      of 360 source files with their feature gates and test counts.
     </div>
   </div>
 </section>
@@ -1048,7 +1048,7 @@ session.add_agent("fixer", fixer);</pre>
 
     <div class="info-box success">
       <strong>Audit results:</strong> 5 Critical + 12 High + 14 Medium findings &mdash; all resolved.
-      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 338 files.
+      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 360 files.
     </div>
   </div>
 </section>
@@ -1355,14 +1355,14 @@ pub trait LlmProvider {
   <div class="container">
     <h2 class="section-title">Testing</h2>
     <div class="prose">
-      <p>The project maintains 7,198 tests across multiple layers:</p>
+      <p>The project maintains 7,469 tests across multiple layers:</p>
     </div>
 
     <div style="overflow-x: auto;">
     <table class="doc-table">
       <thead><tr><th>Category</th><th>Count</th><th>Command</th></tr></thead>
       <tbody>
-        <tr><td>Unit tests (all features)</td><td>~7,198</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
+        <tr><td>Unit tests (all features)</td><td>~7,469</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
         <tr><td>Integration tests</td><td>38</td><td><code>cargo test --features full --test '*'</code></td></tr>
         <tr><td>Test harness (CLI)</td><td>~436</td><td><code>cargo run --bin ai_test_harness -- --all</code></td></tr>
         <tr><td>Distributed networking</td><td>115</td><td><code>cargo test --features "full,distributed-network" --lib</code></td></tr>
@@ -1682,6 +1682,13 @@ cargo run --bin ai_test_harness --features full -- --category=precision --filter
         <li>Auto-list tracking in LLM responses (numbered, bulleted, lettered)</li>
         <li>Reference resolver integrated into <code>send_message()</code> with <code>--- RESOLVED REFERENCES ---</code> injection</li>
       </ul>
+    </div>
+
+    <div class="info-box">
+      <strong>ContextBudgetConfig:</strong> Fine-tune how FreshContext allocates token budget across knowledge sources.
+      Configure per-source limits (RAG, memory, knowledge graph, procedures), set priority ordering, and define
+      overflow behavior (truncate vs. drop). Accessible via <code>AiAssistant::set_context_budget_config()</code>
+      or the <code>context_budget</code> field in TOML/JSON config files.
     </div>
 
     <h3 class="sub-title">Fallback Chains</h3>
