@@ -289,7 +289,7 @@ footer {
         <tr><td>3</td><td>ai_assistant_server</td><td>Server</td><td class="feat">full</td><td>HTTP + MCP server</td></tr>
         <tr><td>4</td><td>ai_assistant_standalone</td><td>Server</td><td class="feat">full, server-axum</td><td>Single-binary service (HTTP only)</td></tr>
         <tr><td>5</td><td>ai_cluster_node</td><td>Server</td><td class="feat">full, server-cluster</td><td>Distributed cluster node (QUIC mesh)</td></tr>
-        <tr><td>6</td><td>ai_proxy</td><td>Server</td><td class="feat">server-axum</td><td>Reverse-proxy in front of providers</td></tr>
+        <tr><td>6</td><td>ai_proxy</td><td>Server</td><td class="feat">server-axum (+security)</td><td>Production API gateway &mdash; rate limit, PII, toxicity, attack, budget, cache, audit (V78)</td></tr>
         <tr><td>7</td><td>ai_gui</td><td>GUI</td><td class="feat">gui</td><td>egui desktop chat</td></tr>
         <tr><td>8</td><td>ai_gui-pro</td><td>GUI</td><td class="feat">gui-pro</td><td>Extended desktop GUI (power users)</td></tr>
         <tr><td>9</td><td>ai_setup_gui</td><td>GUI</td><td class="feat">gui</td><td>Graphical setup wizard</td></tr>
@@ -344,8 +344,35 @@ cargo run --bin ai_cli --features full -- cost report --snapshot cost.json</pre>
       <h4>ai_cluster_node</h4>
       <p>Spawns a distributed node that joins a QUIC mesh for cluster-wide RAG and agent federation. Requires <code>full</code>, <code>server-cluster</code>.</p>
 
-      <h4>ai_proxy</h4>
-      <p>Lightweight reverse proxy that sits in front of upstream providers (Ollama, OpenAI, Anthropic, &hellip;) for auditing, rate limiting, and budget enforcement.</p>
+      <h4>ai_proxy <span class="badge">gateway hardened in V78</span></h4>
+      <p>Production API gateway that sits in front of upstream providers (Ollama, OpenAI, Anthropic, &hellip;). Two feature profiles:</p>
+      <ul>
+        <li><code>--features server-axum</code> &mdash; router + round-robin LB + session affinity + health checks + optional Bearer auth (V77 parity).</li>
+        <li><code>--features "server-axum,security"</code> &mdash; full gateway with guardrails.</li>
+      </ul>
+      <p><strong>Gateway middlewares</strong> (feature-gated by <code>security</code>):</p>
+      <ul>
+        <li>Per-key <strong>rate limiter</strong> (sliding window, <code>key:sha256(bearer) &rarr; sess &rarr; ip</code>)</li>
+        <li><strong>PII input/output</strong> filter via <code>guardrail_pipeline::PiiGuard</code></li>
+        <li><strong>Toxicity</strong> filter (input + output) via <code>ToxicityGuard</code></li>
+        <li><strong>Prompt-injection / attack</strong> guard via <code>AttackGuard</code></li>
+        <li><strong>Budget enforcement</strong> via <code>DefaultCostMiddleware</code> (returns 429 <code>X-Reason: budget-exceeded</code>)</li>
+        <li><strong>LRU response cache</strong> &mdash; PII-safe: tainted responses are never stored</li>
+        <li><strong>Append-only JSONL audit log</strong> with size + count rotation, symlink-safe open (<code>O_NOFOLLOW</code> on Unix, pre-check on Windows); API keys only logged as SHA-256 hash</li>
+      </ul>
+      <p><strong>Configuration</strong> via TOML file + CLI overrides:</p>
+<pre><code># TOML config file (recommended)
+ai_proxy --config examples/ai_proxy.toml
+
+# Dry-run: validate and print the merged config
+ai_proxy --config examples/ai_proxy.toml --dry-run
+
+# CLI overrides still work and win over the file
+ai_proxy --config ai_proxy.toml --port 9000 --disable-cache</code></pre>
+      <p><strong>New CLI flags (V78):</strong> <code>--config</code>, <code>--audit-log</code>, <code>--audit-max-files</code>, <code>--enable-pii-redaction</code>, <code>--disable-cache</code>, <code>--cost-snapshot</code>. <code>--dry-run</code> now validates the config and prints the merged middleware flag table.</p>
+      <p><strong>Deprecated:</strong> <code>--api-key</code> CLI flag (still works, warns &mdash; prefer <code>AI_PROXY_API_KEY</code> env var, which wins over both the config file and <code>--api-key</code>).</p>
+      <p><strong>Response headers:</strong> <code>X-Request-Id</code> on every response, <code>X-Cache: HIT|MISS</code> on <code>/v1/chat/completions</code>, <code>X-Reason</code> on 429 / 503.</p>
+      <p>Streaming (<code>stream: true</code>) and <code>/v1/embeddings</code> are passed through unmodified in V78 &mdash; full guardrail wiring over SSE/WebSocket is deferred to V80. See <code>docs/IMPROVEMENTS_V78.md</code> for the full design and the list of 13 security mitigations.</p>
     </div>
   </div>
 </section>

@@ -364,25 +364,45 @@ cargo run --bin ai_jobs --features "full,scheduler" -- run jobs.json</pre>
   <div class="container">
     <div class="usecase">
       <span class="usecase-number">4</span>
-      <h3>Private team assistant behind TLS + RBAC</h3>
+      <h3>Private team assistant behind TLS + RBAC (with gateway guardrails)</h3>
       <div class="meta">
         <span class="tag bin">ai_assistant_server</span>
+        <span class="tag bin">ai_proxy</span>
         <span class="tag feat">full</span>
         <span class="tag feat">server-axum</span>
+        <span class="tag feat">security</span>
       </div>
-      <p class="problem"><strong>Problem.</strong> You want a self-hosted HTTPS chat endpoint that multiple colleagues can use, with role-based access control.</p>
+      <p class="problem"><strong>Problem.</strong> You want a self-hosted HTTPS chat endpoint that multiple colleagues can use, with role-based access control <strong>and</strong> server-side PII redaction, budget enforcement, and audit logging &mdash; without bolting middlewares on top of every deployment.</p>
       <span class="code-label bash">bash</span>
-<pre># 1. Launch the server with TLS + RBAC
+<pre># 1. Launch the upstream server(s) — normal RBAC + TLS as before
 cargo run --bin ai_assistant_server --features full -- \
-    --bind 0.0.0.0:8443 \
+    --bind 127.0.0.1:8090 \
     --tls-cert /etc/ssl/ai_assistant.crt \
     --tls-key  /etc/ssl/ai_assistant.key \
     --rbac-config /etc/ai_assistant/rbac.toml
 
-# 2. Test from a client
-curl -H "Authorization: Bearer $TOKEN" \
-     --data '{"prompt":"Summarize yesterday PRs"}' \
-     https://ai.internal.corp/api/chat</pre>
+# 2. Put ai_proxy in front with the full middleware stack.
+#    See examples/ai_proxy.toml for every knob.
+export AI_PROXY_API_KEY="$(cat /etc/ai_proxy/key)"
+cargo run --bin ai_proxy --features "server-axum,security" -- \
+    --config /etc/ai_proxy/ai_proxy.toml
+
+# 3. Test from a client — every request is rate-limited, PII-redacted,
+#    budget-checked, and audited.
+curl -H "Authorization: Bearer $AI_PROXY_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"model":"gpt-4","messages":[{"role":"user","content":"hi"}]}' \
+     https://ai.internal.corp/v1/chat/completions</pre>
+      <p><strong>What the V78 gateway adds over a plain <code>ai_assistant_server</code>:</strong></p>
+      <ul>
+        <li><strong>PII redaction</strong> on <code>messages[].content</code> (roles user/system) before requests reach the upstream</li>
+        <li><strong>Budget enforcement</strong> &mdash; over-cap requests get 429 with <code>X-Reason: budget-exceeded</code></li>
+        <li><strong>LRU response cache</strong>, PII-safe (tainted responses never stored)</li>
+        <li><strong>Append-only JSONL audit log</strong> with rotation and symlink-safe open; API keys only logged as SHA-256 hash</li>
+        <li><strong>Per-key rate limiting</strong> with <code>key:/sess:/ip:</code> bucket priority</li>
+        <li><code>X-Request-Id</code> and <code>X-Cache</code> headers on every response</li>
+      </ul>
+      <p>See <code>docs/IMPROVEMENTS_V78.md</code> for the full design and the list of 13 security mitigations.</p>
     </div>
   </div>
 </section>
