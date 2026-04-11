@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/quickstart.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Cases &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 680px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 780px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+
+/* ── Use case card ────────────────────────────────────────── */
+.usecase {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.usecase:hover { border-color: var(--accent); }
+.usecase-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.95rem; margin-right: 12px; flex-shrink: 0;
+  vertical-align: middle;
+}
+.usecase h3 {
+  font-size: 1.12rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.usecase .meta {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 12px;
+}
+.usecase .tag {
+  font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+  background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border);
+  font-family: 'Cascadia Code', monospace;
+}
+.usecase .tag.bin { color: var(--accent); border-color: var(--accent); }
+.usecase .tag.feat { color: var(--green); border-color: var(--green); }
+.usecase .tag.new { color: #fff; background: var(--green); border-color: var(--green); font-family: 'Segoe UI', sans-serif; }
+.usecase p { font-size: 0.9rem; color: var(--text-dim); margin-top: 10px; line-height: 1.65; }
+.usecase .problem { font-size: 0.92rem; color: var(--text); margin: 12px 0 4px; }
+.usecase .problem strong { color: var(--text-bright); }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .usecase { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#overview">Overview</a>
+    <a href="#case1">Local RAG</a>
+    <a href="#case2">CI Cost Gate</a>
+    <a href="#case3">Scheduled Jobs</a>
+    <a href="#case4">Team Server</a>
+    <a href="#case5">Cluster</a>
+    <a href="#case6">Voice</a>
+    <a href="#case7">Butler</a>
+    <a href="#case8">MCP</a>
+    <a href="binaries.html">Binaries</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Use Cases</h1>
+    <p class="tagline">
+      Eight end-to-end scenarios that wire multiple binaries from the
+      <a href="binaries.html">catalogue</a> into real-world workflows &mdash;
+      from a local RAG chat to a distributed cluster, from CI cost gates to
+      scheduled daily briefings.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ OVERVIEW ════════════════════ -->
+<section id="overview">
+  <div class="container">
+    <h2 class="section-title">Overview</h2>
+    <p class="section-sub">
+      Each scenario lists the <strong>problem</strong>, the <strong>binaries</strong>
+      involved, a copy-pasteable <strong>recipe</strong>, and the
+      <strong>required features</strong>. For the authoritative per-binary reference,
+      see the <a href="binaries.html">Binary Catalogue</a> or
+      <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/USE_CASES.md"><code>docs/USE_CASES.md</code></a>.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 1 ══════════════════════ -->
+<section id="case1">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">1</span>
+      <h3>Local chat with RAG over personal documents</h3>
+      <div class="meta">
+        <span class="tag bin">ai_gui</span>
+        <span class="tag bin">kpkg_tool</span>
+        <span class="tag feat">gui</span>
+        <span class="tag feat">rag</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want a desktop chat UI that answers questions using your own PDFs, markdown notes, and source files &mdash; 100&#37; locally, no data leaves the machine.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Package your docs into an encrypted .kpkg bundle
+cargo run --bin kpkg_tool --features rag -- create \
+    --input ./my_notes \
+    --output ./knowledge.kpkg \
+    --password "$KPKG_PASS"
+
+# 2. Launch the desktop GUI pointing at the bundle
+cargo run --bin ai_gui --features "gui,rag" -- \
+    --rag-bundle ./knowledge.kpkg</pre>
+      <div class="info-box success">
+        <strong>Security.</strong> <code>.kpkg</code> files are AES-256-GCM encrypted; the password is never persisted and must be supplied at launch.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 2 ══════════════════════ -->
+<section id="case2">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">2</span>
+      <h3>Cost gate in CI/CD</h3>
+      <div class="meta">
+        <span class="tag bin">ai_cli cost</span>
+        <span class="tag feat">full</span>
+        <span class="tag new">NEW V77</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want your CI pipeline to <strong>fail</strong> if the projected monthly cost of an LLM-powered feature branch exceeds a budget.</p>
+      <span class="code-label bash">bash</span>
+<pre># In your CI step, after running the feature-branch workload:
+cargo run --bin ai_cli --features full -- \
+    cost budget --snapshot "$CI_ARTIFACT/cost_snapshot.json"
+
+# Exit non-zero if projected_monthly_usd > limit
+if ! ai_cli cost budget --snapshot "$CI_ARTIFACT/cost_snapshot.json"; then
+    echo "::error::Budget exceeded on feature branch"
+    exit 1
+fi</pre>
+      <div class="info-box success">
+        <strong>Security.</strong> Snapshot paths are canonicalized before use. The JSON schema rejects <code>NaN</code> / <code>Infinity</code> (validated in V75). CSV export sanitizes formula-injection payloads.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 3 ══════════════════════ -->
+<section id="case3">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">3</span>
+      <h3>Scheduled summaries of feeds or logs</h3>
+      <div class="meta">
+        <span class="tag bin">ai_jobs</span>
+        <span class="tag feat">scheduler</span>
+        <span class="tag feat">full (embedded)</span>
+        <span class="tag new">NEW V77</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want a cron-like daemon that runs LLM-backed summarization jobs on a schedule &mdash; for example, a weekday morning briefing generated from your internal knowledge base.</p>
+      <span class="code-label json">json</span>
+<pre>{
+  "assistant": {
+    "provider": "ollama",
+    "model": "llama3",
+    "system_prompt": "You are a concise reporting assistant."
+  },
+  "jobs": [
+    {
+      "id": "rag_daily_brief",
+      "name": "RAG-enhanced daily brief",
+      "cron": "0 8 * * 1-5",
+      "runtime": "embedded",
+      "session_id": "daily_brief",
+      "type": "agent",
+      "task": "Generate today's daily brief using the team knowledge base"
+    },
+    {
+      "id": "health_check",
+      "name": "Quick health ping",
+      "cron": "*/5 * * * *",
+      "type": "shell",
+      "command": "curl -sf http://localhost:8080/health"
+    }
+  ]
+}</pre>
+      <span class="code-label bash">bash</span>
+<pre># Validate the manifest
+cargo run --bin ai_jobs --features scheduler -- validate jobs.json
+
+# Run the daemon (with embedded mode for RAG-enhanced jobs)
+cargo run --bin ai_jobs --features "full,scheduler" -- run jobs.json</pre>
+      <div class="info-box success">
+        <strong>Security.</strong> <code>MAX_JOBS = 1000</code>, per-job <code>timeout_secs</code> default 60s, <code>std::panic::catch_unwind</code> protects the daemon, API key env vars are referenced by <strong>name</strong> (never logged).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 4 ══════════════════════ -->
+<section id="case4">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">4</span>
+      <h3>Private team assistant behind TLS + RBAC</h3>
+      <div class="meta">
+        <span class="tag bin">ai_assistant_server</span>
+        <span class="tag feat">full</span>
+        <span class="tag feat">server-axum</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want a self-hosted HTTPS chat endpoint that multiple colleagues can use, with role-based access control.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Launch the server with TLS + RBAC
+cargo run --bin ai_assistant_server --features full -- \
+    --bind 0.0.0.0:8443 \
+    --tls-cert /etc/ssl/ai_assistant.crt \
+    --tls-key  /etc/ssl/ai_assistant.key \
+    --rbac-config /etc/ai_assistant/rbac.toml
+
+# 2. Test from a client
+curl -H "Authorization: Bearer $TOKEN" \
+     --data '{"prompt":"Summarize yesterday PRs"}' \
+     https://ai.internal.corp/api/chat</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 5 ══════════════════════ -->
+<section id="case5">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">5</span>
+      <h3>Distributed RAG cluster</h3>
+      <div class="meta">
+        <span class="tag bin">ai_cluster_node</span>
+        <span class="tag feat">full</span>
+        <span class="tag feat">server-cluster</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You have more documents than fit in a single node's RAM and want to fan out RAG retrieval across a QUIC-meshed cluster.</p>
+      <span class="code-label bash">bash</span>
+<pre># Bootstrap peer
+cargo run --bin ai_cluster_node --features "full,server-cluster" -- \
+    --bind 0.0.0.0:4433 --bootstrap
+
+# Follower nodes
+cargo run --bin ai_cluster_node --features "full,server-cluster" -- \
+    --bind 0.0.0.0:4433 \
+    --peers quic://bootstrap.internal:4433</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 6 ══════════════════════ -->
+<section id="case6">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">6</span>
+      <h3>Voice assistant with emotional detection</h3>
+      <div class="meta">
+        <span class="tag bin">ai_virtual_mic</span>
+        <span class="tag bin">ai_gui</span>
+        <span class="tag feat">audio-io</span>
+        <span class="tag feat">gui</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want a voice assistant that detects tone (including snoring) from the microphone stream, pipes it through STT, and speaks the reply back.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Start the virtual mic with the snore detector chain
+cargo run --bin ai_virtual_mic --features audio-io -- \
+    --mode transform \
+    --effects snore_detector,voice_anonymizer
+
+# 2. Point your chat client at the virtual device
+cargo run --bin ai_gui --features "gui,audio-io" -- \
+    --audio-input ai_virtual_mic</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 7 ══════════════════════ -->
+<section id="case7">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">7</span>
+      <h3>Butler auto-configuration on a new machine</h3>
+      <div class="meta">
+        <span class="tag bin">ai_cli butler</span>
+        <span class="tag bin">ai_setup</span>
+        <span class="tag feat">full</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You just cloned the repo on a new laptop and want the assistant to detect your environment, available providers, and GPU, then recommend a starter config.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Interactive butler advisor
+cargo run --bin ai_cli --features full -- butler
+
+# 2. Apply the recommendations via the terminal setup wizard
+cargo run --bin ai_setup --features full</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 8 ══════════════════════ -->
+<section id="case8">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">8</span>
+      <h3>MCP server as a Claude Desktop backend</h3>
+      <div class="meta">
+        <span class="tag bin">ai_assistant_server</span>
+        <span class="tag feat">full</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You want Claude Desktop (or any other MCP client) to talk to your local <code>ai_assistant</code> instance &mdash; exposing 40+ MCP tools, RAG, and memory.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Launch the MCP endpoint over stdio
+cargo run --bin ai_assistant_server --features full -- \
+    --mcp-transport stdio
+
+# 2. In Claude Desktop, add to claude_desktop_config.json:
+#    {
+#      "mcpServers": {
+#        "ai_assistant": {
+#          "command": "/path/to/target/release/ai_assistant_server",
+#          "args": ["--mcp-transport", "stdio"]
+#        }
+#      }
+#    }</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Orlando Jos&eacute; Luque Moraira (Lander). Licensed under PolyForm Noncommercial 1.0.0.
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>

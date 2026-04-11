@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ai-assistant.runawaybrains.com/">
 <meta property="og:title" content="ai_assistant — One Binary. Complete AI Infrastructure.">
-<meta property="og:description" content="A single Rust crate that replaces 5-10 Python/Node services. LLM orchestration, RAG, multi-agent, security, streaming, and distributed computing. 410K+ LoC, 7,469 tests, 60 feature flags.">
+<meta property="og:description" content="A single Rust crate that replaces 5-10 Python/Node services. LLM orchestration, RAG, multi-agent, security, streaming, and distributed computing. 410K+ LoC, 7,492 tests, 60 feature flags.">
 <meta property="og:image" content="https://ai-assistant.runawaybrains.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -354,14 +354,14 @@ footer {
     <div class="stat-row">
       <div class="stat-badge"><span class="num">410K+</span><span class="label">Lines of Rust</span></div>
       <div class="stat-badge"><span class="num">360</span><span class="label">Source Files</span></div>
-      <div class="stat-badge"><span class="num">7,469</span><span class="label">Tests</span></div>
+      <div class="stat-badge"><span class="num">7,492</span><span class="label">Tests</span></div>
       <div class="stat-badge"><span class="num">60</span><span class="label">Feature Flags</span></div>
       <div class="stat-badge"><span class="num">51</span><span class="label">Examples</span></div>
       <div class="stat-badge"><span class="num">42</span><span class="label">Benchmarks</span></div>
     </div>
     <div class="experimental-banner">
       <strong>Status: Experimental</strong> &mdash;
-      This project compiles and passes 7,469+ tests, but it has not been validated in production
+      This project compiles and passes 7,492+ tests, but it has not been validated in production
       or real-world usage. Developed iteratively with AI assistance, some modules may be incomplete,
       loosely wired, or tested only at a surface level. A comprehensive review is pending.
       Use at your own risk.
@@ -693,6 +693,60 @@ curl -X POST http://localhost:8090/v1/chat/completions \
   </div>
 </section>
 
+<!-- ════════════════════════ TOKEN EFFICIENCY ═══════════ -->
+<section id="token-efficiency">
+  <div class="container">
+    <h2 class="section-title">Token Efficiency &amp; Cost Control</h2>
+    <p class="section-sub">
+      LLM API costs can spiral quickly. ai_assistant provides built-in tools to track, limit,
+      and reduce token spend &mdash; without external SaaS dependencies.
+    </p>
+    <div class="card-grid">
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><rect x="4" y="8" width="24" height="16" rx="3" fill="none" stroke="#10b981" stroke-width="1.5"/><line x1="10" y1="14" x2="10" y2="20" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="12" x2="16" y2="20" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="16" x2="22" y2="20" stroke="#10b981" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>ContextBudgetAllocator</h3>
+        <p>Smart allocation distributes token budgets across system prompt, conversation history,
+           RAG context, and tool results. Reduces input tokens significantly by compressing or
+           trimming lower-priority segments before they reach the LLM.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><rect x="5" y="5" width="22" height="22" rx="3" fill="none" stroke="#3b82f6" stroke-width="1.5"/><path d="M10 20 L14 14 L18 17 L24 10" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="14" r="1.2" fill="#3b82f6"/><circle cx="18" cy="17" r="1.2" fill="#3b82f6"/><circle cx="24" cy="10" r="1.2" fill="#3b82f6"/></svg></span>
+        <h3>CostDashboard</h3>
+        <p>Real-time cost tracking with daily and monthly budget limits. View per-provider,
+           per-model, and per-session spend at a glance. Get alerts before hitting budget
+           thresholds.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><path d="M16 4 L26 9 L26 17 Q26 25 16 29 Q6 25 6 17 L6 9 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/><line x1="11" y1="16" x2="21" y2="16" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>CostMiddleware</h3>
+        <p>Pre-request gating that estimates the cost of each LLM call before it executes.
+           Blocks expensive requests that would exceed configured limits, preventing
+           unexpected bills.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><rect x="8" y="6" width="16" height="20" rx="2" fill="none" stroke="#8b5cf6" stroke-width="1.5"/><circle cx="16" cy="16" r="5" fill="none" stroke="#8b5cf6" stroke-width="1.5"/><line x1="16" y1="13" x2="16" y2="16" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="16" x2="18.5" y2="17.5" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        <h3>Local LLM Fallback</h3>
+        <p>Route requests to Ollama, LM Studio, Kobold, or LocalAI for zero-cost inference.
+           Use cloud providers only when local models cannot handle the task, keeping API
+           spend to a minimum.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><path d="M6 24 L12 10 L18 18 L24 6 L28 14" fill="none" stroke="#ec4899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="1.5" fill="#ec4899"/><circle cx="24" cy="6" r="1.5" fill="#ec4899"/></svg></span>
+        <h3>StrategyBandit</h3>
+        <p>ML-powered multi-armed bandit that learns which context compression strategy
+           works best for each use case. Automatically selects the most efficient approach
+           over time, reducing token usage without sacrificing quality.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ DEPLOYMENT ═════════════════ -->
 <section id="deployment">
   <div class="container">
@@ -881,6 +935,22 @@ curl -X POST http://localhost:8090/v1/chat/completions \
         <div class="info">
           <h4>Technical Overview</h4>
           <p>Architecture deep-dive: module map, feature flag structure, provider system, and extension points.</p>
+        </div>
+      </a>
+
+      <a class="link-card" href="binaries.html" style="border-color: var(--accent);">
+        <img class="icon-img" src="favicons/quickstart.svg" alt="">
+        <div class="info">
+          <h4>Binary Catalogue</h4>
+          <p>Twenty first-class executables: CLI, servers, GUIs, the new <code>ai_jobs</code> daemon, virtual mic/cam, and the test harness.</p>
+        </div>
+      </a>
+
+      <a class="link-card" href="use_cases.html" style="border-color: var(--pink);">
+        <img class="icon-img" src="favicons/quickstart.svg" alt="">
+        <div class="info">
+          <h4>Use Cases</h4>
+          <p>End-to-end scenarios that wire multiple binaries together: CI cost gates, scheduled briefs, voice assistants, and more.</p>
         </div>
       </a>
 

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (262 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (268 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">262 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">268 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -745,7 +745,13 @@ body {
 <a href="#concept-259" class="nav-item" data-num="259">259. ScoringMode</a>
 <a href="#concept-260" class="nav-item" data-num="260">260. StrategyBandit Wiring</a>
 <a href="#concept-261" class="nav-item" data-num="261">261. Graph Context Item</a>
-<a href="#concept-262" class="nav-item" data-num="262">262. LlmEnhancerCompressor</a></div>
+<a href="#concept-262" class="nav-item" data-num="262">262. LlmEnhancerCompressor</a>
+<a href="#concept-263" class="nav-item" data-num="263">263. CostDashboard Auto-Wiring</a>
+<a href="#concept-264" class="nav-item" data-num="264">264. AllocationResult Savings Metrics</a>
+<a href="#concept-265" class="nav-item" data-num="265">265. CostDashboardSnapshot</a>
+<a href="#concept-266" class="nav-item" data-num="266">266. Cost Projection API</a>
+<a href="#concept-267" class="nav-item" data-num="267">267. validate_cost Defense</a>
+<a href="#concept-268" class="nav-item" data-num="268">268. MCP Cost Tools</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -5142,6 +5148,42 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">262</span>LlmEnhancerCompressor &mdash; Trait Bridge</h3>
 <div class="card-badges"><span class="badge badge-cat">Context</span><span class="badge badge-ver">V74</span></div></div>
 <div class="card-body"><p>Adapter bridging <code>LlmEnhancer</code> trait to <code>LlmCompressor</code> trait for context compression. Falls back to <code>extractive_compress()</code> on LLM failure.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-263" data-num="263" data-title="CostDashboard Auto-Wiring in LLM Pipeline" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">263</span>CostDashboard Auto-Wiring in LLM Pipeline</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p><code>CostDashboard</code> auto-records every successful LLM call in <code>AiAssistant::poll_response()</code>. Enabled via <code>with_cost_config(CostAwareConfig)</code> builder. Tracks per-model, per-request-type cost without manual instrumentation.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-264" data-num="264" data-title="AllocationResult Savings Metrics" data-category="Context">
+<div class="card-header"><h3><span class="concept-num">264</span>AllocationResult Savings Metrics</h3>
+<div class="card-badges"><span class="badge badge-cat">Context</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p><code>AllocationResult</code> now exposes <code>total_candidate_tokens</code>, <code>tokens_saved</code>, <code>compression_ratio</code>, and <code>estimated_cost_saved(input_cost_per_million)</code>. Quantifies how many tokens the <code>ContextBudgetAllocator</code> removed before hitting the LLM.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-265" data-num="265" data-title="CostDashboardSnapshot" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">265</span>CostDashboardSnapshot &mdash; Schema-Versioned Persistence</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p>Serializable snapshot of the cost dashboard with <code>schema_version: u32</code> field for forward compatibility. <code>snapshot()</code> and <code>restore()</code> methods re-validate all cost values on load, rejecting NaN/Infinity/negative tampering.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-266" data-num="266" data-title="Cost Projection API" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">266</span>Cost Projection API</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p><code>projected_daily_cost()</code>, <code>projected_monthly_cost()</code>, and <code>projected_cost_for_requests(n)</code> extrapolate session rates into future spend estimates. <code>requests_per_hour()</code> helper feeds the projections. Values appear in <code>format_report()</code> under a "Projections" section.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-267" data-num="267" data-title="validate_cost" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">267</span>validate_cost &mdash; NaN/Infinity Budget Bypass Defense</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p>Private helper <code>validate_cost(f64) -&gt; f64</code> rejects NaN, Infinity, and negative costs (returns 0.0) and clamps to <code>MAX_COST = 1_000_000.0</code>. Applied on every <code>record()</code> call and on <code>restore()</code> to close the "NaN &gt; limit == false" budget-bypass attack vector.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-268" data-num="268" data-title="MCP Cost Tools" data-category="MCP">
+<div class="card-header"><h3><span class="concept-num">268</span>MCP Cost Tools (Read-Only, Aggregated)</h3>
+<div class="card-badges"><span class="badge badge-cat">MCP</span><span class="badge badge-ver">V75</span></div></div>
+<div class="card-body"><p><code>register_cost_tools()</code> exposes 3 MCP tools &mdash; <code>cost_report</code>, <code>cost_budget_status</code>, <code>cost_savings_summary</code> &mdash; all annotated with <code>read_only_hint: true</code>. Returns only aggregated data (never per-request entries) to prevent leaking spending patterns to untrusted clients.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>

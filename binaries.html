@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/quickstart.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Catalogue &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 680px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 780px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+
+/* ── Binary table ─────────────────────────────────────────── */
+.bin-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); margin: 16px 0 24px;
+}
+.bin-table th, .bin-table td {
+  padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.bin-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+  white-space: nowrap;
+}
+.bin-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); white-space: nowrap; }
+.bin-table td.feat { font-family: 'Cascadia Code', monospace; font-size: 0.78rem; color: var(--text-dim); }
+.bin-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.bin-table tbody tr:last-child td { border-bottom: none; }
+.bin-table tr.new td { background: rgba(16, 185, 129, 0.08); }
+.bin-table tr.new td:first-child::after {
+  content: "NEW V77"; display: inline-block; margin-left: 8px;
+  background: var(--green); color: #fff; font-size: 0.62rem;
+  font-weight: 700; padding: 1px 7px; border-radius: 4px; letter-spacing: 0.05em;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ── Group card ───────────────────────────────────────────── */
+.group {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px 28px; margin: 20px 0;
+}
+.group h3 {
+  font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 10px;
+}
+.group h4 {
+  font-size: 0.95rem; font-weight: 700; color: var(--text-bright);
+  margin: 18px 0 6px; font-family: 'Cascadia Code', monospace;
+}
+.group h4 .tag-new {
+  display: inline-block; margin-left: 8px; background: var(--green); color: #fff;
+  font-size: 0.62rem; font-weight: 700; padding: 1px 7px; border-radius: 4px;
+  letter-spacing: 0.05em; font-family: 'Segoe UI', sans-serif; vertical-align: middle;
+}
+.group p { font-size: 0.88rem; color: var(--text-dim); margin-top: 6px; }
+.group ul { font-size: 0.86rem; color: var(--text-dim); margin: 8px 0 8px 20px; }
+.group ul li { margin-bottom: 4px; }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .group { padding: 18px; }
+  .bin-table { font-size: 0.76rem; }
+  .bin-table th, .bin-table td { padding: 6px 8px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="#overview">Overview</a>
+    <a href="#summary">Summary</a>
+    <a href="#cli">CLI</a>
+    <a href="#servers">Servers</a>
+    <a href="#guis">GUIs</a>
+    <a href="#ops">Setup &amp; Ops</a>
+    <a href="#media">Media</a>
+    <a href="#knowledge">Knowledge</a>
+    <a href="#testing">Testing</a>
+    <a href="use_cases.html">Use Cases</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Binary Catalogue</h1>
+    <p class="tagline">
+      Twenty first-class executables shipped by <code>ai_assistant</code>&nbsp;&mdash;
+      from a single-binary chat server to a cron-like job daemon, a virtual microphone,
+      and a distributed log aggregator. Every binary is gated behind feature flags,
+      so you only build what you need.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ OVERVIEW ═════════════════════ -->
+<section id="overview">
+  <div class="container">
+    <h2 class="section-title">Overview</h2>
+    <p class="section-sub">
+      This page is the authoritative inventory of every binary in the crate and is kept
+      in lockstep with <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md"><code>docs/BINARIES.md</code></a>.
+      Total binaries: <strong>20</strong> (as of V77 &mdash; added <code>ai_jobs</code>).
+    </p>
+
+    <div class="info-box">
+      Binaries declare <code>required-features</code> in <code>Cargo.toml</code>. If your
+      build does not satisfy them, Cargo silently skips the binary &mdash; no compile error.
+      This keeps the minimal build tiny while letting power users opt into the full catalogue.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SUMMARY ══════════════════════ -->
+<section id="summary">
+  <div class="container">
+    <h2 class="section-title">Summary Table</h2>
+    <table class="bin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Binary</th>
+          <th>Group</th>
+          <th>required-features</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>ai_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Non-interactive CLI (scan, query, bench, test, cost, &hellip;)</td></tr>
+        <tr><td>2</td><td>ai_assistant_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Interactive REPL (chat-style)</td></tr>
+        <tr><td>3</td><td>ai_assistant_server</td><td>Server</td><td class="feat">full</td><td>HTTP + MCP server</td></tr>
+        <tr><td>4</td><td>ai_assistant_standalone</td><td>Server</td><td class="feat">full, server-axum</td><td>Single-binary service (HTTP only)</td></tr>
+        <tr><td>5</td><td>ai_cluster_node</td><td>Server</td><td class="feat">full, server-cluster</td><td>Distributed cluster node (QUIC mesh)</td></tr>
+        <tr><td>6</td><td>ai_proxy</td><td>Server</td><td class="feat">server-axum</td><td>Reverse-proxy in front of providers</td></tr>
+        <tr><td>7</td><td>ai_gui</td><td>GUI</td><td class="feat">gui</td><td>egui desktop chat</td></tr>
+        <tr><td>8</td><td>ai_gui-pro</td><td>GUI</td><td class="feat">gui-pro</td><td>Extended desktop GUI (power users)</td></tr>
+        <tr><td>9</td><td>ai_setup_gui</td><td>GUI</td><td class="feat">gui</td><td>Graphical setup wizard</td></tr>
+        <tr><td>10</td><td>ai_logs_gui</td><td>GUI</td><td class="feat">gui-logs</td><td>Log viewer desktop app</td></tr>
+        <tr><td>11</td><td>ai_setup</td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Terminal setup wizard</td></tr>
+        <tr><td>12</td><td>ai_optimize</td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Configuration optimizer</td></tr>
+        <tr class="new"><td>13</td><td>ai_jobs</td><td>Setup &amp; Ops</td><td class="feat">scheduler</td><td>Cron-like job daemon (delegated + embedded runtime)</td></tr>
+        <tr><td>14</td><td>ai_logs</td><td>Setup &amp; Ops</td><td class="feat">distributed-network</td><td>Distributed log aggregator</td></tr>
+        <tr><td>15</td><td>ai_virtual_mic</td><td>Media</td><td class="feat">audio-io</td><td>Virtual microphone (voice effects)</td></tr>
+        <tr><td>16</td><td>ai_virtual_mic_host</td><td>Media</td><td class="feat">audio</td><td>Host driver for the virtual mic</td></tr>
+        <tr><td>17</td><td>ai_virtual_cam</td><td>Media</td><td class="feat">video-io</td><td>Virtual camera (video effects)</td></tr>
+        <tr><td>18</td><td>kpkg_tool</td><td>Knowledge</td><td class="feat">rag</td><td>Encrypted knowledge package tool (.kpkg)</td></tr>
+        <tr><td>19</td><td>ai_gpu_share</td><td>GPU Sharing</td><td class="feat">full, gpu-sharing</td><td>GPU sharing network CLI</td></tr>
+        <tr><td>20</td><td>ai_test_harness</td><td>Testing</td><td class="feat">full, browser</td><td>Multi-category test harness</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════ CLI ═══════════════════════════ -->
+<section id="cli">
+  <div class="container">
+    <h2 class="section-title">CLI &amp; REPL</h2>
+
+    <div class="group">
+      <h4>ai_cli</h4>
+      <p>Non-interactive CLI for scripting, CI/CD, and one-shot queries. Ships with ten subcommands including the new V77 <code>cost</code> subcommand.</p>
+      <span class="code-label bash">bash</span>
+<pre>cargo run --bin ai_cli -- scan
+cargo run --bin ai_cli -- query "What is Rust?"
+cargo run --bin ai_cli --features full -- cost report --snapshot cost.json</pre>
+      <p>Subcommands: <code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code>, <code>help</code>.</p>
+
+      <h4>ai_assistant_cli</h4>
+      <p>Interactive terminal REPL. Good for exploring models without leaving the terminal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SERVERS ══════════════════════ -->
+<section id="servers">
+  <div class="container">
+    <h2 class="section-title">Servers</h2>
+
+    <div class="group">
+      <h4>ai_assistant_server</h4>
+      <p>Reference HTTP + MCP server. Exposes chat, RAG, tools, and 40+ MCP tools. Requires <code>full</code>.</p>
+
+      <h4>ai_assistant_standalone</h4>
+      <p>A trimmed-down, single-binary service focused on HTTP. Good default for <code>systemd</code>-managed deployments.</p>
+
+      <h4>ai_cluster_node</h4>
+      <p>Spawns a distributed node that joins a QUIC mesh for cluster-wide RAG and agent federation. Requires <code>full</code>, <code>server-cluster</code>.</p>
+
+      <h4>ai_proxy</h4>
+      <p>Lightweight reverse proxy that sits in front of upstream providers (Ollama, OpenAI, Anthropic, &hellip;) for auditing, rate limiting, and budget enforcement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ GUIs ═════════════════════════ -->
+<section id="guis">
+  <div class="container">
+    <h2 class="section-title">GUIs</h2>
+
+    <div class="group">
+      <h4>ai_gui</h4>
+      <p>egui-based desktop chat for everyday interactive use.</p>
+
+      <h4>ai_gui-pro</h4>
+      <p>Power-user variant with prompt templates, multi-session tabs, and RAG inspection.</p>
+
+      <h4>ai_setup_gui</h4>
+      <p>Graphical setup wizard &mdash; guides through provider detection, API keys, and smoke tests.</p>
+
+      <h4>ai_logs_gui</h4>
+      <p>Desktop log viewer for distributed <code>ai_logs</code> streams.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SETUP & OPS ══════════════════ -->
+<section id="ops">
+  <div class="container">
+    <h2 class="section-title">Setup &amp; Ops</h2>
+
+    <div class="group">
+      <h4>ai_setup</h4>
+      <p>Terminal-based setup wizard. Covers provider detection, API key storage, and optional feature enablement.</p>
+
+      <h4>ai_optimize</h4>
+      <p>Configuration optimizer &mdash; analyzes a running deployment and suggests changes to squeeze more performance out of the current hardware/provider mix.</p>
+
+      <h4>ai_jobs <span class="tag-new">NEW V77</span></h4>
+      <p>Cron-like job daemon. Loads a JSON manifest, validates cron expressions, and either lists, dry-runs, or executes the jobs on a 30-second tick.</p>
+      <span class="code-label bash">bash</span>
+<pre>cargo run --bin ai_jobs --features scheduler -- validate examples/jobs.json
+cargo run --bin ai_jobs --features scheduler -- list      examples/jobs.json
+cargo run --bin ai_jobs --features scheduler -- dry-run   examples/jobs.json --minutes 120
+cargo run --bin ai_jobs --features scheduler -- run       examples/jobs.json</pre>
+
+      <p>Two runtime modes per job:</p>
+      <ul>
+        <li><code>delegated</code> <em>(default)</em> &mdash; shells out to <code>ai_cli</code> or any shell command. Always available.</li>
+        <li><code>embedded</code> &mdash; runs an in-process <code>AiAssistant</code> with access to RAG, tools, memory, and session state. Gated behind <code>--features full</code>.</li>
+      </ul>
+
+      <p>The manifest is <strong>JSON</strong> (parallel schema to the core <code>scheduler</code> module, so no new Serde dependencies are pulled into the core crate):</p>
+      <span class="code-label json">json</span>
+<pre>{
+  "assistant": {
+    "provider": "ollama",
+    "model": "llama3",
+    "system_prompt": "You are a concise reporting assistant."
+  },
+  "jobs": [
+    {
+      "id": "backup_nightly",
+      "name": "Nightly backup",
+      "cron": "0 3 * * *",
+      "type": "shell",
+      "command": "tar czf /backups/$(date +%F).tgz /data"
+    },
+    {
+      "id": "rag_daily_brief",
+      "name": "RAG-enhanced daily brief",
+      "cron": "0 8 * * 1-5",
+      "runtime": "embedded",
+      "session_id": "daily_brief",
+      "type": "agent",
+      "task": "Generate today's daily brief using the team knowledge base"
+    }
+  ]
+}</pre>
+
+      <div class="info-box success">
+        <strong>Security properties:</strong>
+        <ul>
+          <li>Per-job <code>timeout_secs</code> (default 60s) enforced via <code>Child::kill()</code>.</li>
+          <li><code>MAX_JOBS = 1000</code> hard cap at load time.</li>
+          <li><code>std::panic::catch_unwind</code> protects the daemon from job panics.</li>
+          <li>Unknown providers downgrade to Ollama with a warning.</li>
+          <li>API key env vars are referenced by <strong>name</strong> &mdash; never logged.</li>
+          <li>Manifest path is canonicalized and logged before use.</li>
+        </ul>
+      </div>
+
+      <h4>ai_logs</h4>
+      <p>Collector / aggregator for distributed logs produced by other binaries.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ MEDIA ════════════════════════ -->
+<section id="media">
+  <div class="container">
+    <h2 class="section-title">Media</h2>
+
+    <div class="group">
+      <h4>ai_virtual_mic</h4>
+      <p>Virtual microphone with configurable voice effects (anonymizer, distorter, snore detector, pitch shifter, &hellip;).</p>
+
+      <h4>ai_virtual_mic_host</h4>
+      <p>Host driver that other processes can use to send audio to the virtual mic.</p>
+
+      <h4>ai_virtual_cam</h4>
+      <p>Virtual camera with 19 video effects (blur, edge detect, sepia, &hellip;) and a small egui control panel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ KNOWLEDGE ═══════════════════ -->
+<section id="knowledge">
+  <div class="container">
+    <h2 class="section-title">Knowledge</h2>
+
+    <div class="group">
+      <h4>kpkg_tool</h4>
+      <p>Create, read, and verify encrypted knowledge packages (<code>.kpkg</code>) used by the RAG pipeline. AES-256-GCM with optional signatures.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ GPU SHARING ═════════════════ -->
+<section id="gpu-sharing">
+  <div class="container">
+    <h2 class="section-title">GPU Sharing</h2>
+
+    <div class="group">
+      <h4>ai_gpu_share</h4>
+      <p>CLI for participating in an <code>ai_assistant</code> GPU sharing network (credit system, dynamic pricing, collusion detection). Requires <code>full</code> + <code>gpu-sharing</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TESTING ═════════════════════ -->
+<section id="testing">
+  <div class="container">
+    <h2 class="section-title">Testing</h2>
+
+    <div class="group">
+      <h4>ai_test_harness</h4>
+      <p>Multi-category test harness used by CI and by local developers to run feature-gated integration tests without having to remember every <code>cargo test</code> incantation. Requires <code>full</code> + <code>browser</code> (for crawl policy tests).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ SEE ALSO ════════════════════ -->
+<section id="see-also">
+  <div class="container">
+    <h2 class="section-title">See Also</h2>
+    <ul style="list-style:none; padding:0; font-size:0.92rem;">
+      <li style="margin-bottom:10px;"><a href="use_cases.html">&rarr; Use Cases</a> &mdash; end-to-end scenarios that wire several binaries together.</li>
+      <li style="margin-bottom:10px;"><a href="quickstart.html">&rarr; Quickstart</a> &mdash; from zero to a working assistant in 30 seconds.</li>
+      <li style="margin-bottom:10px;"><a href="feature_matrix.html">&rarr; Feature Matrix</a> &mdash; which <code>Cargo.toml</code> features enable which modules.</li>
+      <li style="margin-bottom:10px;"><a href="concepts.html">&rarr; Concepts</a> &mdash; the big picture architecture.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Orlando Jos&eacute; Luque Moraira (Lander). Licensed under PolyForm Noncommercial 1.0.0.
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>
