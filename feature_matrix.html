@@ -1123,7 +1123,7 @@ const GROUPS = [
       { tech: 'Cloud Providers (AWS/GCP/Azure/Gemini)', flag: null,
         cells: { basic_chat:'available', rag_chat:'available', kpkg:'available', multi_user:'available', agent_tools:'available', autonomous:'available', multi_agent:'available', http_server:'available', distributed:'available', p2p:'available' },
         typical: ['basic_chat','rag_chat','multi_user','agent_tools','autonomous','multi_agent','http_server'],
-        notes: 'Bedrock, Vertex AI, Azure OpenAI, Gemini. Siempre compilado, se puede usar desde cualquier contexto. AiProvider variants: Gemini, Bedrock{region}.' },
+        notes: 'Bedrock, Vertex AI, Azure OpenAI, Gemini. Siempre compilado, se puede usar desde cualquier contexto. AiProvider variants: Gemini, Bedrock{region}, AzureOpenAI{endpoint,deployment}.' },
       { tech: 'Async Providers', flag: 'async-runtime',
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['http_server','autonomous','multi_agent'],

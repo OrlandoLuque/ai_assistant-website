@@ -216,6 +216,7 @@ footer {
     <a href="#case6">Voice</a>
     <a href="#case7">Butler</a>
     <a href="#case8">MCP</a>
+    <a href="#case9">FFI / Games</a>
     <a href="binaries.html">Binaries</a>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
   </div>
@@ -226,10 +227,11 @@ footer {
   <div class="container">
     <h1>Use Cases</h1>
     <p class="tagline">
-      Eight end-to-end scenarios that wire multiple binaries from the
+      Nine end-to-end scenarios that wire multiple binaries from the
       <a href="binaries.html">catalogue</a> into real-world workflows &mdash;
       from a local RAG chat to a distributed cluster, from CI cost gates to
-      scheduled daily briefings.
+      scheduled daily briefings, and (new in V79) native C FFI for
+      game-engine NPCs.
     </p>
   </div>
 </section>
@@ -373,6 +375,7 @@ cargo run --bin ai_jobs --features "full,scheduler" -- run jobs.json</pre>
         <span class="tag feat">security</span>
       </div>
       <p class="problem"><strong>Problem.</strong> You want a self-hosted HTTPS chat endpoint that multiple colleagues can use, with role-based access control <strong>and</strong> server-side PII redaction, budget enforcement, and audit logging &mdash; without bolting middlewares on top of every deployment.</p>
+      <p><strong>Azure OpenAI note (V80).</strong> The upstream server supports Azure OpenAI as a first-class provider. Set <code>provider = "azure_openai"</code> in your config, or pass <code>AZURE_OPENAI_API_KEY</code>, <code>AZURE_OPENAI_ENDPOINT</code>, and <code>AZURE_OPENAI_DEPLOYMENT</code> as environment variables. Azure uses the <code>api-key</code> header (not Bearer) and the Azure-specific deployment URL automatically.</p>
       <span class="code-label bash">bash</span>
 <pre># 1. Launch the upstream server(s) — normal RBAC + TLS as before
 cargo run --bin ai_assistant_server --features full -- \
@@ -505,6 +508,91 @@ cargo run --bin ai_assistant_server --features full -- \
 #        }
 #      }
 #    }</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 9 (V79 NEW) ════════════ -->
+<section id="case9">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">9</span>
+      <h3>NPCs in games via FFI <span style="font-size:0.6em; color:var(--accent);">(new in V79)</span></h3>
+      <div class="meta">
+        <span class="tag bin">libai_assistant</span>
+        <span class="tag feat">ffi</span>
+        <span class="tag feat">rag (optional)</span>
+        <span class="tag feat">full (optional)</span>
+      </div>
+      <p class="problem">
+        <strong>Problem.</strong> You're building a game in Unity, Unreal,
+        or Bevy and want non-player characters to drive their dialogue and
+        behavior through an LLM &mdash; with no out-of-process HTTP requests,
+        no tokio runtime in the engine, and a native C ABI the game engine
+        can consume directly.
+      </p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Build the shared library + auto-generated C header.
+cargo build --features ffi --profile release-fast
+
+# 2. Drop the artifacts into your engine's native plugin folder:
+#    - include/ai_assistant.h
+#    - target/release-fast/libai_assistant.{so,dylib,dll}
+#    - target/release-fast/libai_assistant.a (Unreal static link)
+
+# 3. Build the minimal C NPC driver
+gcc -I include examples/ffi_c/main.c \
+    -L target/release-fast -lai_assistant \
+    -o /tmp/npc_demo
+LD_LIBRARY_PATH=target/release-fast /tmp/npc_demo</pre>
+      <span class="code-label">C</span>
+<pre>#include "ai_assistant.h"
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    AiAssistantHandle *h = ai_assistant_new_with_prompt(
+        "You are a gruff blacksmith. Reply in &lt;= 30 words, in-character.");
+    ai_assistant_set_provider(h, AI_PROVIDER_KIND_OLLAMA);
+    ai_assistant_set_model(h, "llama3.2:3b");
+
+    char *reply = NULL;
+    int rc = ai_assistant_send_message(
+        h, "A stranger asks about your wares.", &amp;reply);
+    if (rc == 0) {
+        printf("Blacksmith: %s\n", reply);
+        ai_assistant_free_string(reply);
+    }
+    ai_assistant_free(h);
+    return rc;
+}</pre>
+      <div class="info-box">
+        <strong>Required features.</strong> <code>ffi</code> (minimum, zero-dep).
+        Add <code>rag</code> to auto-build RAG context from an indexed world-lore
+        corpus. Add <code>full</code> to unlock every provider and tool the
+        library supports.
+      </div>
+      <div class="info-box success">
+        <strong>Security.</strong>
+        <ul>
+          <li>Each <code>AiAssistantHandle *</code> is <strong>single-threaded</strong>
+              (SQLite-style). Pin each NPC's handle to a dedicated worker thread.</li>
+          <li>Every entry point has a <code>catch_unwind</code> panic boundary
+              &mdash; panics never escape into the game engine.</li>
+          <li>Strings from <code>ai_assistant_send_message</code> must be freed via
+              <code>ai_assistant_free_string</code>, <strong>not</strong>
+              <code>free(3)</code>.</li>
+          <li>Build with <code>--profile release-fast</code>, not <code>release</code>
+              &mdash; the default <code>release</code> profile uses
+              <code>panic = "abort"</code> and makes <code>catch_unwind</code> a
+              no-op. <code>build.rs</code> warns when it detects the dangerous combo.</li>
+        </ul>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim);">
+        See also: <code>docs/FFI.md</code> (full API reference),
+        <code>examples/ffi_c/</code> (complete C example with per-platform build
+        instructions), <a href="binaries.html#library-artifacts">Library Artifacts</a>
+        on the Binaries page for per-platform library naming.
+      </p>
     </div>
   </div>
 </section>
