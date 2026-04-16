@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons_refined/microscope.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academic Research Guide &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0c1322;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f1f5f9;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
+  --surface: #ffffff;
+  --surface2: #e2e8f0;
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --cyan: #0891b2;
+  --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.code-label.yaml { background: #06b6d4; }
+
+/* ── Step cards ───────────────────────────────────────────── */
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.9rem; margin-right: 12px; flex-shrink: 0;
+}
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Tables ───────────────────────────────────────────────── */
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+.tag-yes { color: var(--green); font-weight: 700; }
+.tag-no { color: var(--text-dim); }
+
+/* ── Pipeline diagram ────────────────────────────────────── */
+.pipeline {
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+  justify-content: center; margin: 24px 0;
+}
+.pipeline-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px; text-align: center; min-width: 110px;
+}
+.pipeline-step strong { display: block; font-size: 0.82rem; color: var(--text-bright); }
+.pipeline-step span { font-size: 0.74rem; color: var(--text-dim); }
+.pipeline-arrow { font-size: 1.2rem; color: var(--accent); padding: 0 6px; flex-shrink: 0; }
+
+/* ── Highlight box (for anti-hallucination prominence) ──── */
+.highlight-box {
+  border: 2px solid var(--green); background: var(--surface);
+  border-radius: 14px; padding: 28px; margin: 24px 0;
+}
+.highlight-box h3 { color: var(--green); font-size: 1.1rem; margin-bottom: 12px; }
+.highlight-box p, .highlight-box ul { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
+.highlight-box ul { padding-left: 20px; margin-top: 10px; }
+.highlight-box ul li { margin-bottom: 6px; }
+
+/* ── Next steps grid ──────────────────────────────────────── */
+.next-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px; margin-top: 24px;
+}
+.next-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; display: flex; gap: 14px; align-items: center;
+  transition: border-color .2s, transform .15s; text-decoration: none;
+}
+.next-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+.next-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+.next-card .info p { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+  .next-grid { grid-template-columns: 1fr; }
+  .pipeline { flex-direction: column; gap: 8px; }
+  .pipeline-arrow { transform: rotate(90deg); }
+  .highlight-box { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="use_cases.html">Use Cases</a>
+    <a href="guide_anti_hallucination.html">Anti-Hallucination</a>
+    <a href="guide_research.html" style="color:var(--text-bright)">Research</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Academic Research Guide</h1>
+    <p class="tagline">
+      Search arXiv, Semantic Scholar, and PubMed from a single command.
+      Generate verified literature reviews with BibTeX export &mdash; automatically.
+      No equivalent in LangChain or LlamaIndex.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ 1. WHY THIS MATTERS ═══════ -->
+<section id="why">
+  <div class="container">
+    <h2 class="section-title">1. Why This Matters</h2>
+    <p class="section-sub">
+      Academic research is one of the most time-consuming tasks in any knowledge-intensive workflow.
+      ai_assistant eliminates the manual labour of searching, cross-referencing, and citing.
+    </p>
+
+    <div class="step">
+      <span class="step-number">?</span>
+      <h3>The Problem</h3>
+      <ul>
+        <li>Researchers waste hours manually searching multiple databases (arXiv, Google Scholar, PubMed) with different interfaces and query syntaxes</li>
+        <li>Cross-referencing results across providers requires tedious copy-paste and deduplication</li>
+        <li>Citation management is error-prone &mdash; wrong formats, missing fields, broken BibTeX entries</li>
+        <li>AI-generated literature reviews are prone to hallucination: fabricated papers, invented authors, wrong dates</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <span class="step-number">!</span>
+      <h3>The Solution</h3>
+      <ul>
+        <li><strong>Unified search</strong> &mdash; one command, three academic databases, deduplicated results</li>
+        <li><strong>Automated review</strong> &mdash; structured literature reviews in four synthesis styles</li>
+        <li><strong>Verified output</strong> &mdash; FaithfulnessScorer + CoVe verify every claim against source papers</li>
+        <li><strong>BibTeX export</strong> &mdash; sanitized, standards-compliant citations in five bibliography formats</li>
+      </ul>
+    </div>
+
+    <div class="info-box" style="border-left-color: var(--pink);">
+      <strong>No equivalent in LangChain or LlamaIndex.</strong>
+      Neither framework provides built-in academic search, literature review generation, BibTeX management,
+      or anti-hallucination verification for research output. ai_assistant is the only framework that
+      combines all four in a single pipeline.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 2. QUICK START ══════════════ -->
+<section id="quickstart">
+  <div class="container">
+    <h2 class="section-title">2. Quick Start</h2>
+    <p class="section-sub">
+      Three steps to go from a research question to a verified, cited literature review.
+    </p>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Search Across Providers</h3>
+      <p>Search arXiv, Semantic Scholar, and PubMed in a single command. Export results as BibTeX.</p>
+      <span class="code-label bash">terminal</span>
+      <pre>ai_cli research "transformer attention mechanisms" \
+  --providers arxiv,scholar,pubmed \
+  --max-results 30 \
+  --bibtex --output results.bib</pre>
+      <p>This searches all three providers, deduplicates results, and writes a <code>.bib</code> file with sanitized entries.</p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>Generate a Literature Review</h3>
+      <p>Synthesize search results into a structured review with proper citations.</p>
+      <span class="code-label bash">terminal</span>
+      <pre>ai_cli research "RLHF alignment techniques" \
+  --review --depth standard \
+  --format systematic --bibtex</pre>
+      <p>Generates a systematic literature review covering up to 50 papers, with auto-generated BibTeX bibliography.</p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">3</span>
+      <h3>Verified Research with Anti-Hallucination</h3>
+      <p>Add faithfulness scoring and quality gates to ensure the review is factually accurate.</p>
+      <span class="code-label bash">terminal</span>
+      <pre>ai_cli research "RLHF alignment techniques" \
+  --review --format systematic --bibtex \
+  --faithfulness --quality-gates</pre>
+      <p>Every claim in the review is verified against the source papers. Quality gates reject output below the confidence threshold.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 3. ACADEMIC SEARCH PROVIDERS ═ -->
+<section id="providers">
+  <div class="container">
+    <h2 class="section-title">3. Academic Search Providers</h2>
+    <p class="section-sub">
+      ai_assistant integrates three academic search APIs through a unified <code>AcademicSearchEngine</code>
+      interface. Each provider is queried in parallel and results are deduplicated by title + author.
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Provider</th><th>API Type</th><th>Auth</th><th>Rate Limit</th><th>Best For</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>arXiv</td>
+          <td>Atom/XML</td>
+          <td>None</td>
+          <td>3s between requests</td>
+          <td>CS, Physics, Math preprints</td>
+        </tr>
+        <tr>
+          <td>Semantic Scholar</td>
+          <td>REST/JSON</td>
+          <td>Optional API key</td>
+          <td>100 req/5min (free)</td>
+          <td>CS with citation graph traversal</td>
+        </tr>
+        <tr>
+          <td>PubMed</td>
+          <td>E-utilities XML</td>
+          <td>Optional API key</td>
+          <td>3 req/s (10 with key)</td>
+          <td>Biomedical &amp; life sciences</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">API Key Configuration</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      arXiv requires no authentication. For higher rate limits on the other providers, set environment variables:
+    </p>
+    <span class="code-label bash">terminal</span>
+    <pre># Semantic Scholar — raises limit from 100/5min to 1000/5min
+export SEMANTIC_SCHOLAR_API_KEY="your-key-here"
+
+# PubMed / NCBI — raises limit from 3/s to 10/s
+export NCBI_API_KEY="your-key-here"</pre>
+
+    <div class="info-box success">
+      <strong>Reserved for future batches:</strong> CrossRef and OpenAlex providers are defined in
+      <code>AcademicSource</code> and will be wired in a future release.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 4. BIBTEX SUPPORT ═══════════ -->
+<section id="bibtex">
+  <div class="container">
+    <h2 class="section-title">4. BibTeX Support</h2>
+    <p class="section-sub">
+      Full BibTeX parsing and generation with security sanitization.
+      Import existing <code>.bib</code> files into the RAG knowledge base or export search results.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Supported Entry Types (9)</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>BibTeX Type</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>@article</td><td>Journal article</td></tr>
+        <tr><td>@book</td><td>Book</td></tr>
+        <tr><td>@inproceedings</td><td>Conference or workshop paper</td></tr>
+        <tr><td>@incollection</td><td>Chapter in a collected volume</td></tr>
+        <tr><td>@phdthesis</td><td>PhD or Master's thesis</td></tr>
+        <tr><td>@techreport</td><td>Technical report</td></tr>
+        <tr><td>@misc</td><td>Miscellaneous</td></tr>
+        <tr><td>@unpublished</td><td>Unpublished work</td></tr>
+        <tr><td>@online</td><td>Online resource</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Import &amp; Export</h3>
+    <span class="code-label bash">terminal</span>
+    <pre># Import an existing .bib file into the RAG knowledge base
+ai_cli research import-bib references.bib
+
+# Export search results as BibTeX
+ai_cli research "diffusion models" --providers arxiv --bibtex --output diffusion.bib</pre>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::bibtex::{BibParser, BibGenerator, BibEntry};
+
+// Parse an existing .bib file
+let content = std::fs::read_to_string("references.bib").expect("read .bib");
+let entries: Vec&lt;BibEntry&gt; = BibParser::parse(&content)?;
+println!("Parsed {} entries", entries.len());
+
+// Generate BibTeX from search results
+let generator = BibGenerator::new();
+let bibtex_str = generator.generate(&entries);
+std::fs::write("export.bib", bibtex_str)?;</pre>
+
+    <div class="info-box warning">
+      <strong>Security:</strong> All BibTeX field values are sanitized to strip dangerous LaTeX commands:
+      <code>\input</code>, <code>\include</code>, <code>\write18</code>, <code>\immediate</code>,
+      <code>\openout</code>, <code>\csname</code>. This prevents LaTeX injection attacks when
+      compiling exported <code>.bib</code> files.
+    </div>
+
+    <div class="info-box">
+      <strong>Limits:</strong> Max file size: <strong>10 MB</strong>. Max entries: <strong>10,000</strong>.
+      Max field value length: <strong>10,000 characters</strong>. These limits are enforced during both
+      parsing and generation to prevent resource exhaustion.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 5. LITERATURE REVIEW PIPELINE ═ -->
+<section id="review-pipeline">
+  <div class="container">
+    <h2 class="section-title">5. Literature Review Pipeline</h2>
+    <p class="section-sub">
+      The review pipeline takes a research question, searches across providers, filters and ranks
+      results, synthesizes a structured review, and exports citations &mdash; all in one command.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Search Depths</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Depth</th><th>Max Papers</th><th>Strategy</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Quick</td><td>20</td><td>Single pass, fastest results</td></tr>
+        <tr><td>Standard</td><td>50</td><td>Multi-provider, deduplicated</td></tr>
+        <tr><td>Deep</td><td>100</td><td>Citation graph traversal, most thorough</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Synthesis Styles</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Style</th><th>Description</th><th>Best For</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Narrative</td><td>Flowing prose review connecting themes</td><td>Thesis introductions, survey papers</td></tr>
+        <tr><td>Systematic</td><td>Structured with tables and categorization</td><td>SLRs, meta-analyses</td></tr>
+        <tr><td>Annotated</td><td>Paper-by-paper summaries with commentary</td><td>Reading lists, lab meetings</td></tr>
+        <tr><td>Comparative</td><td>Contrasting approaches side by side</td><td>Method comparison, related work sections</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Bibliography Formats (5)</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      Export citations in <strong>BibTeX</strong>, <strong>APA 7th</strong>, <strong>MLA 9th</strong>,
+      <strong>Chicago 17th</strong>, or <strong>IEEE</strong> format.
+    </p>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Pipeline Stages</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <strong>Search</strong>
+        <span>arXiv + Scholar + PubMed</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step">
+        <strong>Filter</strong>
+        <span>Deduplicate &amp; rank</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step">
+        <strong>Synthesize</strong>
+        <span>LLM review generation</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step">
+        <strong>Cite</strong>
+        <span>BibTeX / APA / MLA / ...</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step">
+        <strong>Export</strong>
+        <span>.bib + .md / .tex</span>
+      </div>
+    </div>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::literature_review::{
+    LiteratureReviewConfig, SearchDepth, SynthesisStyle, BibliographyFormat,
+};
+
+let config = LiteratureReviewConfig {
+    query: "reinforcement learning from human feedback".to_string(),
+    depth: SearchDepth::Standard,
+    style: SynthesisStyle::Systematic,
+    bibliography_format: BibliographyFormat::BibTeX,
+    ..Default::default()
+};
+
+// The pipeline handles search, filter, synthesize, cite, and export
+let review = literature_review_engine.generate_review(&config).await?;
+
+println!("Review: {} words", review.text.split_whitespace().count());
+println!("Citations: {}", review.citations.len());
+std::fs::write("review.bib", &review.bibtex)?;</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 6. PAPER METADATA ═══════════ -->
+<section id="metadata">
+  <div class="container">
+    <h2 class="section-title">6. Paper Metadata Extraction</h2>
+    <p class="section-sub">
+      Extract structured metadata from academic paper text &mdash; title, authors, abstract,
+      and section boundaries. Uses heuristic section detection based on common paper structures.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Detected Section Types</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Section Type</th><th>Detected Headings</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Abstract</td><td>"abstract"</td></tr>
+        <tr><td>Introduction</td><td>"introduction"</td></tr>
+        <tr><td>RelatedWork</td><td>"related work", "literature review", "background", "prior work"</td></tr>
+        <tr><td>Methodology</td><td>"method", "approach", "framework", "model", "architecture"</td></tr>
+        <tr><td>Results</td><td>"result", "experiment", "evaluation", "finding"</td></tr>
+        <tr><td>Discussion</td><td>"discussion"</td></tr>
+        <tr><td>Conclusion</td><td>"conclusion", "summary", "future work"</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::paper_metadata::{PaperMetadataExtractor, SectionType};
+
+let extractor = PaperMetadataExtractor::new();
+let paper_text = std::fs::read_to_string("paper.txt")?;
+let metadata = extractor.extract(&paper_text)?;
+
+println!("Title: {}", metadata.title);
+println!("Authors: {:?}", metadata.authors);
+for section in &metadata.sections {
+    println!("[{:?}] {} ({} chars)",
+        section.section_type,
+        section.heading,
+        section.content.len());
+}</pre>
+
+    <div class="info-box">
+      <strong>Tip:</strong> Metadata extraction works on plain-text paper content. For PDFs, first parse with
+      the document parsing module (<code>document_parsing</code>) to extract text, then pass to the metadata extractor.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 7. ANTI-HALLUCINATION ═══════ -->
+<section id="anti-hallucination">
+  <div class="container">
+    <h2 class="section-title">7. Verified Research &mdash; Anti-Hallucination Integration</h2>
+    <p class="section-sub">
+      AI-generated literature reviews are prone to hallucination: fabricated papers, invented authors,
+      wrong publication dates, and misattributed claims. ai_assistant is the only framework that
+      <strong>verifies its own research output</strong> before returning it to the user.
+    </p>
+
+    <div class="highlight-box">
+      <h3>Why This Is Critical for Academic Research</h3>
+      <p>
+        A fabricated citation in a literature review can invalidate an entire paper.
+        Standard LLM frameworks generate reviews without any verification &mdash; they cannot tell
+        you whether a cited paper actually exists or whether a claim is faithfully attributed.
+      </p>
+      <ul>
+        <li>LLMs invent plausible-sounding paper titles, author names, and DOIs</li>
+        <li>LLMs misattribute findings from one paper to another</li>
+        <li>LLMs fabricate statistics and quantitative claims</li>
+        <li>None of this is detectable without automated verification against source material</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--green);">FaithfulnessScorer</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      The <code>FaithfulnessScorer</code> decomposes the generated review into individual claims and
+      verifies each claim against the source papers that were actually retrieved. Every claim receives
+      a faithfulness score from 0.0 (unsupported) to 1.0 (fully supported).
+    </p>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::faithfulness::FaithfulnessScorer;
+
+let scorer = FaithfulnessScorer::new();
+
+// Score the review against the papers it claims to cite
+let result = scorer.score(
+    &review.text,        // the generated review
+    &source_documents,   // the actual retrieved papers
+)?;
+
+println!("Overall faithfulness: {:.2}", result.overall_score);
+for claim in &result.claims {
+    println!("  [{:.2}] {}", claim.score, claim.text);
+    if claim.score &lt; 0.5 {
+        println!("    WARNING: Unsupported claim!");
+    }
+}</pre>
+
+    <h3 style="margin-top: 28px; color: var(--green);">Quality Gates</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      Quality gates enforce minimum thresholds. If the review fails a gate, it is rejected and
+      regenerated with stricter constraints &mdash; not returned to the user in a degraded state.
+    </p>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::quality_gates::QualityGate;
+
+// Reject reviews with faithfulness below 0.7
+let gate = QualityGate::faithfulness_threshold(0.7);
+
+if !gate.passes(&faithfulness_result) {
+    // Regenerate with stricter constraints
+    eprintln!("Review failed quality gate (score: {:.2})",
+        faithfulness_result.overall_score);
+}</pre>
+
+    <h3 style="margin-top: 28px; color: var(--green);">Chain-of-Verification (CoVe)</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      CoVe (<code>chain_of_verification</code>) cross-checks claims from the generated review against
+      paper content. It generates verification questions, answers them independently from the source
+      material, and flags any discrepancies.
+    </p>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::chain_of_verification::CoVeVerifier;
+
+let verifier = CoVeVerifier::new();
+let verification = verifier.verify(&review.text, &source_documents)?;
+
+for check in &verification.checks {
+    println!("[{}] Q: {}", check.status, check.question);
+    println!("       Expected: {}", check.expected);
+    println!("       Found:    {}", check.found);
+}</pre>
+
+    <h3 style="margin-top: 28px; color: var(--green);">Hallucination Type Detection</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      The <code>hallucination_detection</code> module classifies detected issues into specific types
+      so you can act on them precisely:
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Hallucination Type</th><th>Description</th><th>Example in Research</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FactualError</td><td>Made-up fact</td><td>Claiming GPT-3 has 300B parameters</td></tr>
+        <tr><td>Contradiction</td><td>Internal inconsistency</td><td>Stating two conflicting conclusions</td></tr>
+        <tr><td>UnsupportedClaim</td><td>Claim without source backing</td><td>Citing results not in any paper</td></tr>
+        <tr><td>InventedEntity</td><td>Fabricated entity</td><td>Non-existent author or paper title</td></tr>
+        <tr><td>MisAttribution</td><td>Wrong attribution</td><td>Crediting findings to wrong paper</td></tr>
+        <tr><td>FabricatedQuote</td><td>Invented quote</td><td>Fake quote from a paper abstract</td></tr>
+        <tr><td>IncorrectStatistic</td><td>Wrong number</td><td>Claiming 95% accuracy when paper says 87%</td></tr>
+        <tr><td>Anachronism</td><td>Temporal error</td><td>Citing a 2024 paper as published in 2019</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--green);">Combined Pipeline &mdash; One Command</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      Use the CLI to run the full verified research pipeline in a single command:
+    </p>
+    <span class="code-label bash">terminal</span>
+    <pre>ai_cli research "RLHF" \
+  --review \
+  --format systematic \
+  --bibtex \
+  --faithfulness \
+  --quality-gates</pre>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin-top:12px;">
+      This single command performs: academic search across all providers, literature review synthesis
+      in systematic style, BibTeX citation export, faithfulness scoring of every claim, and quality gate
+      enforcement. If the review fails verification, it is automatically regenerated.
+    </p>
+
+    <div class="info-box success" style="border-left-width: 6px;">
+      <strong>ai_assistant is the only framework that verifies its own literature review output.</strong>
+      LangChain, LlamaIndex, Haystack, and AutoGen do not provide built-in faithfulness scoring,
+      quality gates, or chain-of-verification for generated research output. See the
+      <a href="guide_anti_hallucination.html">Anti-Hallucination Guide</a> for the full pipeline details.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 8. RESEARCH AGENT ROLES ═════ -->
+<section id="agents">
+  <div class="container">
+    <h2 class="section-title">8. Research Agent Roles</h2>
+    <p class="section-sub">
+      The multi-agent system includes three research-specific roles that collaborate
+      to produce high-quality, verified academic output.
+    </p>
+
+    <div class="step">
+      <span class="step-number">R</span>
+      <h3>ResearchAssistant</h3>
+      <p>
+        Searches for academic papers, filters relevant results, summarizes findings, and provides
+        structured literature reviews. Uses the academic search providers and BibTeX generator.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">P</span>
+      <h3>PeerReviewer</h3>
+      <p>
+        Critically evaluates drafts, verifies claims against sources, checks citations, and provides
+        constructive feedback. Integrates with the FaithfulnessScorer and hallucination detection.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">W</span>
+      <h3>WritingCoach</h3>
+      <p>
+        Improves academic writing quality &mdash; clarity, structure, argumentation, and proper citation style.
+        Ensures the output meets publication standards.
+      </p>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Multi-Agent Systematic Review Workflow</h3>
+    <div class="pipeline" style="margin-top: 16px;">
+      <div class="pipeline-step" style="border-color: var(--accent);">
+        <strong>ResearchAssistant</strong>
+        <span>Search &amp; gather papers</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step" style="border-color: var(--accent2);">
+        <strong>ResearchAssistant</strong>
+        <span>Draft literature review</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step" style="border-color: var(--yellow);">
+        <strong>PeerReviewer</strong>
+        <span>Verify claims &amp; citations</span>
+      </div>
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-step" style="border-color: var(--green);">
+        <strong>WritingCoach</strong>
+        <span>Polish &amp; finalize</span>
+      </div>
+    </div>
+
+    <span class="code-label rust">Rust API</span>
+    <pre>use ai_assistant::multi_agent::{AgentRole, MultiAgentOrchestrator};
+
+let mut orchestrator = MultiAgentOrchestrator::new();
+
+// Define the systematic review pipeline
+orchestrator.add_agent(AgentRole::ResearchAssistant);
+orchestrator.add_agent(AgentRole::PeerReviewer);
+orchestrator.add_agent(AgentRole::WritingCoach);
+
+// Execute — each agent processes sequentially, passing output to the next
+let result = orchestrator.execute(
+    "Write a systematic review on diffusion models for image generation"
+).await?;</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 9. SERVER & MCP ═════════════ -->
+<section id="server-mcp">
+  <div class="container">
+    <h2 class="section-title">9. Server &amp; MCP Integration</h2>
+    <p class="section-sub">
+      Access research capabilities through the HTTP server or MCP protocol.
+    </p>
+
+    <h3 style="color: var(--text-bright);">REST Endpoints</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>POST</td><td>/research/search</td><td>Search academic papers across providers</td></tr>
+        <tr><td>POST</td><td>/research/review</td><td>Generate a literature review</td></tr>
+        <tr><td>POST</td><td>/research/bibtex/import</td><td>Import a .bib file</td></tr>
+        <tr><td>POST</td><td>/research/bibtex/export</td><td>Export search results as BibTeX</td></tr>
+        <tr><td>POST</td><td>/research/metadata</td><td>Extract metadata from paper text</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <span class="code-label bash">terminal</span>
+    <pre># Search for papers
+curl -X POST http://localhost:8090/research/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "large language model alignment",
+    "providers": ["arxiv", "scholar"],
+    "max_results": 20
+  }'
+
+# Generate a literature review
+curl -X POST http://localhost:8090/research/review \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "RLHF techniques",
+    "depth": "standard",
+    "style": "systematic",
+    "bibliography_format": "bibtex"
+  }'</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">MCP Tools</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
+      Six research tools are registered in the MCP server and exposed to AI clients:
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px; margin-top: 12px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>MCP Tool</th><th>Category</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>search_papers</td><td>Search</td><td>Search academic papers across providers</td></tr>
+        <tr><td>get_paper_metadata</td><td>Metadata</td><td>Get metadata for a specific paper</td></tr>
+        <tr><td>import_bibtex</td><td>Bibliography</td><td>Import a .bib file into knowledge base</td></tr>
+        <tr><td>export_bibtex</td><td>Bibliography</td><td>Export results as BibTeX</td></tr>
+        <tr><td>literature_review</td><td>Review</td><td>Generate a literature review</td></tr>
+        <tr><td>extract_paper_metadata</td><td>Metadata</td><td>Extract metadata from paper text</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 10. CONFIGURATION ═══════════ -->
+<section id="config">
+  <div class="container">
+    <h2 class="section-title">10. Configuration</h2>
+    <p class="section-sub">
+      Configure the research module via TOML or programmatically. The <code>research</code> feature flag
+      must be enabled (it is included in the <code>full</code> meta-feature).
+    </p>
+
+    <h3 style="color: var(--text-bright);">Feature Flag</h3>
+    <span class="code-label toml">Cargo.toml</span>
+    <pre>[dependencies]
+ai_assistant_core = { git = "https://github.com/OrlandoLuque/ai_assistant", features = ["research"] }
+
+# Or enable everything:
+# features = ["full"]</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">TOML Configuration</h3>
+    <span class="code-label toml">config.toml</span>
+    <pre>[research]
+# Default search depth: "quick", "standard", or "deep"
+default_depth = "standard"
+
+# Default synthesis style: "narrative", "systematic", "annotated", "comparative"
+default_style = "narrative"
+
+# Default bibliography format: "bibtex", "apa", "mla", "chicago", "ieee"
+default_bibliography_format = "bibtex"
+
+# Enable anti-hallucination verification by default
+enable_faithfulness = true
+enable_quality_gates = true
+faithfulness_threshold = 0.7
+
+[research.providers]
+# arXiv needs no API key
+arxiv_enabled = true
+
+# Semantic Scholar — set SEMANTIC_SCHOLAR_API_KEY env var for higher limits
+semantic_scholar_enabled = true
+
+# PubMed — set NCBI_API_KEY env var for higher limits
+pubmed_enabled = true
+
+[research.rate_limits]
+# Override default rate limits (in milliseconds between requests)
+arxiv_interval_ms = 3000
+scholar_requests_per_5min = 100
+pubmed_requests_per_second = 3</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 11. SECURITY ════════════════ -->
+<section id="security">
+  <div class="container">
+    <h2 class="section-title">11. Security</h2>
+    <p class="section-sub">
+      The research module follows the same zero-compromise security model as the rest of ai_assistant.
+    </p>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Rate Limiting</h3>
+      <p>
+        Each provider enforces its own rate limit. arXiv: 3s between requests. Semantic Scholar:
+        100 req/5min (free tier). PubMed: 3 req/s (10 with API key). Limits are respected automatically
+        by <code>AcademicSearchEngine</code> &mdash; no manual throttling needed.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>API Key Handling</h3>
+      <p>
+        API keys are sourced exclusively from environment variables (<code>SEMANTIC_SCHOLAR_API_KEY</code>,
+        <code>NCBI_API_KEY</code>). They are never logged, never included in error messages, and never
+        written to disk.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">3</span>
+      <h3>BibTeX Sanitization</h3>
+      <p>
+        All BibTeX field values are sanitized against LaTeX injection attacks. Dangerous commands
+        (<code>\input</code>, <code>\include</code>, <code>\write18</code>, <code>\immediate</code>,
+        <code>\openout</code>, <code>\csname</code>) are stripped before export.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">4</span>
+      <h3>File &amp; Resource Limits</h3>
+      <p>
+        Import operations enforce strict limits: 10 MB max file size, 10,000 max entries, 10,000 max
+        characters per field value. Query parameters are URL-encoded. Response Content-Type is validated
+        before parsing.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ NEXT STEPS ═══════════════════ -->
+<section id="next">
+  <div class="container">
+    <h2 class="section-title">Next Steps</h2>
+    <p class="section-sub">
+      Explore related documentation to get the most out of the research pipeline.
+    </p>
+
+    <div class="next-grid">
+      <a class="next-card" href="guide_anti_hallucination.html">
+        <div class="info">
+          <h4>Anti-Hallucination Guide</h4>
+          <p>Full pipeline: FaithfulnessScorer, CoVe, MARK strategy, quality gates, and more.</p>
+        </div>
+      </a>
+      <a class="next-card" href="concepts.html">
+        <div class="info">
+          <h4>Concepts Reference</h4>
+          <p>Architecture, patterns, RAG tiers, and design decisions explained in depth.</p>
+        </div>
+      </a>
+      <a class="next-card" href="use_cases.html">
+        <div class="info">
+          <h4>Use Cases</h4>
+          <p>Real-world scenarios including research automation, knowledge management, and more.</p>
+        </div>
+      </a>
+      <a class="next-card" href="feature_matrix.html">
+        <div class="info">
+          <h4>Feature Matrix</h4>
+          <p>Complete status of every module, feature flag, and test count.</p>
+        </div>
+      </a>
+      <a class="next-card" href="framework_comparison.html">
+        <div class="info">
+          <h4>Framework Comparison</h4>
+          <p>See how ai_assistant compares to LangChain, LlamaIndex, Haystack, and others.</p>
+        </div>
+      </a>
+      <a class="next-card" href="quickstart.html">
+        <div class="info">
+          <h4>Getting Started</h4>
+          <p>Install, configure, and run your first chat in 30 seconds.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ THEME TOGGLE JS ════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>

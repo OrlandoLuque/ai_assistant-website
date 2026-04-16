@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/shield.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anti-Hallucination Guide &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626; --cyan: #0891b2; --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.code-label.yaml { background: #06b6d4; }
+
+/* ── Step cards ───────────────────────────────────────────── */
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.9rem; margin-right: 12px; flex-shrink: 0;
+}
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box.danger { border-left-color: var(--red); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Feature flag table ───────────────────────────────────── */
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+.tag-yes { color: var(--green); font-weight: 700; }
+.tag-no { color: var(--text-dim); }
+.tag-partial { color: var(--yellow); font-weight: 700; }
+
+/* ── Pipeline visual ─────────────────────────────────────── */
+.pipeline-step {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 14px 0; border-left: 3px solid var(--accent);
+  margin-left: 16px; padding-left: 24px; position: relative;
+}
+.pipeline-step::before {
+  content: attr(data-num);
+  position: absolute; left: -14px; top: 12px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 0.72rem;
+  font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+.pipeline-step:last-child { border-left-color: transparent; }
+.pipeline-step .ps-title { font-weight: 700; color: var(--text-bright); font-size: 0.92rem; }
+.pipeline-step .ps-desc { font-size: 0.82rem; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Next steps grid ──────────────────────────────────────── */
+.next-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px; margin-top: 24px;
+}
+.next-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; display: flex; gap: 14px; align-items: center;
+  transition: border-color .2s, transform .15s; text-decoration: none;
+}
+.next-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+.next-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+.next-card .info p { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+  .next-grid { grid-template-columns: 1fr; }
+  .pipeline-step { margin-left: 8px; padding-left: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="use_cases.html">Use Cases</a>
+    <a href="guide_anti_hallucination.html" style="color:var(--text-bright)">Anti-Hallucination</a>
+    <a href="guide_research.html">Research</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>Anti-Hallucination Guide</h1>
+    <p class="tagline">
+      Eliminate LLM hallucinations with a configurable 11-step pipeline &mdash;
+      7 strategies, calibrated abstention, faithfulness scoring, and quality gates.
+      No equivalent in LangChain or LlamaIndex.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ 1. WHY THIS MATTERS ════════ -->
+<section id="why">
+  <div class="container">
+    <h2 class="section-title">1. Why This Matters</h2>
+    <p class="section-sub">
+      LLMs hallucinate between 5&ndash;20% of their outputs. In medical, legal, and financial
+      applications, a single fabricated fact can cause real harm. Other frameworks offer partial
+      solutions; ai_assistant provides the <strong>complete</strong> anti-hallucination pipeline
+      in a single crate.
+    </p>
+
+    <div class="info-box danger">
+      <strong>The cost of hallucinations:</strong> A hallucinated legal citation can result in
+      court sanctions. A fabricated drug interaction can endanger patients. A wrong financial
+      figure can trigger regulatory action. This is not a nice-to-have &mdash; it is a requirement.
+    </div>
+
+    <h3 style="margin-top: 32px; color: var(--text-bright);">Framework Comparison</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0 16px;">
+      How ai_assistant's anti-hallucination stack compares to other frameworks:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>ai_assistant</th>
+          <th>LangChain</th>
+          <th>LlamaIndex</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Claim decomposition</td>
+          <td class="tag-yes">Built-in (2 methods)</td>
+          <td class="tag-partial">Via external lib</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Faithfulness scoring (NLI)</td>
+          <td class="tag-yes">WordOverlap + LlmNli</td>
+          <td class="tag-partial">Via RAGAS</td>
+          <td class="tag-partial">Via RAGAS</td>
+        </tr>
+        <tr>
+          <td>Calibrated abstention</td>
+          <td class="tag-yes">Built-in</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Chain-of-Verification (CoVe)</td>
+          <td class="tag-yes">Built-in</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>7 ungrounded-claim strategies</td>
+          <td class="tag-yes">Omit/Mark/Warn/Footnote/...</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Quality gates (5 metrics)</td>
+          <td class="tag-yes">Fail/Warn/Log actions</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Auto-temperature for factual queries</td>
+          <td class="tag-yes">Built-in</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Self-consistency check</td>
+          <td class="tag-yes">Built-in</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>Cost caps (max LLM calls)</td>
+          <td class="tag-yes">Configurable</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>REST API + response headers</td>
+          <td class="tag-yes">3 endpoints + headers</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+        <tr>
+          <td>MCP tool integration</td>
+          <td class="tag-yes">3 tools</td>
+          <td class="tag-no">No</td>
+          <td class="tag-no">No</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 2. QUICK START ═════════════ -->
+<section id="quickstart">
+  <div class="container">
+    <h2 class="section-title">2. Quick Start</h2>
+    <p class="section-sub">
+      Get anti-hallucination protection running in three steps.
+    </p>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Basic Verification (CLI)</h3>
+      <p>Verify a claim using the built-in CLI with a single command:</p>
+      <span class="code-label bash">bash</span>
+      <pre>ai_cli verify "Rust was first released in 2015" --strategy mark</pre>
+      <p>The <code>verify</code> subcommand decomposes the input into claims, scores each one,
+         and applies the chosen strategy to ungrounded claims.</p>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>Full Pipeline with Faithfulness + Quality Gates</h3>
+      <p>Enable the complete pipeline in Rust with faithfulness scoring and quality gates:</p>
+      <span class="code-label rust">Rust</span>
+      <pre>use ai_assistant::anti_hallucination::*;
+use ai_assistant::faithfulness::*;
+use ai_assistant::quality_gates::*;
+
+// 1. Configure the anti-hallucination pipeline
+let ah_config = AntiHallucinationConfig::production();
+let pipeline = AntiHallucinationPipeline::new(ah_config);
+
+// 2. Process an LLM response against source context
+let context = "Rust 1.0 was released on May 15, 2015.";
+let response = "Rust was first released in 2015. It uses a garbage collector.";
+let result = pipeline.process(response, Some(context));
+
+println!("Abstained: {}", result.abstained);
+println!("Grounding ratio: {:.0}%", result.grounding_ratio() * 100.0);
+println!("Ungrounded claims: {}", result.ungrounded_count);
+println!("Processed text:\n{}", result.processed_text);
+
+// 3. Run quality gates
+let runner = QualityGateRunner::production_defaults();
+let scores = QualityScores {
+    faithfulness: Some(0.85),
+    confidence: Some(result.overall_confidence),
+    grounding_ratio: Some(result.grounding_ratio()),
+    ..Default::default()
+};
+let gate_result = runner.run(&scores);
+println!("Quality gates passed: {}", gate_result.passed);</pre>
+    </div>
+
+    <div class="step">
+      <span class="step-number">3</span>
+      <h3>Chain-of-Verification (CoVe)</h3>
+      <p>Enable CoVe for multi-step verification with external evidence:</p>
+      <span class="code-label rust">Rust</span>
+      <pre>use ai_assistant::chain_of_verification::*;
+
+let cove_config = CoVeConfig {
+    enabled: true,
+    verification_source: VerificationSource::RagThenWeb,
+    correction_mode: CorrectionMode::Replace,
+    max_claims_to_verify: 10,
+    max_llm_calls: 5,
+    ..Default::default()
+};
+
+// The CoVe pipeline:
+//   1. Extracts claims from the draft response
+//   2. Generates verification questions for each claim
+//   3. Verifies each claim against RAG or web sources
+//   4. Corrects or annotates the response
+
+// result.corrected_response contains the verified output
+// result.overall_accuracy gives the ratio of supported claims</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 3. THE 7 STRATEGIES ═══════ -->
+<section id="strategies">
+  <div class="container">
+    <h2 class="section-title">3. The 7 Ungrounded-Claim Strategies</h2>
+    <p class="section-sub">
+      When the pipeline detects an ungrounded claim, it applies one of seven configurable strategies.
+      Choose the right one for your use case:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Strategy</th><th>Behavior</th><th>Best For</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Omit</td>
+          <td>Remove unverified claims entirely from the output</td>
+          <td>Medical, legal &mdash; zero tolerance for fabrication</td>
+        </tr>
+        <tr>
+          <td>Mark</td>
+          <td>Tag unverified claims with <code>[unverified]</code> marker</td>
+          <td>General use &mdash; transparent, lets users judge</td>
+        </tr>
+        <tr>
+          <td>Warn</td>
+          <td>Keep claims but emit a warning to the caller</td>
+          <td>Development, logging &mdash; non-intrusive monitoring</td>
+        </tr>
+        <tr>
+          <td>Footnote</td>
+          <td>Add explanatory footnotes for unverified claims</td>
+          <td>Research, academic &mdash; detailed annotation</td>
+        </tr>
+        <tr>
+          <td>VerifyThenMark</td>
+          <td>Attempt verification first; mark if still ungrounded</td>
+          <td>Production &mdash; best balance of cost and safety</td>
+        </tr>
+        <tr>
+          <td>VerifyThenOmit</td>
+          <td>Attempt verification first; remove if still ungrounded</td>
+          <td>High-stakes &mdash; maximum safety with verification</td>
+        </tr>
+        <tr>
+          <td>Ask</td>
+          <td>Ask the user to confirm or reject each ungrounded claim</td>
+          <td>Interactive &mdash; human-in-the-loop validation</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Default strategy:</strong> <code>Mark</code>. Override it in config or per-request.
+      The mark format is configurable &mdash; default is <code>"[unverified] {}"</code> where
+      <code>{}</code> is replaced by the claim text.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 4. THE PIPELINE ════════════ -->
+<section id="pipeline">
+  <div class="container">
+    <h2 class="section-title">4. The 11-Step Pipeline</h2>
+    <p class="section-sub">
+      Every LLM response passes through an orchestrated sequence of checks. Each step is
+      independently configurable and can be enabled or disabled.
+    </p>
+
+    <div class="pipeline-step" data-num="1">
+      <div>
+        <div class="ps-title">Auto-Temperature</div>
+        <div class="ps-desc">Detects factual queries and lowers temperature (default 0.3) before sending to the LLM. Reduces randomness for fact-seeking questions.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="2">
+      <div>
+        <div class="ps-title">LLM Generation</div>
+        <div class="ps-desc">The LLM generates its response with the adjusted (or default) temperature.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="3">
+      <div>
+        <div class="ps-title">Abstention Check</div>
+        <div class="ps-desc">If overall confidence is below <code>abstention_threshold</code> (default 0.3), the pipeline stops and returns an abstention message instead.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="4">
+      <div>
+        <div class="ps-title">Claim Decomposition</div>
+        <div class="ps-desc">Response is decomposed into atomic claims. Two methods: <code>SentenceSplit</code> (zero-cost) or <code>LlmDecomposition</code> (one LLM call, higher precision).</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="5">
+      <div>
+        <div class="ps-title">Faithfulness Scoring</div>
+        <div class="ps-desc">Each claim is scored against source context using NLI. Produces per-claim <code>NliVerdict</code>: Entailed, Contradicted, or Neutral.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="6">
+      <div>
+        <div class="ps-title">Grounded Generation Check</div>
+        <div class="ps-desc">Validates that the response is grounded in the provided context and does not introduce unsupported information.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="7">
+      <div>
+        <div class="ps-title">Fact-Check with Search</div>
+        <div class="ps-desc">Claims with <code>NliVerdict::Neutral</code> (no evidence) are fact-checked against external sources (RAG or web search).</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="8">
+      <div>
+        <div class="ps-title">Chain-of-Verification (CoVe)</div>
+        <div class="ps-desc">Optional multi-step verification: generates verification questions, checks each against sources, and corrects the response.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="9">
+      <div>
+        <div class="ps-title">Self-Consistency</div>
+        <div class="ps-desc">Parallel/independent check: generates multiple responses and compares them for internal consistency. Flags contradictions.</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="10">
+      <div>
+        <div class="ps-title">Apply Ungrounded Strategy</div>
+        <div class="ps-desc">Ungrounded claims are processed using the configured strategy (Omit, Mark, Warn, Footnote, VerifyThenMark, VerifyThenOmit, or Ask).</div>
+      </div>
+    </div>
+    <div class="pipeline-step" data-num="11">
+      <div>
+        <div class="ps-title">Quality Gates</div>
+        <div class="ps-desc">Final pass: checks 5 metrics against configurable thresholds. Can Fail (block output), Warn (add warning), or Log (silent).</div>
+      </div>
+    </div>
+
+    <div class="info-box success" style="margin-top: 20px;">
+      <strong>Cost control:</strong> The pipeline respects <code>max_extra_llm_calls</code>
+      (default: 5). Steps that require LLM calls are budgeted and will not exceed this limit,
+      preventing runaway costs.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 5. CALIBRATED ABSTENTION ═══ -->
+<section id="abstention">
+  <div class="container">
+    <h2 class="section-title">5. Calibrated Abstention</h2>
+    <p class="section-sub">
+      When the LLM is not confident enough to answer accurately, the pipeline refuses to answer
+      rather than risk a hallucination. This is calibrated abstention &mdash; a critical safety
+      mechanism for high-stakes applications.
+    </p>
+
+    <span class="code-label rust">Rust</span>
+    <pre>let config = AntiHallucinationConfig {
+    enabled: true,
+    abstention_enabled: true,
+    abstention_threshold: 0.3,  // Abstain if confidence &lt; 30%
+    abstention_message: Some(
+        "I don't have enough confidence to answer this accurately. \
+         Please provide more context or rephrase the question.".into()
+    ),
+    ..Default::default()
+};
+
+let pipeline = AntiHallucinationPipeline::new(config);
+let result = pipeline.process(response, context);
+
+if result.abstained {
+    println!("Pipeline abstained: {}", result.abstention_reason.unwrap());
+    // result.processed_text contains the abstention message
+}</pre>
+
+    <div class="info-box warning" style="margin-top: 16px;">
+      <strong>Better to say "I don't know" than to hallucinate.</strong>
+      In medical and legal applications, a confident-sounding wrong answer is far more dangerous
+      than an honest admission of uncertainty. Calibrated abstention is enabled by default in the
+      <code>production()</code> and <code>strict()</code> presets.
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">How It Works</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      The confidence scorer analyzes the response for hedging language
+      (<em>"I think"</em>, <em>"probably"</em>, <em>"it seems"</em>),
+      certainty patterns, and claim support ratios. If the overall score falls
+      below the threshold, the pipeline returns the abstention message instead
+      of the generated text.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ 6. FAITHFULNESS SCORING ════ -->
+<section id="faithfulness">
+  <div class="container">
+    <h2 class="section-title">6. Faithfulness Scoring</h2>
+    <p class="section-sub">
+      Evaluates whether each claim in a generated response is supported (entailed) by the
+      source context. Uses Natural Language Inference (NLI) at the claim level.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Two NLI Methods</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Method</th><th>Cost</th><th>Precision</th><th>How It Works</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WordOverlap</td>
+          <td style="color:var(--green);">Zero (no LLM calls)</td>
+          <td style="color:var(--yellow);">Moderate</td>
+          <td>Jaccard word overlap between claim and context. Fast but imprecise.</td>
+        </tr>
+        <tr>
+          <td>LlmNli</td>
+          <td style="color:var(--yellow);">1 LLM call per batch</td>
+          <td style="color:var(--green);">High</td>
+          <td>LLM-based entailment check. Prompts the LLM to classify each claim.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);">NLI Verdicts</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 8px 0 16px;">
+      Each claim receives one of three verdicts:
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Verdict</th><th>Meaning</th><th>Next Action</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--green);">Entailed</td>
+          <td>Claim is supported by the source context</td>
+          <td>Pass through unchanged</td>
+        </tr>
+        <tr>
+          <td style="color:var(--red);">Contradicted</td>
+          <td>Claim contradicts the source context</td>
+          <td>Apply ungrounded strategy immediately</td>
+        </tr>
+        <tr>
+          <td style="color:var(--yellow);">Neutral</td>
+          <td>No evidence found (neither supported nor contradicted)</td>
+          <td>Sent to fact-check with search (step 7)</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Code Example</h3>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::faithfulness::*;
+
+let config = FaithfulnessConfig {
+    decomposition_method: DecompositionMethod::SentenceSplit,
+    nli_method: NliMethod::WordOverlap,
+    min_faithfulness_score: 0.7,
+    word_overlap_entailment_threshold: 0.3,
+    word_overlap_contradiction_threshold: 0.05,
+    ..Default::default()
+};
+
+let scorer = FaithfulnessScorer::new(config);
+let context = &amp;["Rust was first released in 2015.", "It is a systems language."];
+let response = "Rust was released in 2015 and is a systems programming language.";
+
+let report = scorer.score(response, context);
+
+println!("Overall faithfulness: {:.0}%", report.overall_score * 100.0);
+println!("Entailed: {}, Contradicted: {}, Neutral: {}",
+    report.entailed_count, report.contradicted_count, report.neutral_count);
+
+for claim in &amp;report.claims {
+    println!("  [{}] {} (confidence: {:.2})",
+        claim.verdict, claim.claim.text, claim.confidence);
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 7. CHAIN-OF-VERIFICATION ═══ -->
+<section id="cove">
+  <div class="container">
+    <h2 class="section-title">7. Chain-of-Verification (CoVe)</h2>
+    <p class="section-sub">
+      A multi-step verification pipeline that generates verification questions for each claim,
+      checks them against external sources, and produces a corrected response.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Verification Sources</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Source</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>RagOnly</td><td>Check only against the RAG knowledge base</td></tr>
+        <tr><td>WebSearchOnly</td><td>Check only via web search</td></tr>
+        <tr><td>RagThenWeb</td><td>Try RAG first, fall back to web search if no evidence</td></tr>
+        <tr><td>Both</td><td>Check both RAG and web search, combine all evidence</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);">Correction Modes</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Mode</th><th>Behavior</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Replace</td><td>Replace incorrect claims with corrected text from evidence</td></tr>
+        <tr><td>Annotate</td><td>Add annotations (e.g., <code>[unverified]</code>) to unverified claims</td></tr>
+        <tr><td>Footnote</td><td>Add footnotes with full verification details and evidence</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);">CoVe Pipeline Flow</h3>
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', monospace; font-size: 0.82rem; line-height: 1.8; color: var(--text-dim);">
+      <span style="color:var(--cyan);">Draft Response</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color:var(--accent);">Extract Claims</span> &rarr; ["Rust uses GC", "Released 2015", ...]<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color:var(--accent);">Generate Questions</span> &rarr; "Does Rust use a garbage collector?"<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color:var(--accent);">Verify vs Sources</span> &rarr; RAG / Web / Both<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color:var(--green);">Supported</span> | <span style="color:var(--red);">Contradicted</span> | <span style="color:var(--yellow);">Unverifiable</span> | <span style="color:var(--cyan);">Partially Supported</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color:var(--green);">Corrected Response</span> (via Replace / Annotate / Footnote)
+    </div>
+
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::chain_of_verification::*;
+
+// Strict: replace contradicted claims, check both RAG and web
+let strict = CoVeConfig::strict();
+// strict.verification_source == Both
+// strict.correction_mode == Replace
+// strict.max_llm_calls == 10
+
+// Permissive: annotate only, RAG-only
+let permissive = CoVeConfig::permissive();
+// permissive.verification_source == RagOnly
+// permissive.correction_mode == Annotate
+// permissive.max_llm_calls == 3</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 8. QUALITY GATES ═══════════ -->
+<section id="quality-gates">
+  <div class="container">
+    <h2 class="section-title">8. Quality Gates</h2>
+    <p class="section-sub">
+      Quality gates enforce minimum thresholds on 5 metrics. Each gate triggers a configurable
+      action when the metric falls below its threshold &mdash; Fail (block), Warn (pass with warning),
+      or Log (silent).
+    </p>
+
+    <h3 style="color: var(--text-bright);">5 Quality Metrics</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Metric</th><th>Range</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Faithfulness</td><td>0.0 &ndash; 1.0</td><td>Ratio of claims entailed by source context</td></tr>
+        <tr><td>Confidence</td><td>0.0 &ndash; 1.0</td><td>Overall confidence score of the response</td></tr>
+        <tr><td>GroundingRatio</td><td>0.0 &ndash; 1.0</td><td>Ratio of grounded claims to total claims</td></tr>
+        <tr><td>ConsistencyScore</td><td>0.0 &ndash; 1.0</td><td>Self-consistency across multiple generations</td></tr>
+        <tr><td>CitationCoverage</td><td>0.0 &ndash; 1.0</td><td>Ratio of claims with source citations</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);">3 Gate Actions</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Action</th><th>Blocking?</th><th>Behavior</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--red);">Fail</td>
+          <td class="tag-yes">Yes</td>
+          <td>Block the output entirely &mdash; return an error to the caller</td>
+        </tr>
+        <tr>
+          <td style="color:var(--yellow);">Warn</td>
+          <td class="tag-no">No</td>
+          <td>Allow the output but add a warning for the caller</td>
+        </tr>
+        <tr>
+          <td>Log</td>
+          <td class="tag-no">No</td>
+          <td>Pass silently, but log the failure for observability</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);"><code>production_defaults()</code> Preset</h3>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::quality_gates::*;
+
+// Production defaults: 3 gates
+let runner = QualityGateRunner::production_defaults();
+// Gate 1: Fail if confidence &lt; 0.3
+// Gate 2: Warn if faithfulness &lt; 0.7
+// Gate 3: Warn if grounding ratio &lt; 0.5
+
+// Strict: 5 gates including consistency and citations
+let strict = QualityGateRunner::strict();
+// Fail if confidence &lt; 0.5
+// Fail if faithfulness &lt; 0.7
+// Fail if grounding &lt; 0.6
+// Warn if consistency &lt; 0.5
+// Warn if citations &lt; 0.3
+
+// Custom gates
+let mut custom = QualityGateRunner::new(vec![
+    QualityGate::fail_below("min-faith", QualityMetric::Faithfulness, 0.8),
+    QualityGate::warn_below("citations", QualityMetric::CitationCoverage, 0.5),
+]);
+
+// Run against scores
+let scores = QualityScores {
+    faithfulness: Some(0.9),
+    confidence: Some(0.7),
+    grounding_ratio: Some(0.8),
+    consistency_score: Some(0.6),
+    citation_coverage: Some(0.4),
+};
+let result = runner.run(&amp;scores);
+println!("Passed: {} | Overall: {:.2}", result.passed, result.overall_score);</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">CI/CD Integration</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      Use quality gates in your CI pipeline to prevent low-quality outputs from reaching production:
+    </p>
+    <span class="code-label bash">bash</span>
+    <pre># Run quality check via the REST API
+curl -s -X POST http://localhost:8090/api/v1/verify/quality-check \
+  -H "Content-Type: application/json" \
+  -d '{"faithfulness": 0.85, "confidence": 0.7, "grounding_ratio": 0.6}' \
+  | jq '.passed'
+
+# In CI: fail the build if quality gates don't pass
+RESULT=$(curl -s -X POST http://localhost:8090/api/v1/verify/quality-check \
+  -H "Content-Type: application/json" \
+  -d '{"faithfulness": 0.85, "confidence": 0.7}')
+
+if [ "$(echo $RESULT | jq -r '.passed')" != "true" ]; then
+  echo "Quality gates FAILED"
+  echo $RESULT | jq '.failing_gates'
+  exit 1
+fi</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 9. CONFIGURATION ═══════════ -->
+<section id="config">
+  <div class="container">
+    <h2 class="section-title">9. Configuration Reference</h2>
+    <p class="section-sub">
+      The anti-hallucination pipeline is configured via TOML (for the server) or Rust structs
+      (for the library). All features are opt-in.
+    </p>
+
+    <h3 style="color: var(--text-bright);">TOML Configuration</h3>
+    <span class="code-label toml">config.toml</span>
+    <pre>[anti_hallucination]
+enabled = true
+ungrounded_strategy = "mark"           # omit | mark | warn | footnote | verify_then_mark | verify_then_omit | ask
+abstention_enabled = true
+abstention_threshold = 0.3             # 0.0 - 1.0
+confidence_scoring_enabled = true
+auto_temperature_enabled = true
+factual_query_temperature = 0.3        # Lower = more deterministic
+mark_format = "[unverified] {}"        # {} is replaced by claim text
+min_confidence_for_output = 0.3
+max_extra_llm_calls = 5                # Cost cap
+
+[anti_hallucination.faithfulness]
+decomposition_method = "sentence_split" # sentence_split | llm_decomposition
+nli_method = "word_overlap"             # word_overlap | llm_nli
+min_faithfulness_score = 0.7
+
+[anti_hallucination.cove]
+enabled = true
+max_claims_to_verify = 10
+verification_source = "rag_then_web"    # rag_only | web_search_only | rag_then_web | both
+correction_mode = "annotate"            # replace | annotate | footnote
+max_llm_calls = 5</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Rust Presets</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      Three built-in presets cover common scenarios:
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Preset</th><th>Strategy</th><th>Abstention</th><th>Threshold</th><th>Auto-Temp</th><th>Best For</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>production()</td>
+          <td>Mark</td>
+          <td class="tag-yes">Enabled</td>
+          <td>0.3</td>
+          <td class="tag-yes">Enabled</td>
+          <td>General production use</td>
+        </tr>
+        <tr>
+          <td>strict()</td>
+          <td>Omit</td>
+          <td class="tag-yes">Enabled</td>
+          <td>0.5</td>
+          <td class="tag-yes">Enabled</td>
+          <td>Medical, legal, financial</td>
+        </tr>
+        <tr>
+          <td>permissive()</td>
+          <td>Warn</td>
+          <td class="tag-no">Disabled</td>
+          <td>0.1</td>
+          <td class="tag-no">Disabled</td>
+          <td>Development, creative use</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::anti_hallucination::AntiHallucinationConfig;
+
+// Production: Mark strategy, abstention enabled, auto-temperature
+let prod = AntiHallucinationConfig::production();
+
+// Strict: Omit strategy, higher thresholds, zero tolerance
+let strict = AntiHallucinationConfig::strict();
+
+// Permissive: Warn only, no abstention, low thresholds
+let permissive = AntiHallucinationConfig::permissive();</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════ 10. SERVER & API ═══════════ -->
+<section id="api">
+  <div class="container">
+    <h2 class="section-title">10. Server &amp; API</h2>
+    <p class="section-sub">
+      The anti-hallucination pipeline is fully integrated with the HTTP server and MCP protocol.
+    </p>
+
+    <h3 style="color: var(--text-bright);">REST Endpoints</h3>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--green);">POST</td>
+          <td>/api/v1/verify/quality-check</td>
+          <td>Run quality gates on provided scores</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan);">GET</td>
+          <td>/api/v1/verify/config</td>
+          <td>Get current anti-hallucination and quality gate config</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green);">POST</td>
+          <td>/api/v1/verify/faithfulness</td>
+          <td>Evaluate faithfulness of text against context</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top: 24px; color: var(--text-bright);">Example: Faithfulness Check</h3>
+    <span class="code-label bash">bash</span>
+    <pre># Check faithfulness of a response against source context
+curl -X POST http://localhost:8090/api/v1/verify/faithfulness \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Rust was released in 2015 and uses garbage collection.",
+    "context": "Rust 1.0 was released on May 15, 2015. Rust does not use a garbage collector."
+  }'
+
+# Response:
+# {
+#   "faithfulness_score": 0.5,
+#   "text_words": 9,
+#   ...
+# }</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Example: Quality Check</h3>
+    <span class="code-label bash">bash</span>
+    <pre># Run quality gates with specific scores
+curl -X POST http://localhost:8090/api/v1/verify/quality-check \
+  -H "Content-Type: application/json" \
+  -d '{
+    "faithfulness": 0.85,
+    "confidence": 0.7,
+    "grounding_ratio": 0.6,
+    "consistency_score": 0.8
+  }'
+
+# Response:
+# {
+#   "passed": true,
+#   "overall_score": 0.76,
+#   "failing_gates": [],
+#   "warnings": []
+# }</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">MCP Tools</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      Three MCP tools expose anti-hallucination capabilities to AI agents:
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px; margin: 16px 0;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Tool</th><th>Description</th><th>Input</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>check_faithfulness</td>
+          <td>Evaluate faithfulness of a response against context</td>
+          <td><code>text</code>, <code>context</code></td>
+        </tr>
+        <tr>
+          <td>verify_claims</td>
+          <td>Verify claims in text using the CoVe pipeline</td>
+          <td><code>text</code></td>
+        </tr>
+        <tr>
+          <td>run_quality_gates</td>
+          <td>Run quality gates on provided metric scores</td>
+          <td><code>faithfulness</code>, <code>confidence</code>, ...</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="info-box success">
+      <strong>Feature flag:</strong> The REST endpoints and MCP tools require the
+      <code>eval</code> feature flag to be enabled at compile time.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 11. SECURITY ═══════════════ -->
+<section id="security">
+  <div class="container">
+    <h2 class="section-title">11. Security &amp; Cost Protection</h2>
+    <p class="section-sub">
+      The anti-hallucination pipeline includes safeguards against both excessive costs
+      and prompt injection attacks.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Cost Caps</h3>
+    <div class="step">
+      <span class="step-number" style="background:var(--yellow);">$</span>
+      <h3>Max Extra LLM Calls</h3>
+      <p>The <code>max_extra_llm_calls</code> setting (default: 5) limits how many additional
+         LLM calls the pipeline can make per response. This prevents runaway costs from
+         verification loops. The CoVe pipeline also has its own <code>max_llm_calls</code>
+         budget (default: 5).</p>
+      <span class="code-label rust">Rust</span>
+      <pre>let config = AntiHallucinationConfig {
+    max_extra_llm_calls: 3,  // Tight budget
+    ..AntiHallucinationConfig::production()
+};
+
+let cove = CoVeConfig {
+    max_llm_calls: 5,        // CoVe-specific budget
+    max_claims_to_verify: 10, // Hard cap on claims
+    ..Default::default()
+};</pre>
+    </div>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Injection Protection</h3>
+    <div class="step">
+      <span class="step-number" style="background:var(--red);">!</span>
+      <h3>Prompt Injection Resistance</h3>
+      <p>The pipeline's claim decomposition and verification steps are resistant to
+         prompt injection because they process the <em>output</em> of the LLM, not
+         user input directly. Verification questions are generated from extracted claims,
+         not from raw user text. Combined with the <code>security</code> feature's
+         constitutional guardrails, this provides defense-in-depth against adversarial inputs.</p>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Defense in depth:</strong> Anti-hallucination is one layer. Combine with
+      <code>security</code> feature (RBAC, PII detection, constitutional guardrails) and
+      <code>eval</code> feature (evaluation suite) for comprehensive production safety.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ LINKS ══════════════════════ -->
+<section id="links">
+  <div class="container">
+    <h2 class="section-title">Related Guides</h2>
+    <p class="section-sub">
+      Explore more of the ai_assistant documentation:
+    </p>
+
+    <div class="next-grid">
+      <a class="next-card" href="guide_research.html">
+        <div class="info">
+          <h4>Research Guide</h4>
+          <p>Academic search with arXiv, Google Scholar, and BibTeX export.</p>
+        </div>
+      </a>
+      <a class="next-card" href="concepts.html">
+        <div class="info">
+          <h4>Concepts Reference</h4>
+          <p>275 sections covering architecture, patterns, and design decisions.</p>
+        </div>
+      </a>
+      <a class="next-card" href="use_cases.html">
+        <div class="info">
+          <h4>Use Cases</h4>
+          <p>Real-world applications: medical, legal, financial, research, and more.</p>
+        </div>
+      </a>
+      <a class="next-card" href="feature_matrix.html">
+        <div class="info">
+          <h4>Feature Matrix</h4>
+          <p>Complete status of every module, feature flag, and test count.</p>
+        </div>
+      </a>
+      <a class="next-card" href="framework_comparison.html">
+        <div class="info">
+          <h4>Framework Comparison</h4>
+          <p>How ai_assistant compares to LangChain, LlamaIndex, Haystack, and others.</p>
+        </div>
+      </a>
+      <a class="next-card" href="quickstart.html">
+        <div class="info">
+          <h4>Quickstart</h4>
+          <p>From zero to a working AI assistant in 30 seconds.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ THEME TOGGLE JS ════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>
