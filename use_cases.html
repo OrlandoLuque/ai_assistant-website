@@ -217,6 +217,8 @@ footer {
     <a href="#case7">Butler</a>
     <a href="#case8">MCP</a>
     <a href="#case9">FFI / Games</a>
+    <a href="#case10">Verify</a>
+    <a href="#case11">Research</a>
     <a href="binaries.html">Binaries</a>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
   </div>
@@ -227,11 +229,12 @@ footer {
   <div class="container">
     <h1>Use Cases</h1>
     <p class="tagline">
-      Nine end-to-end scenarios that wire multiple binaries from the
+      Eleven end-to-end scenarios that wire multiple binaries from the
       <a href="binaries.html">catalogue</a> into real-world workflows &mdash;
       from a local RAG chat to a distributed cluster, from CI cost gates to
-      scheduled daily briefings, and (new in V79) native C FFI for
-      game-engine NPCs.
+      scheduled daily briefings, native C FFI for game-engine NPCs,
+      verified AI responses with anti-hallucination, and academic
+      literature review with BibTeX export.
     </p>
   </div>
 </section>
@@ -493,7 +496,7 @@ cargo run --bin ai_setup --features full</pre>
         <span class="tag bin">ai_assistant_server</span>
         <span class="tag feat">full</span>
       </div>
-      <p class="problem"><strong>Problem.</strong> You want Claude Desktop (or any other MCP client) to talk to your local <code>ai_assistant</code> instance &mdash; exposing 40+ MCP tools, RAG, and memory.</p>
+      <p class="problem"><strong>Problem.</strong> You want Claude Desktop (or any other MCP client) to talk to your local <code>ai_assistant</code> instance &mdash; exposing 49+ MCP tools, RAG, and memory.</p>
       <span class="code-label bash">bash</span>
 <pre># 1. Launch the MCP endpoint over stdio
 cargo run --bin ai_assistant_server --features full -- \
@@ -593,6 +596,64 @@ int main(void) {
         instructions), <a href="binaries.html#library-artifacts">Library Artifacts</a>
         on the Binaries page for per-platform library naming.
       </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 10 ═════════════════════ -->
+<section id="case10">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">10</span>
+      <h3>Verified AI responses with anti-hallucination pipeline</h3>
+      <div class="meta">
+        <span class="tag bin">ai_cli</span>
+        <span class="tag bin">ai_assistant_server</span>
+        <span class="tag feat">full</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You need factually grounded LLM responses for medical, legal, or other critical applications &mdash; where hallucinated claims can cause real harm.</p>
+      <p>The verification pipeline decomposes every response into atomic claims, scores each one for groundedness against source material, and applies a configurable strategy. Seven strategies are available (e.g. <code>verify-mark</code>, <code>reject</code>, <code>highlight</code>) so you can tune the trade-off between coverage and strictness. Quality gates powered by the <code>eval</code> feature let you set hard thresholds on faithfulness scores.</p>
+      <span class="code-label bash">bash</span>
+<pre># Verify a medical query with faithfulness scoring + quality gates
+cargo run --bin ai_cli --features full -- \
+    verify "What are the side effects of ibuprofen?" \
+    --strategy verify-mark \
+    --faithfulness \
+    --quality-gates</pre>
+      <div class="info-box success">
+        <strong>Features.</strong> Requires <code>full</code> (includes <code>eval</code> for quality gates). The <code>--faithfulness</code> flag enables per-claim groundedness scoring. The <code>--strategy verify-mark</code> flag annotates each claim inline with its verification status.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CASE 11 ═════════════════════ -->
+<section id="case11">
+  <div class="container">
+    <div class="usecase">
+      <span class="usecase-number">11</span>
+      <h3>Academic literature review with BibTeX export</h3>
+      <div class="meta">
+        <span class="tag bin">ai_cli</span>
+        <span class="tag feat">full</span>
+        <span class="tag feat">research</span>
+      </div>
+      <p class="problem"><strong>Problem.</strong> You need to search academic databases, generate a structured literature review, and export citations in BibTeX format &mdash; without manually combing through ArXiv, Google Scholar, and PubMed.</p>
+      <span class="code-label bash">bash</span>
+<pre># 1. Search across multiple academic providers
+cargo run --bin ai_cli --features "full,research" -- \
+    research "transformer attention" \
+    --providers arxiv,scholar,pubmed \
+    --max-results 20
+
+# 2. Generate a systematic review with BibTeX export
+cargo run --bin ai_cli --features "full,research" -- \
+    research "RLHF" \
+    --review --format systematic \
+    --bibtex</pre>
+      <div class="info-box success">
+        <strong>Security.</strong> API keys for academic providers are read from environment variables (never hard-coded or logged). BibTeX output is sanitized against LaTeX injection to prevent malicious payloads in exported <code>.bib</code> files.
+      </div>
     </div>
   </div>
 </section>

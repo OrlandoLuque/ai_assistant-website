@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ai-assistant.runawaybrains.com/">
 <meta property="og:title" content="ai_assistant — One Binary. Complete AI Infrastructure.">
-<meta property="og:description" content="A single Rust crate that replaces 5-10 Python/Node services. LLM orchestration, RAG, multi-agent, security, streaming, and distributed computing. 410K+ LoC, 7,492 tests, 60 feature flags.">
+<meta property="og:description" content="A single Rust crate that replaces 5-10 Python/Node services. LLM orchestration, RAG, multi-agent, security, streaming, and distributed computing. ~423K LoC, 6,095 tests, 61 feature flags.">
 <meta property="og:image" content="https://ai-assistant.runawaybrains.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -30,7 +30,7 @@
 <meta name="twitter:image" content="https://ai-assistant.runawaybrains.com/og-image.png">
 
 <!-- General SEO -->
-<meta name="description" content="ai_assistant: A complete AI infrastructure library in Rust. LLM orchestration, RAG, multi-agent, security, streaming, distributed computing. 410K+ LoC, 60 feature flags. PolyForm Noncommercial License.">
+<meta name="description" content="ai_assistant: A complete AI infrastructure library in Rust. LLM orchestration, RAG, multi-agent, security, streaming, distributed computing. ~423K LoC, 61 feature flags. PolyForm Noncommercial License.">
 <style>
 /* ── Theme Variables ──────────────────────────────────────── */
 :root {
@@ -352,16 +352,16 @@ footer {
       Just <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:0.85em;">cargo build --release</code> and deploy.
     </p>
     <div class="stat-row">
-      <div class="stat-badge"><span class="num">410K+</span><span class="label">Lines of Rust</span></div>
-      <div class="stat-badge"><span class="num">360</span><span class="label">Source Files</span></div>
-      <div class="stat-badge"><span class="num">7,492</span><span class="label">Tests</span></div>
-      <div class="stat-badge"><span class="num">60</span><span class="label">Feature Flags</span></div>
+      <div class="stat-badge"><span class="num">423K+</span><span class="label">Lines of Rust</span></div>
+      <div class="stat-badge"><span class="num">369</span><span class="label">Source Files</span></div>
+      <div class="stat-badge"><span class="num">6,095</span><span class="label">Tests</span></div>
+      <div class="stat-badge"><span class="num">61</span><span class="label">Feature Flags</span></div>
       <div class="stat-badge"><span class="num">51</span><span class="label">Examples</span></div>
       <div class="stat-badge"><span class="num">42</span><span class="label">Benchmarks</span></div>
     </div>
     <div class="experimental-banner">
       <strong>Status: Experimental</strong> &mdash;
-      This project compiles and passes 7,492+ tests, but it has not been validated in production
+      This project compiles and passes 6,095+ tests, but it has not been validated in production
       or real-world usage. Developed iteratively with AI assistance, some modules may be incomplete,
       loosely wired, or tested only at a surface level. A comprehensive review is pending.
       Use at your own risk.
@@ -393,7 +393,7 @@ footer {
     </div>
     <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">
       <strong>Note:</strong> The crates.io package (<code>ai_assistant_core</code>) contains only basic LLM provider integration.
-      The full project (410K+ LoC, RAG, multi-agent, distributed, autonomous, etc.) is on GitHub.
+      The full project (~423K LoC, RAG, multi-agent, distributed, autonomous, etc.) is on GitHub.
     </p>
 
     <h3 style="margin-top:40px; font-size:1.1rem; color:var(--text);">Included Binaries <span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">(full project &mdash; GitHub / Releases)</span></h3>
@@ -604,6 +604,31 @@ curl -X POST http://localhost:8090/v1/chat/completions \
         </ul>
       </div>
 
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><path d="M16 4 L26 9 L26 17 Q26 25 16 29 Q6 25 6 17 L6 9 Z" fill="none" stroke="#f43f5e" stroke-width="1.5"/><line x1="11" y1="16" x2="21" y2="16" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="11" x2="16" y2="21" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="16" r="4" fill="none" stroke="#f43f5e" stroke-width="1" opacity=".4"/></svg></span>
+        <h3>Anti-Hallucination</h3>
+        <p>7-strategy pipeline to detect and mitigate LLM hallucinations, with calibrated abstention and faithfulness scoring.</p>
+        <ul>
+          <li>7 strategies: Omit, Mark, Warn, Footnote, VerifyThenMark, VerifyThenOmit, Ask</li>
+          <li>Calibrated abstention (knows when to say "I don't know")</li>
+          <li>Faithfulness scoring against source documents</li>
+          <li>Chain-of-Verification for factual claims</li>
+          <li>Quality gates with configurable thresholds</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle"><rect x="7" y="4" width="18" height="24" rx="2" fill="none" stroke="#06b6d4" stroke-width="1.5"/><line x1="11" y1="9" x2="21" y2="9" stroke="#06b6d4" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="13" x2="21" y2="13" stroke="#06b6d4" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="17" x2="17" y2="17" stroke="#06b6d4" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="21" x2="19" y2="21" stroke="#06b6d4" stroke-width="1.2" stroke-linecap="round"/><circle cx="22" cy="22" r="5" fill="none" stroke="#06b6d4" stroke-width="1.2"/><line x1="25" y1="25" x2="28" y2="28" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        <h3>Academic Research</h3>
+        <p>Built-in academic paper discovery and literature review pipeline with structured metadata extraction and citation management.</p>
+        <ul>
+          <li>arXiv, Semantic Scholar, PubMed API integration</li>
+          <li>BibTeX parser and generator</li>
+          <li>Automated literature review pipeline</li>
+          <li>Paper metadata extraction and indexing</li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </section>
@@ -677,7 +702,7 @@ curl -X POST http://localhost:8090/v1/chat/completions \
           </tr>
           <tr>
             <td>Test count</td>
-            <td class="highlight-col val-good">7,069</td>
+            <td class="highlight-col val-good">6,095</td>
             <td class="val-na">Varies</td>
             <td class="val-na">Varies</td>
           </tr>

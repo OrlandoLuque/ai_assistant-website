@@ -371,7 +371,7 @@ cargo install ai_assistant_core --bin ai_assistant_server --features "full"</pre
         <strong>Important:</strong> The
         <a href="https://crates.io/crates/ai_assistant_core">crates.io package</a>
         contains <strong>basic LLM provider integration only</strong>.
-        The full project (410K+ LoC &mdash; RAG, multi-agent, distributed, autonomous, security, etc.)
+        The full project (423K+ LoC &mdash; RAG, multi-agent, distributed, autonomous, security, etc.)
         is available from the <a href="https://github.com/OrlandoLuque/ai_assistant">GitHub repository</a>.
       </div>
     </div>
@@ -425,6 +425,7 @@ cargo build --release --features full --bin ai_assistant_cli
         <tr><td>a2a</td><td>Agent-to-Agent protocol</td><td class="tag-no">No</td></tr>
         <tr><td>hitl</td><td>Human-in-the-loop approval gates</td><td class="tag-no">No</td></tr>
         <tr><td>webrtc</td><td>WebRTC peer connections</td><td class="tag-no">No</td></tr>
+        <tr><td>research</td><td>Academic search (arXiv, Scholar) with BibTeX export</td><td class="tag-no">No</td></tr>
         <tr><td>diagnostic-logging</td><td>Structured diagnostic logging for ai_cli</td><td class="tag-no">No</td></tr>
       </tbody>
     </table>
@@ -959,6 +960,31 @@ cargo run --features full --bin ai_assistant_cli -- --provider ollama --model ll
       The CLI supports model selection, conversation history, session management,
       and all the same features as the library API.
     </p>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Anti-Hallucination Verification</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      Use the <code>verify</code> subcommand to fact-check LLM answers with multiple verification strategies:
+    </p>
+    <span class="code-label bash">bash</span>
+    <pre># Verify a claim using the MARK strategy with faithfulness scoring
+ai_cli verify "Is Rust memory-safe without a garbage collector?" \
+  --strategy mark --faithfulness
+
+# Other strategies: consensus, cross-reference, decompose
+ai_cli verify "Python is faster than C++" --strategy consensus</pre>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Academic Research Search</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin: 12px 0;">
+      The <code>research</code> subcommand searches academic sources and exports citations
+      (requires the <code>research</code> feature flag):
+    </p>
+    <span class="code-label bash">bash</span>
+    <pre># Search arXiv and Google Scholar, export BibTeX
+ai_cli research "transformer attention mechanisms" \
+  --providers arxiv,scholar --bibtex
+
+# Search a single provider
+ai_cli research "CRISPR gene editing 2025" --providers arxiv</pre>
   </div>
 </section>
 

@@ -286,7 +286,7 @@ footer {
         </tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td>ai_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Non-interactive CLI (scan, query, bench, test, cost, &hellip;)</td></tr>
+        <tr><td>1</td><td>ai_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Non-interactive CLI (scan, query, bench, test, cost, verify, research, quality, &hellip;)</td></tr>
         <tr><td>2</td><td>ai_assistant_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Interactive REPL (chat-style)</td></tr>
         <tr><td>3</td><td>ai_assistant_server</td><td>Server</td><td class="feat">full</td><td>HTTP + MCP server</td></tr>
         <tr><td>4</td><td>ai_assistant_standalone</td><td>Server</td><td class="feat">full, server-axum</td><td>Single-binary service (HTTP only)</td></tr>
@@ -318,12 +318,22 @@ footer {
 
     <div class="group">
       <h4>ai_cli</h4>
-      <p>Non-interactive CLI for scripting, CI/CD, and one-shot queries. Ships with ten subcommands including the new V77 <code>cost</code> subcommand.</p>
+      <p>Non-interactive CLI for scripting, CI/CD, and one-shot queries. Ships with thirteen subcommands including the V77 <code>cost</code> subcommand and three new V88 subcommands.</p>
       <span class="code-label bash">bash</span>
 <pre>cargo run --bin ai_cli -- scan
 cargo run --bin ai_cli -- query "What is Rust?"
-cargo run --bin ai_cli --features full -- cost report --snapshot cost.json</pre>
-      <p>Subcommands: <code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code>, <code>help</code>.</p>
+cargo run --bin ai_cli --features full -- cost report --snapshot cost.json
+cargo run --bin ai_cli --features full -- verify "Is Rust memory-safe?" --strategy cove --quality-gates
+cargo run --bin ai_cli --features research -- research "transformer attention" --providers arxiv --bibtex
+cargo run --bin ai_cli --features full -- quality gates list</pre>
+      <p>Subcommands: <code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code>, <code>verify</code>, <code>research</code>, <code>quality</code>, <code>help</code>.</p>
+
+      <p><strong>New in V88:</strong></p>
+      <ul>
+        <li><code>verify</code> &mdash; One-shot query with anti-hallucination pipeline (<code>--strategy</code>, <code>--faithfulness</code>, <code>--cove</code>, <code>--quality-gates</code>).</li>
+        <li><code>research</code> &mdash; Search academic databases (requires <code>research</code> feature: <code>--providers</code>, <code>--max-results</code>, <code>--bibtex</code>, <code>--review</code>).</li>
+        <li><code>quality</code> &mdash; Inspect or run quality gates (<code>gates list</code>, <code>gates check</code>).</li>
+      </ul>
 
       <h4>ai_assistant_cli</h4>
       <p>Interactive terminal REPL. Good for exploring models without leaving the terminal.</p>
@@ -338,7 +348,7 @@ cargo run --bin ai_cli --features full -- cost report --snapshot cost.json</pre>
 
     <div class="group">
       <h4>ai_assistant_server</h4>
-      <p>Reference HTTP + MCP server. Exposes chat, RAG, tools, and 40+ MCP tools. Requires <code>full</code>.</p>
+      <p>Reference HTTP + MCP server. Exposes chat, RAG, tools, and 49+ MCP tools. Requires <code>full</code>.</p>
 
       <h4>ai_assistant_standalone</h4>
       <p>A trimmed-down, single-binary service focused on HTTP. Good default for <code>systemd</code>-managed deployments.</p>
@@ -522,6 +532,15 @@ cargo run --bin ai_jobs --features scheduler -- run       examples/jobs.json</pr
     <div class="group">
       <h4>ai_test_harness</h4>
       <p>Multi-category test harness used by CI and by local developers to run feature-gated integration tests without having to remember every <code>cargo test</code> incantation. Requires <code>full</code> + <code>browser</code> (for crawl policy tests).</p>
+
+      <p><strong>New V88 test categories:</strong></p>
+      <ul>
+        <li><code>anti-hallucination</code> &mdash; 3 tests (pipeline correctness, strategy dispatch, output validation).</li>
+        <li><code>quality-gates</code> &mdash; 4 tests (gate registration, threshold enforcement, report generation, CLI integration).</li>
+        <li><code>faithfulness</code> &mdash; 2 tests (scoring accuracy, source attribution).</li>
+        <li><code>verification</code> &mdash; 2 tests (claim extraction, evidence matching).</li>
+        <li><code>research</code> &mdash; 4 tests (provider query, BibTeX export, result ranking, review mode). Gated behind <code>research</code> feature.</li>
+      </ul>
     </div>
   </div>
 </section>

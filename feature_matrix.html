@@ -766,7 +766,7 @@
 <body>
 
 <h1>AI Assistant &mdash; Matriz Casos de Uso vs Tecnolog&iacute;as</h1>
-<p class="subtitle">v29 (2026-03-04) &mdash; 7,492 tests | 42 benchmarks | 51 examples | 360 source files | 0 warnings &mdash; Haz clic en cualquier celda para editarla. &bull; <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub</a></p>
+<p class="subtitle">v29 (2026-03-04) &mdash; 6,095 tests | 42 benchmarks | 51 examples | 369 source files | 0 warnings &mdash; Haz clic en cualquier celda para editarla. &bull; <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub</a></p>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:var(--core)"></div>Core (siempre activo)</div>
@@ -970,6 +970,7 @@
     <tr><td><code>prompt-signatures</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
     <tr><td><code>a2a</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
     <tr><td><code>advanced-memory</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
+    <tr><td><code>research</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
   </table>
 
   <h2>Historial de versiones</h2>
@@ -1217,6 +1218,18 @@ const GROUPS = [
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['rag_chat','kpkg','autonomous'],
         notes: 'Feature flag rag. MultiModalRetriever, MultiModalPipeline, ImageCaptionExtractor, ModalityType (Text/Image/Audio/Video/Table). Cross-modal retrieval and fusion. 15 tests.' },
+      { tech: 'Academic Search APIs (arXiv, Semantic Scholar, PubMed)', flag: 'research',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','agent_tools'],
+        notes: 'Feature flag research. Integrated academic search: arXiv API, Semantic Scholar API, PubMed/NCBI API. Unified query interface across all three sources. No equivalent in LangChain/LlamaIndex.' },
+      { tech: 'BibTeX Parser/Generator', flag: 'research',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous'],
+        notes: 'Feature flag research. Full BibTeX parsing and generation for academic citations. No equivalent in LangChain/LlamaIndex.' },
+      { tech: 'Literature Review Pipeline', flag: 'research',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','agent_tools'],
+        notes: 'Feature flag research. End-to-end literature review: search, filter, summarize, cite. No equivalent in LangChain/LlamaIndex.' },
     ]
   },
   {
@@ -1581,6 +1594,26 @@ const GROUPS = [
         cells: { basic_chat:'available', rag_chat:'available', kpkg:'available', multi_user:'available', agent_tools:'available', autonomous:'available', multi_agent:'available', http_server:'available', distributed:'available', p2p:'available' },
         typical: ['autonomous','http_server','multi_user'],
         notes: 'Siempre compilado. Peak hours data-driven, moving_average, detect_anomalies. Predicción de carga y detección de anomalías en métricas.' },
+      { tech: 'Anti-Hallucination Pipeline', flag: 'eval',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','multi_agent','http_server'],
+        notes: 'Feature flag eval. 7 strategies with quality gates: claim extraction, source verification, confidence calibration, chain-of-verification, faithfulness scoring, abstention, self-consistency. LangChain: Partial. LlamaIndex: No.' },
+      { tech: 'Calibrated Abstention', flag: 'eval',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','multi_agent'],
+        notes: 'Feature flag eval. LLM refuses to answer when confidence is below threshold rather than hallucinating. LangChain: No. LlamaIndex: No.' },
+      { tech: 'Faithfulness Scoring (NLI)', flag: 'eval',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','multi_agent'],
+        notes: 'Feature flag eval. Faithfulness scoring via word overlap + LLM-based natural language inference. Verifies response fidelity against source documents. LangChain: Partial. LlamaIndex: Partial.' },
+      { tech: 'Chain-of-Verification', flag: 'eval',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','multi_agent'],
+        notes: 'Feature flag eval. Multi-step verification: generate answer, plan verification questions, independently answer each, produce verified final response. LangChain: No. LlamaIndex: No.' },
+      { tech: 'Quality Gates', flag: 'eval',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['rag_chat','autonomous','multi_agent','http_server'],
+        notes: 'Feature flag eval. 5 metrics (faithfulness, relevance, coherence, completeness, safety) with configurable thresholds and 3 severity levels: fail, warn, log. LangChain: No. LlamaIndex: No.' },
     ]
   },
   {

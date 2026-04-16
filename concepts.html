@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (268 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (275 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">268 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">275 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -751,7 +751,14 @@ body {
 <a href="#concept-265" class="nav-item" data-num="265">265. CostDashboardSnapshot</a>
 <a href="#concept-266" class="nav-item" data-num="266">266. Cost Projection API</a>
 <a href="#concept-267" class="nav-item" data-num="267">267. validate_cost Defense</a>
-<a href="#concept-268" class="nav-item" data-num="268">268. MCP Cost Tools</a></div>
+<a href="#concept-268" class="nav-item" data-num="268">268. MCP Cost Tools</a>
+<a href="#concept-269" class="nav-item" data-num="269">269. Anti-Hallucination Pipeline</a>
+<a href="#concept-270" class="nav-item" data-num="270">270. Calibrated Abstention</a>
+<a href="#concept-271" class="nav-item" data-num="271">271. Faithfulness Scoring</a>
+<a href="#concept-272" class="nav-item" data-num="272">272. Chain-of-Verification (CoVe)</a>
+<a href="#concept-273" class="nav-item" data-num="273">273. Quality Gates</a>
+<a href="#concept-274" class="nav-item" data-num="274">274. Academic Search</a>
+<a href="#concept-275" class="nav-item" data-num="275">275. Literature Review Pipeline</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Distributed<span class="chevron"></span></div>
@@ -5184,6 +5191,48 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">268</span>MCP Cost Tools (Read-Only, Aggregated)</h3>
 <div class="card-badges"><span class="badge badge-cat">MCP</span><span class="badge badge-ver">V75</span></div></div>
 <div class="card-body"><p><code>register_cost_tools()</code> exposes 3 MCP tools &mdash; <code>cost_report</code>, <code>cost_budget_status</code>, <code>cost_savings_summary</code> &mdash; all annotated with <code>read_only_hint: true</code>. Returns only aggregated data (never per-request entries) to prevent leaking spending patterns to untrusted clients.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-269" data-num="269" data-title="Anti-Hallucination Pipeline" data-category="Quality &amp; Safety">
+<div class="card-header"><h3><span class="concept-num">269</span>Anti-Hallucination Pipeline: Strategy-Based Claim Processing</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>Pipeline with 7 strategies (Omit, Mark, Warn, Footnote, VerifyThenMark, VerifyThenOmit, Ask) for handling ungrounded claims. Decomposes responses into atomic claims, scores each for groundedness, applies configured strategy.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-270" data-num="270" data-title="Calibrated Abstention" data-category="Quality &amp; Safety">
+<div class="card-header"><h3><span class="concept-num">270</span>Calibrated Abstention</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>When confidence &lt; threshold (default 0.3), refuses to answer instead of guessing. AbstentionGuard in guardrail pipeline. Auto-temperature forces low temp for factual queries.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-271" data-num="271" data-title="Faithfulness Scoring" data-category="Quality &amp; Safety">
+<div class="card-header"><h3><span class="concept-num">271</span>Faithfulness Scoring</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>NLI-based scoring with WordOverlap (zero-cost) and LlmNli methods. Verdicts: Entailed, Contradicted, Neutral. Grounded generation anchors sentences to source chunks.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-272" data-num="272" data-title="Chain-of-Verification (CoVe)" data-category="Quality &amp; Safety">
+<div class="card-header"><h3><span class="concept-num">272</span>Chain-of-Verification (CoVe)</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>Self-correcting pipeline: generate &rarr; extract claims &rarr; generate verification questions &rarr; answer independently &rarr; compare &rarr; correct. Three correction modes: Replace, Annotate, Footnote.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-273" data-num="273" data-title="Quality Gates" data-category="Quality &amp; Safety">
+<div class="card-header"><h3><span class="concept-num">273</span>Quality Gates</h3>
+<div class="card-badges"><span class="badge badge-cat">Quality &amp; Safety</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>Configurable thresholds on 5 metrics (Faithfulness, Confidence, GroundingRatio, ConsistencyScore, CitationCoverage) with Fail/Warn/Log actions.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-274" data-num="274" data-title="Academic Search" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">274</span>Academic Search</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>Unified multi-provider trait for arXiv, Semantic Scholar, PubMed with per-provider rate limiting. <code>AcademicPaper</code> struct normalizes results.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-275" data-num="275" data-title="Literature Review Pipeline" data-category="RAG">
+<div class="card-header"><h3><span class="concept-num">275</span>Literature Review Pipeline</h3>
+<div class="card-badges"><span class="badge badge-cat">RAG</span><span class="badge badge-ver">V77</span></div></div>
+<div class="card-body"><p>Automated search &rarr; filter &rarr; synthesize pipeline with 4 styles (Narrative, Systematic, Annotated, Comparative) and 5 bibliography formats.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
