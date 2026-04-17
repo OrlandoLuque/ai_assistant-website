@@ -326,6 +326,7 @@ footer {
 <nav>
   <div class="container">
     <span class="nav-brand">ai_assistant</span>
+    <a href="#easy">Easy to Use</a>
     <a href="#try-it">Try It</a>
     <a href="#use-cases">Use Cases</a>
     <a href="#advantages">Advantages</a>
@@ -351,9 +352,6 @@ footer {
       No Python. No Node. No Docker compose with 12 services.
       Just <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:0.85em;">cargo build --release</code> and deploy.
     </p>
-    <p class="sub-tagline" style="margin-top: 10px; font-size: 0.92rem; color: var(--green);">
-      Designed to be easy: one-command verification, one-command research, copy-paste recipes for every use case.
-    </p>
     <div class="stat-row">
       <div class="stat-badge"><span class="num">423K+</span><span class="label">Lines of Rust</span></div>
       <div class="stat-badge"><span class="num">369</span><span class="label">Source Files</span></div>
@@ -369,6 +367,75 @@ footer {
       loosely wired, or tested only at a surface level. A comprehensive review is pending.
       Use at your own risk.
     </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ EASY TO USE ══════════════ -->
+<section id="easy" style="padding: 48px 0;">
+  <div class="container">
+    <h2 class="section-title">Easy to Use</h2>
+    <p class="section-sub">
+      Complex AI infrastructure, simple interface. Every feature is accessible
+      with a single command or a few lines of code.
+    </p>
+
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+      <div class="card" style="border-top: 3px solid var(--green);">
+        <h3 style="color: var(--green); margin-bottom: 12px;">Chat in 10 Seconds</h3>
+        <p style="margin-bottom: 12px;">Download, run, chat. No config files, no setup wizards, no API keys needed.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_cli --provider ollama
+&gt; What is Rust?
+Rust is a systems programming language...</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--red);">
+        <h3 style="color: var(--red); margin-bottom: 12px;">Verify Any Claim</h3>
+        <p style="margin-bottom: 12px;">One command to fact-check LLM output. Seven strategies, zero config required.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli verify "The Earth is 4.5 billion years old" \
+  --strategy mark --faithfulness</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--cyan);">
+        <h3 style="color: var(--cyan); margin-bottom: 12px;">Research Any Topic</h3>
+        <p style="margin-bottom: 12px;">Search arXiv, Semantic Scholar, PubMed. Get a literature review with BibTeX.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli research "transformer attention" \
+  --providers arxiv,scholar --bibtex</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--accent);">
+        <h3 style="color: var(--accent); margin-bottom: 12px;">HTTP API for Any Language</h3>
+        <p style="margin-bottom: 12px;">Start the server, use it from Python, Node.js, curl &mdash; OpenAI SDK compatible.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_server  # starts on :8090
+
+curl localhost:8090/chat -d \
+  '{"messages":[{"role":"user","content":"Hi!"}]}'</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--yellow);">
+        <h3 style="color: var(--yellow); margin-bottom: 12px;">Desktop GUI</h3>
+        <p style="margin-bottom: 12px;">No terminal needed. A native desktop app with chat, model scanning, and RAG.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_gui
+# Opens a desktop window with chat interface,
+# provider auto-detection, and model selection.</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--accent2);">
+        <h3 style="color: var(--accent2); margin-bottom: 12px;">Guided Setup</h3>
+        <p style="margin-bottom: 12px;">Don't know where to start? The setup wizard auto-detects providers and walks you through.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_setup
+# Scans for Ollama, LM Studio, cloud APIs.
+# Writes config. You're ready in 30 seconds.</code></pre>
+      </div>
+
+    </div>
+
+    <p style="text-align: center; margin-top: 24px; font-size: 0.92rem; color: var(--text-dim);">
+      Every feature has copy-paste examples in the
+      <a href="quickstart.html">Quickstart</a>,
+      <a href="guide_anti_hallucination.html">Anti-Hallucination Guide</a>, and
+      <a href="guide_research.html">Research Guide</a>.
+    </p>
   </div>
 </section>
 
@@ -399,53 +466,53 @@ footer {
       The full project (~423K LoC, RAG, multi-agent, distributed, autonomous, etc.) is on GitHub.
     </p>
 
-    <h3 style="margin-top:40px; font-size:1.1rem; color:var(--text);">Included Binaries <span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">(full project &mdash; GitHub / Releases)</span></h3>
+    <h3 style="margin-top:40px; font-size:1.1rem; color:var(--text);">6 of 20 Included Binaries <span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">&mdash; <a href="binaries.html">see all 20 &rarr;</a></span></h3>
     <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">
-      These binaries are part of the full project. Download them from
+      The full project includes 20 ready-to-run executables. Download them from
       <a href="https://github.com/OrlandoLuque/ai_assistant/releases">GitHub Releases</a>
       or build from source with <code>cargo build --release</code>.
     </p>
     <div class="link-grid">
-      <div class="link-card" style="border-color: var(--pink);">
-        <img class="icon-img" src="favicons/home.svg" alt="">
-        <div class="info">
-          <h4>ai_cli</h4>
-          <p>Power-user CLI with diagnostics. Structured logging, diagnostic commands, and advanced debugging tools.</p>
-        </div>
-      </div>
       <div class="link-card" style="border-color: var(--green);">
         <img class="icon-img" src="favicons/cli.svg" alt="">
         <div class="info">
           <h4>ai_assistant_cli</h4>
-          <p>Interactive REPL with auto-detection. Type a question, get an answer. Supports /models, /history, /save, /load.</p>
+          <p>Type a question, get an answer. Interactive chat with auto-detection &mdash; no config needed. The fastest way to try ai_assistant.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--pink);">
+        <img class="icon-img" src="favicons/home.svg" alt="">
+        <div class="info">
+          <h4>ai_cli</h4>
+          <p>One-command operations: <code>verify</code> claims, <code>research</code> papers, run <code>quality</code> gates, <code>scan</code> providers. Script-friendly.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--accent);">
         <img class="icon-img" src="favicons/server.svg" alt="">
         <div class="info">
           <h4>ai_assistant_server</h4>
-          <p>HTTP API server &mdash; OpenAI-compatible drop-in replacement. Use from Python, Node.js, Go, C#, Java, curl, or any HTTP client.</p>
+          <p>Start the server, use it from any language. OpenAI-compatible API &mdash; works with Python, Node.js, curl, Continue.dev, and Cursor.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--accent2);">
         <img class="icon-img" src="favicons/gui.svg" alt="">
         <div class="info">
           <h4>ai_gui</h4>
-          <p>Desktop GUI with chat, model scanning, and .kpkg knowledge package support. Work in progress.</p>
-        </div>
-      </div>
-      <div class="link-card" style="border-color: var(--cyan);">
-        <img class="icon-img" src="favicons/kpkg.svg" alt="">
-        <div class="info">
-          <h4>kpkg_tool</h4>
-          <p>Create, inspect, and extract encrypted knowledge packages (.kpkg) for RAG-powered conversations.</p>
+          <p>Desktop GUI &mdash; no terminal needed. Chat, scan models, load knowledge packages. Point-and-click AI assistant.</p>
         </div>
       </div>
       <div class="link-card" style="border-color: var(--yellow);">
-        <img class="icon-img" src="favicons/cluster.svg" alt="">
+        <img class="icon-img" src="favicons_refined/setup_gui.svg" alt="">
         <div class="info">
-          <h4>ai_cluster_node</h4>
-          <p>Distributed cluster node &mdash; QUIC mesh networking with CRDTs. Run multiple nodes that sync automatically.</p>
+          <h4>ai_setup</h4>
+          <p>Guided setup wizard. Auto-detects Ollama, LM Studio, and cloud APIs. Writes your config in 30 seconds &mdash; zero manual editing.</p>
+        </div>
+      </div>
+      <div class="link-card" style="border-color: var(--red);">
+        <img class="icon-img" src="favicons/shield.svg" alt="">
+        <div class="info">
+          <h4>ai_proxy</h4>
+          <p>Production API gateway with rate limiting, PII detection, toxicity filtering, budget caps, and audit logging. Deploy in front of any LLM.</p>
         </div>
       </div>
     </div>
