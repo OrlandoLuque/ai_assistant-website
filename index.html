@@ -375,15 +375,98 @@ footer {
   <div class="container">
     <h2 class="section-title">Easy to Use</h2>
     <p class="section-sub">
-      Complex AI infrastructure, simple interface. Every feature is accessible
-      with a single command or a few lines of code.
+      Complex AI infrastructure, simple interface. From a desktop app to a distributed cluster,
+      every feature is accessible with a single command or a few lines of code.
     </p>
 
+    <!-- ── GUI ─────────────────────────────────────────────── -->
+    <h3 style="margin: 32px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--accent2); padding-left: 12px;">
+      Point &amp; Click &mdash; No Terminal Needed
+    </h3>
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+      <div class="card" style="border-top: 3px solid var(--accent2);">
+        <h3 style="color: var(--accent2); margin-bottom: 12px;">Desktop Assistant</h3>
+        <p style="margin-bottom: 12px;">Open the app. Chat with any LLM. Load documents for RAG. Use multi-agent workflows. All from a native desktop window &mdash; zero terminal knowledge required.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_gui
+# Auto-detects providers, scans models.
+# Chat, load .kpkg knowledge packs, switch models.
+# Everything point-and-click.</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--yellow);">
+        <h3 style="color: var(--yellow); margin-bottom: 12px;">Guided Setup Wizard</h3>
+        <p style="margin-bottom: 12px;">Don't know where to start? The wizard auto-detects Ollama, LM Studio, cloud APIs &mdash; writes your config file in 30 seconds.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_setup
+Scanning... found Ollama (localhost:11434)
+Scanning... found LM Studio (localhost:1234)
+Config written to ai_config.json &mdash; done!</code></pre>
+      </div>
+
+    </div>
+
+    <!-- ── ARCHITECTURE / SERVICES ─────────────────────────── -->
+    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--accent); padding-left: 12px;">
+      Architecture &mdash; Mount a Service, Connect Your Apps
+    </h3>
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+      <div class="card" style="border-top: 3px solid var(--accent);">
+        <h3 style="color: var(--accent); margin-bottom: 12px;">OpenAI-Compatible Server</h3>
+        <p style="margin-bottom: 12px;">One command starts an HTTP server that speaks the OpenAI API. Point any existing app, SDK, or tool at it &mdash; it just works.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_server  # starts on :8090
+
+# Any OpenAI-compatible client works:
+# Continue.dev, Cursor, LangChain, your own app.
+# Just change the base URL to localhost:8090.</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--green);">
+        <h3 style="color: var(--green); margin-bottom: 12px;">Use From Java, Python, Node&hellip;</h3>
+        <p style="margin-bottom: 12px;">No Rust required in your project. Start the server, call it via HTTP from any language. A Java developer can use ai_assistant without touching Cargo.toml.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Python — just pip install openai
+from openai import OpenAI
+client = OpenAI(
+    base_url="http://localhost:8090/v1",
+    api_key="not-needed"  # local, no key
+)
+client.chat.completions.create(
+    model="llama3.2",
+    messages=[{"role":"user","content":"Hi!"}]
+)</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--cyan);">
+        <h3 style="color: var(--cyan); margin-bottom: 12px;">Distributed Cluster</h3>
+        <p style="margin-bottom: 12px;">Scale horizontally. Start nodes on different machines &mdash; they discover each other, sync state with CRDTs, and share knowledge via QUIC/TLS 1.3. No Redis, no Kafka.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Node 1 — start the first node
+ai_cluster_node --node-id n1 --port 8091
+
+# Node 2 — joins automatically
+ai_cluster_node --node-id n2 --port 8092 \
+  --bootstrap 192.168.1.10:8091</code></pre>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--pink);">
+        <h3 style="color: var(--pink); margin-bottom: 12px;">Production Gateway</h3>
+        <p style="margin-bottom: 12px;">Put <code>ai_proxy</code> in front of any LLM. Get rate limiting, PII detection, toxicity filtering, budget caps, and audit logging out of the box.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_proxy --upstream http://localhost:8090
+# All requests flow through the proxy:
+# rate limit, PII redaction, budget cap,
+# toxicity filter, full audit log.</code></pre>
+      </div>
+
+    </div>
+
+    <!-- ── CONSOLE ─────────────────────────────────────────── -->
+    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--green); padding-left: 12px;">
+      Console &mdash; One Command Does It
+    </h3>
     <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
 
       <div class="card" style="border-top: 3px solid var(--green);">
-        <h3 style="color: var(--green); margin-bottom: 12px;">Chat in 10 Seconds</h3>
-        <p style="margin-bottom: 12px;">Download, run, chat. Auto-detects Ollama, LM Studio, or any running provider &mdash; no config needed.</p>
+        <h3 style="color: var(--green); margin-bottom: 12px;">Interactive Chat</h3>
+        <p style="margin-bottom: 12px;">Auto-detects all running providers. Type a question, get an answer. History, sessions, model switching &mdash; all built in.</p>
         <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_cli
 Scanning for LLM providers... found Ollama (3 models)
 &gt; What is Rust?
@@ -392,46 +475,54 @@ Rust is a systems programming language...</code></pre>
 
       <div class="card" style="border-top: 3px solid var(--red);">
         <h3 style="color: var(--red); margin-bottom: 12px;">Verify Any Claim</h3>
-        <p style="margin-bottom: 12px;">One command to fact-check LLM output. Seven strategies, zero config required.</p>
+        <p style="margin-bottom: 12px;">Fact-check any LLM output. Seven strategies, faithfulness scoring, quality gates &mdash; one command.</p>
         <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli verify "The Earth is 4.5 billion years old" \
   --strategy mark --faithfulness</code></pre>
       </div>
 
       <div class="card" style="border-top: 3px solid var(--cyan);">
-        <h3 style="color: var(--cyan); margin-bottom: 12px;">Research Any Topic</h3>
-        <p style="margin-bottom: 12px;">Search arXiv, Semantic Scholar, PubMed. Get a literature review with BibTeX.</p>
+        <h3 style="color: var(--cyan); margin-bottom: 12px;">Research Papers</h3>
+        <p style="margin-bottom: 12px;">Search arXiv, Semantic Scholar, PubMed in one command. Get a literature review with BibTeX citations.</p>
         <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli research "transformer attention" \
   --providers arxiv,scholar --bibtex</code></pre>
       </div>
 
-      <div class="card" style="border-top: 3px solid var(--accent);">
-        <h3 style="color: var(--accent); margin-bottom: 12px;">HTTP API for Any Language</h3>
-        <p style="margin-bottom: 12px;">Start the server, use it from Python, Node.js, curl &mdash; OpenAI SDK compatible.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_server  # starts on :8090
-
-curl localhost:8090/chat -d \
-  '{"messages":[{"role":"user","content":"Hi!"}]}'</code></pre>
-      </div>
-
       <div class="card" style="border-top: 3px solid var(--yellow);">
-        <h3 style="color: var(--yellow); margin-bottom: 12px;">Desktop GUI</h3>
-        <p style="margin-bottom: 12px;">No terminal needed. A native desktop app with chat, model scanning, and RAG.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_gui
-# Opens a desktop window with chat interface,
-# provider auto-detection, and model selection.</code></pre>
-      </div>
+        <h3 style="color: var(--yellow); margin-bottom: 12px;">Smart Configuration</h3>
+        <p style="margin-bottom: 12px;"><code>butler</code> scans your environment and gives 37 tailored recommendations. <code>ai_optimize</code> tests configurations with a multi-armed bandit to find the best one automatically.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Butler: environment scan + recommendations
+ai_cli butler
 
-      <div class="card" style="border-top: 3px solid var(--accent2);">
-        <h3 style="color: var(--accent2); margin-bottom: 12px;">Guided Setup</h3>
-        <p style="margin-bottom: 12px;">Don't know where to start? The setup wizard auto-detects providers and walks you through.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_setup
-# Scans for Ollama, LM Studio, cloud APIs.
-# Writes config. You're ready in 30 seconds.</code></pre>
+# Optimizer: auto-tune your config (10 rounds)
+ai_optimize run --rounds 10
+ai_optimize report --html results.html</code></pre>
       </div>
 
     </div>
 
-    <p style="text-align: center; margin-top: 24px; font-size: 0.92rem; color: var(--text-dim);">
+    <!-- ── PROGRAMMING ─────────────────────────────────────── -->
+    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--pink); padding-left: 12px;">
+      Code &mdash; Rust Library, Full Control
+    </h3>
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+      <div class="card" style="border-top: 3px solid var(--pink);">
+        <h3 style="color: var(--pink); margin-bottom: 12px;">Direct Rust Integration</h3>
+        <p style="margin-bottom: 12px;">Add <code>ai_assistant</code> as a dependency. Full API access to every module: providers, RAG, agents, verification, research. Compile-time type safety, zero runtime overhead.</p>
+        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>use ai_assistant::{AiAssistant, AiConfig, AiProvider};
+
+let mut ai = AiAssistant::new();
+ai.load_config(AiConfig {
+    provider: AiProvider::Ollama,
+    selected_model: "llama3.2".into(),
+    ..Default::default()
+});
+ai.send_message_simple("What is Rust?".into());</code></pre>
+      </div>
+
+    </div>
+
+    <p style="text-align: center; margin-top: 28px; font-size: 0.92rem; color: var(--text-dim);">
       Every feature has copy-paste examples in the
       <a href="quickstart.html">Quickstart</a>,
       <a href="guide_anti_hallucination.html">Anti-Hallucination Guide</a>, and
