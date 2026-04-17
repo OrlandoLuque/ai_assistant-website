@@ -371,145 +371,111 @@ footer {
 </section>
 
 <!-- ════════════════════════ EASY TO USE ══════════════ -->
-<section id="easy" style="padding: 48px 0;">
+<section id="easy" style="padding: 64px 0;">
   <div class="container">
-    <h2 class="section-title">Easy to Use</h2>
+    <h2 class="section-title">What Will You Build?</h2>
     <p class="section-sub">
-      Complex AI infrastructure, simple interface. From a desktop app to a distributed cluster,
-      every feature is accessible with a single command or a few lines of code.
+      One crate, many paths. Find yours.
     </p>
 
-    <!-- ── GUI ─────────────────────────────────────────────── -->
-    <h3 style="margin: 32px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--accent2); padding-left: 12px;">
-      Point &amp; Click &mdash; No Terminal Needed
-    </h3>
-    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 32px;">
 
-      <div class="card" style="border-top: 3px solid var(--accent2);">
-        <h3 style="color: var(--accent2); margin-bottom: 12px;">Desktop Assistant</h3>
-        <p style="margin-bottom: 12px;">Open the app. Chat with any LLM. Load documents for RAG. Use multi-agent workflows. All from a native desktop window &mdash; zero terminal knowledge required.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_gui
-# Auto-detects providers, scans models.
-# Chat, load .kpkg knowledge packs, switch models.
-# Everything point-and-click.</code></pre>
+      <!-- ── PERSONA 1: Just want to chat ──────────────────── -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--green); transition: border-color .2s;">
+        <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 700; margin-bottom: 8px;">I just want to chat with an AI</p>
+        <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Open the app and talk</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+          Double-click <strong>ai_gui</strong>. It auto-detects your local LLM (Ollama, LM Studio),
+          shows available models, and you start chatting. No terminal, no config files, no API keys.
+          Load documents for context, switch models mid-conversation, save sessions.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(16,185,129,0.12); color: var(--green);">Zero config</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(16,185,129,0.12); color: var(--green);">Desktop GUI</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(16,185,129,0.12); color: var(--green);">100% private</span>
+        </div>
+        <p style="margin-top: 16px; font-size: 0.82rem;">
+          Prefer the terminal? &rarr; <code style="font-size: 0.82em;">ai_assistant_cli</code> auto-detects providers too.
+        </p>
       </div>
 
-      <div class="card" style="border-top: 3px solid var(--yellow);">
-        <h3 style="color: var(--yellow); margin-bottom: 12px;">Guided Setup Wizard</h3>
-        <p style="margin-bottom: 12px;">Don't know where to start? The wizard auto-detects Ollama, LM Studio, cloud APIs &mdash; writes your config file in 30 seconds.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_setup
-Scanning... found Ollama (localhost:11434)
-Scanning... found LM Studio (localhost:1234)
-Config written to ai_config.json &mdash; done!</code></pre>
-      </div>
-
-    </div>
-
-    <!-- ── ARCHITECTURE / SERVICES ─────────────────────────── -->
-    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--accent); padding-left: 12px;">
-      Architecture &mdash; Mount a Service, Connect Your Apps
-    </h3>
-    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-
-      <div class="card" style="border-top: 3px solid var(--accent);">
-        <h3 style="color: var(--accent); margin-bottom: 12px;">OpenAI-Compatible Server</h3>
-        <p style="margin-bottom: 12px;">One command starts an HTTP server that speaks the OpenAI API. Point any existing app, SDK, or tool at it &mdash; it just works.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_server  # starts on :8090
-
-# Any OpenAI-compatible client works:
-# Continue.dev, Cursor, LangChain, your own app.
-# Just change the base URL to localhost:8090.</code></pre>
-      </div>
-
-      <div class="card" style="border-top: 3px solid var(--green);">
-        <h3 style="color: var(--green); margin-bottom: 12px;">Use From Java, Python, Node&hellip;</h3>
-        <p style="margin-bottom: 12px;">No Rust required in your project. Start the server, call it via HTTP from any language. A Java developer can use ai_assistant without touching Cargo.toml.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Python — just pip install openai
+      <!-- ── PERSONA 2: Building an app ────────────────────── -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--accent); transition: border-color .2s;">
+        <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 8px;">I'm building an app</p>
+        <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Start the server, call it from any language</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+          Run <strong>ai_assistant_server</strong> &mdash; you get an OpenAI-compatible HTTP API on port 8090.
+          Use it from Python, Java, Node.js, Go, C#, curl, or any HTTP client.
+          No Rust in your project. Just change <code>base_url</code> to <code>localhost:8090</code> in your existing OpenAI SDK code.
+        </p>
+        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Python — works with the standard OpenAI SDK
 from openai import OpenAI
-client = OpenAI(
-    base_url="http://localhost:8090/v1",
-    api_key="not-needed"  # local, no key
-)
-client.chat.completions.create(
+client = OpenAI(base_url="http://localhost:8090/v1",
+                api_key="not-needed")
+r = client.chat.completions.create(
     model="llama3.2",
-    messages=[{"role":"user","content":"Hi!"}]
-)</code></pre>
+    messages=[{"role":"user","content":"Hello!"}])
+</code></pre>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">OpenAI-compatible</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">Any language</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">SSE streaming</span>
+        </div>
       </div>
 
-      <div class="card" style="border-top: 3px solid var(--cyan);">
-        <h3 style="color: var(--cyan); margin-bottom: 12px;">Distributed Cluster</h3>
-        <p style="margin-bottom: 12px;">Scale horizontally. Start nodes on different machines &mdash; they discover each other, sync state with CRDTs, and share knowledge via QUIC/TLS 1.3. No Redis, no Kafka.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Node 1 — start the first node
-ai_cluster_node --node-id n1 --port 8091
-
-# Node 2 — joins automatically
-ai_cluster_node --node-id n2 --port 8092 \
-  --bootstrap 192.168.1.10:8091</code></pre>
+      <!-- ── PERSONA 3: Researcher ─────────────────────────── -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--cyan); transition: border-color .2s;">
+        <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cyan); font-weight: 700; margin-bottom: 8px;">I'm a researcher</p>
+        <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Search papers, verify claims, export BibTeX</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+          Search arXiv, Semantic Scholar, and PubMed with one command. Generate a verified literature
+          review &mdash; the anti-hallucination pipeline checks every claim against the source papers.
+          Export citations as BibTeX. No other framework does this.
+        </p>
+        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Search + literature review + verified + BibTeX
+ai_cli research "RLHF alignment" \
+  --providers arxiv,scholar --review \
+  --faithfulness --bibtex</code></pre>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">3 academic APIs</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">Anti-hallucination</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">BibTeX export</span>
+        </div>
+        <p style="margin-top: 16px; font-size: 0.82rem;">
+          <a href="guide_research.html">Research Guide &rarr;</a> &nbsp;|&nbsp;
+          <a href="guide_anti_hallucination.html">Anti-Hallucination Guide &rarr;</a>
+        </p>
       </div>
 
-      <div class="card" style="border-top: 3px solid var(--pink);">
-        <h3 style="color: var(--pink); margin-bottom: 12px;">Production Gateway</h3>
-        <p style="margin-bottom: 12px;">Put <code>ai_proxy</code> in front of any LLM. Get rate limiting, PII detection, toxicity filtering, budget caps, and audit logging out of the box.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_proxy --upstream http://localhost:8090
-# All requests flow through the proxy:
-# rate limit, PII redaction, budget cap,
-# toxicity filter, full audit log.</code></pre>
+      <!-- ── PERSONA 4: Team / Infra lead ──────────────────── -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--pink); transition: border-color .2s;">
+        <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); font-weight: 700; margin-bottom: 8px;">I run infrastructure for a team</p>
+        <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Deploy, scale, and protect</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+          Put <strong>ai_proxy</strong> in front for rate limiting, PII redaction, budget caps, and audit logging.
+          Scale with <strong>ai_cluster_node</strong> &mdash; nodes auto-discover, sync via CRDTs over QUIC/TLS 1.3.
+          Let <strong>butler</strong> scan your environment and <strong>ai_optimize</strong> auto-tune your config with a multi-armed bandit.
+        </p>
+        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Gateway with security + auto-tuned config
+ai_proxy --upstream localhost:8090
+ai_optimize run --rounds 10</code></pre>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">RBAC + PII + audit</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-scaling cluster</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-tuning</span>
+        </div>
       </div>
 
-    </div>
-
-    <!-- ── CONSOLE ─────────────────────────────────────────── -->
-    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--green); padding-left: 12px;">
-      Console &mdash; One Command Does It
-    </h3>
-    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-
-      <div class="card" style="border-top: 3px solid var(--green);">
-        <h3 style="color: var(--green); margin-bottom: 12px;">Interactive Chat</h3>
-        <p style="margin-bottom: 12px;">Auto-detects all running providers. Type a question, get an answer. History, sessions, model switching &mdash; all built in.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>./ai_assistant_cli
-Scanning for LLM providers... found Ollama (3 models)
-&gt; What is Rust?
-Rust is a systems programming language...</code></pre>
-      </div>
-
-      <div class="card" style="border-top: 3px solid var(--red);">
-        <h3 style="color: var(--red); margin-bottom: 12px;">Verify Any Claim</h3>
-        <p style="margin-bottom: 12px;">Fact-check any LLM output. Seven strategies, faithfulness scoring, quality gates &mdash; one command.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli verify "The Earth is 4.5 billion years old" \
-  --strategy mark --faithfulness</code></pre>
-      </div>
-
-      <div class="card" style="border-top: 3px solid var(--cyan);">
-        <h3 style="color: var(--cyan); margin-bottom: 12px;">Research Papers</h3>
-        <p style="margin-bottom: 12px;">Search arXiv, Semantic Scholar, PubMed in one command. Get a literature review with BibTeX citations.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>ai_cli research "transformer attention" \
-  --providers arxiv,scholar --bibtex</code></pre>
-      </div>
-
-      <div class="card" style="border-top: 3px solid var(--yellow);">
-        <h3 style="color: var(--yellow); margin-bottom: 12px;">Smart Configuration</h3>
-        <p style="margin-bottom: 12px;"><code>butler</code> scans your environment and gives 37 tailored recommendations. <code>ai_optimize</code> tests configurations with a multi-armed bandit to find the best one automatically.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code># Butler: environment scan + recommendations
-ai_cli butler
-
-# Optimizer: auto-tune your config (10 rounds)
-ai_optimize run --rounds 10
-ai_optimize report --html results.html</code></pre>
-      </div>
-
-    </div>
-
-    <!-- ── PROGRAMMING ─────────────────────────────────────── -->
-    <h3 style="margin: 40px 0 16px; color: var(--text-bright); font-size: 1.05rem; border-left: 3px solid var(--pink); padding-left: 12px;">
-      Code &mdash; Rust Library, Full Control
-    </h3>
-    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-
-      <div class="card" style="border-top: 3px solid var(--pink);">
-        <h3 style="color: var(--pink); margin-bottom: 12px;">Direct Rust Integration</h3>
-        <p style="margin-bottom: 12px;">Add <code>ai_assistant</code> as a dependency. Full API access to every module: providers, RAG, agents, verification, research. Compile-time type safety, zero runtime overhead.</p>
-        <pre style="font-size: 0.82rem; margin: 0; padding: 14px; line-height: 1.5;"><code>use ai_assistant::{AiAssistant, AiConfig, AiProvider};
+      <!-- ── PERSONA 5: Rust developer ─────────────────────── -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--accent2); transition: border-color .2s;">
+        <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent2); font-weight: 700; margin-bottom: 8px;">I'm a Rust developer</p>
+        <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">One crate, 61 feature flags, full control</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+          Add <code>ai_assistant</code> to your <code>Cargo.toml</code>. Pick only the features you need &mdash;
+          providers, RAG, agents, verification, research, distributed. Compile-time dead code elimination.
+          Type-safe API. 6,095 tests. Zero <code>.unwrap()</code> in production code.
+        </p>
+        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code>use ai_assistant::{AiAssistant, AiConfig, AiProvider};
 
 let mut ai = AiAssistant::new();
 ai.load_config(AiConfig {
@@ -517,16 +483,20 @@ ai.load_config(AiConfig {
     selected_model: "llama3.2".into(),
     ..Default::default()
 });
-ai.send_message_simple("What is Rust?".into());</code></pre>
+ai.send_message_simple("Hello!".into());</code></pre>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">61 feature flags</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Type-safe</span>
+          <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Zero overhead</span>
+        </div>
       </div>
 
     </div>
 
-    <p style="text-align: center; margin-top: 28px; font-size: 0.92rem; color: var(--text-dim);">
-      Every feature has copy-paste examples in the
-      <a href="quickstart.html">Quickstart</a>,
-      <a href="guide_anti_hallucination.html">Anti-Hallucination Guide</a>, and
-      <a href="guide_research.html">Research Guide</a>.
+    <p style="text-align: center; margin-top: 32px; font-size: 0.92rem; color: var(--text-dim);">
+      Not sure where to start? Run <code style="font-size: 0.85em;">ai_setup</code> &mdash; it scans your environment,
+      detects providers, and writes your config in 30 seconds. &nbsp;
+      <a href="quickstart.html">Full Quickstart &rarr;</a>
     </p>
   </div>
 </section>
