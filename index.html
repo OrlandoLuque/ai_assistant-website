@@ -299,6 +299,28 @@ footer {
   color: var(--text-dim); border-top: 1px solid var(--border);
 }
 
+/* ── Persona cards (clickable) ────────────────────────────── */
+.persona-card {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 32px; transition: border-color .2s, transform .15s, box-shadow .2s;
+  cursor: pointer; position: relative;
+}
+.persona-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  text-decoration: none;
+  border-color: var(--border);
+}
+[data-theme="light"] .persona-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.persona-card:hover .persona-cta { opacity: 1; }
+.persona-cta {
+  display: inline-block; margin-top: 16px; font-size: 0.85rem; font-weight: 600;
+  opacity: 0.7; transition: opacity .2s;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero h1 { font-size: 1.8rem; }
@@ -381,7 +403,7 @@ footer {
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 32px;">
 
       <!-- ── PERSONA 1: Just want to chat ──────────────────── -->
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--green); transition: border-color .2s;">
+      <a href="quickstart.html" class="persona-card" style="border-top: 4px solid var(--green);">
         <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 700; margin-bottom: 8px;">I just want to chat with an AI</p>
         <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Open the app and talk</h3>
         <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
@@ -394,13 +416,11 @@ footer {
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(16,185,129,0.12); color: var(--green);">Desktop GUI</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(16,185,129,0.12); color: var(--green);">100% private</span>
         </div>
-        <p style="margin-top: 16px; font-size: 0.82rem;">
-          Prefer the terminal? &rarr; <code style="font-size: 0.82em;">ai_assistant_cli</code> auto-detects providers too.
-        </p>
-      </div>
+        <span class="persona-cta" style="color: var(--green);">Get started &rarr;</span>
+      </a>
 
       <!-- ── PERSONA 2: Building an app ────────────────────── -->
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--accent); transition: border-color .2s;">
+      <a href="api_reference.html" class="persona-card" style="border-top: 4px solid var(--accent);">
         <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 8px;">I'm building an app</p>
         <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Start the server, call it from any language</h3>
         <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
@@ -421,10 +441,11 @@ r = client.chat.completions.create(
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">Any language</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">SSE streaming</span>
         </div>
-      </div>
+        <span class="persona-cta" style="color: var(--accent);">API Reference &rarr;</span>
+      </a>
 
       <!-- ── PERSONA 3: Researcher ─────────────────────────── -->
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--cyan); transition: border-color .2s;">
+      <a href="guide_research.html" class="persona-card" style="border-top: 4px solid var(--cyan);">
         <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cyan); font-weight: 700; margin-bottom: 8px;">I'm a researcher</p>
         <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Search papers, verify claims, export BibTeX</h3>
         <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
@@ -441,14 +462,11 @@ ai_cli research "RLHF alignment" \
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">Anti-hallucination</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">BibTeX export</span>
         </div>
-        <p style="margin-top: 16px; font-size: 0.82rem;">
-          <a href="guide_research.html">Research Guide &rarr;</a> &nbsp;|&nbsp;
-          <a href="guide_anti_hallucination.html">Anti-Hallucination Guide &rarr;</a>
-        </p>
-      </div>
+        <span class="persona-cta" style="color: var(--cyan);">Research Guide &rarr;</span>
+      </a>
 
       <!-- ── PERSONA 4: Team / Infra lead ──────────────────── -->
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--pink); transition: border-color .2s;">
+      <a href="binaries.html" class="persona-card" style="border-top: 4px solid var(--pink);">
         <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); font-weight: 700; margin-bottom: 8px;">I run infrastructure for a team</p>
         <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">Deploy, scale, and protect</h3>
         <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
@@ -464,10 +482,11 @@ ai_optimize run --rounds 10</code></pre>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-scaling cluster</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-tuning</span>
         </div>
-      </div>
+        <span class="persona-cta" style="color: var(--pink);">Binary Catalogue &rarr;</span>
+      </a>
 
       <!-- ── PERSONA 5: Rust developer ─────────────────────── -->
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; border-top: 4px solid var(--accent2); transition: border-color .2s;">
+      <a href="developer_guide.html" class="persona-card" style="border-top: 4px solid var(--accent2);">
         <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent2); font-weight: 700; margin-bottom: 8px;">I'm a Rust developer</p>
         <h3 style="font-size: 1.2rem; color: var(--text-bright); margin-bottom: 12px;">One crate, 61 feature flags, full control</h3>
         <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
@@ -489,7 +508,8 @@ ai.send_message_simple("Hello!".into());</code></pre>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Type-safe</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Zero overhead</span>
         </div>
-      </div>
+        <span class="persona-cta" style="color: var(--accent2);">Developer Guide &rarr;</span>
+      </a>
 
     </div>
 
