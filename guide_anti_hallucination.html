@@ -122,6 +122,7 @@ code {
 .code-label.bash { background: #10b981; }
 .code-label.json { background: #f59e0b; color: #1e293b; }
 .code-label.yaml { background: #06b6d4; }
+.code-label.http { background: #3b82f6; }
 
 /* ── Step cards ───────────────────────────────────────────── */
 .step {
@@ -1145,6 +1146,93 @@ let cove = CoVeConfig {
       <strong>Defense in depth:</strong> Anti-hallucination is one layer. Combine with
       <code>security</code> feature (RBAC, PII detection, constitutional guardrails) and
       <code>eval</code> feature (evaluation suite) for comprehensive production safety.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 12. BENCHMARKS ═════════════ -->
+<section id="benchmarks">
+  <div class="container">
+    <h2 class="section-title">12. Dataset Benchmarks (V90)</h2>
+    <p class="section-sub">
+      V90 adds a harness that runs the anti-hallucination pipeline against standard
+      community datasets so your numbers are directly comparable with published model
+      cards and prior art. Zero new dependencies, zero vendored data &mdash; datasets
+      are fetched on explicit user action and cached locally.
+    </p>
+
+    <h3 style="color: var(--text-bright);">Registered benchmarks</h3>
+    <table class="flag-table" style="margin-top: 8px;">
+      <thead>
+        <tr><th>Name</th><th>Sample type</th><th>License</th><th>Opt-in</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>truthfulqa</code></td><td>QA (correct vs. incorrect references)</td><td>Apache-2.0</td><td>no</td></tr>
+        <tr><td><code>halueval_qa</code></td><td>right vs. hallucinated answer pairs</td><td>MIT</td><td>no</td></tr>
+        <tr><td><code>factscore</code></td><td>atomic-claim decomposition (bios)</td><td>MIT</td><td>no</td></tr>
+        <tr><td><code>ragas_wikiqa</code></td><td>contextual QA (question + context + answer)</td><td>Apache-2.0</td><td>no</td></tr>
+        <tr><td><code>fever</code></td><td>claim vs. evidence (Supports/Refutes/NEI)</td><td>CC-BY-SA 3.0</td><td>yes</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 8px;">Opt-in datasets require <code>--accept-license</code> on
+      download. Cache lives under <code>$CARGO_TARGET_DIR/eval_benchmarks/&lt;loader&gt;/</code>.</p>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">CLI</h3>
+    <span class="code-label bash">bash</span>
+    <pre>ai_cli benchmark list
+ai_cli benchmark info truthfulqa
+ai_cli benchmark download fever --accept-license
+
+ai_cli benchmark run truthfulqa \
+    --provider ollama --model mistral:7b-instruct --limit 50
+
+ai_cli benchmark calibrate halueval_qa \
+    --provider ollama --model llama3.2 \
+    --limit 200 --objective f1 --json</pre>
+
+    <p style="margin-top: 12px;"><code>run</code> reports total, correct, accuracy, mean
+      score, per-category breakdown, and wall-clock duration. <code>calibrate</code> adds a
+      post-hoc threshold sweep so you can see where accuracy / F1 peaks for a given model
+      without re-running inference.</p>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">HTTP &amp; MCP</h3>
+    <p>Two read-only endpoints surface the loader registry:</p>
+    <span class="code-label http">http</span>
+    <pre>GET /benchmarks             &rarr; { "total": N, "benchmarks": [...] }
+GET /benchmarks/&lt;name&gt;      &rarr; metadata, or 404
+GET /api/v1/benchmarks...   &rarr; same, versioned prefix</pre>
+
+    <p style="margin-top: 12px;">MCP exposes two tools (read-only + idempotent):</p>
+    <ul>
+      <li><code>list_benchmarks</code> &mdash; enumerate all loaders.</li>
+      <li><code>get_benchmark(name)</code> &mdash; metadata lookup; returns
+        <code>found: false</code> when absent.</li>
+    </ul>
+    <p>Register them with
+      <code>ai_assistant::mcp_protocol::register_benchmark_tools(&amp;mut server)</code>.</p>
+
+    <h3 style="margin-top: 28px; color: var(--text-bright);">Programmatic use</h3>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::eval_benchmarks::{
+    get_loader, run, sweep, default_grid, Objective, RunOptions, report,
+};
+
+let loader = get_loader("truthfulqa").unwrap();
+let path = loader.download(cache.dir_for(loader.name())?)?;
+let samples = loader.load(&amp;path, Some(100))?;
+
+let r = run(loader.name(), &amp;samples, &amp;RunOptions::default(), |prompt| {
+    my_llm_call(prompt) // Result&lt;String, String&gt;
+});
+
+println!("{}", report::to_text(&amp;r));
+let best = sweep(&amp;r, &amp;default_grid(), Objective::F1).best;
+println!("Best F1 threshold: {:.2}", best.threshold);</pre>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Calibration is post-hoc:</strong> the sweep re-partitions existing scores
+      across a 21-point grid (0.00&ndash;1.00 step 0.05), so one model run feeds many
+      threshold experiments at zero extra inference cost.
     </div>
   </div>
 </section>
