@@ -1201,6 +1201,30 @@ const CATEGORIES = [
       },
     ]
   },
+  {
+    id: 'eval-benchmarks',
+    name: 'Dataset Benchmark Tools (V90)',
+    icon: '<img class="icon-img" src="favicons/microscope.svg" alt="">',
+    feature: 'eval',
+    featureInFull: true,
+    desc: 'Read-only tools que exponen el registro de benchmarks de alucinaci\u00f3n/faithfulness (TruthfulQA, HaluEval, FActScore, RAGAS, FEVER). Registrar con register_benchmark_tools(&mut server).',
+    items: [
+      { name: 'list_benchmarks', type: 'tool',
+        desc: 'Enumerar todos los loaders registrados con metadata',
+        params: [],
+        module: 'mcp_protocol/benchmark_tools.rs',
+        notes: 'Read-only + idempotent. Devuelve {total, benchmarks: [{name, description, sample_type, license, citation, requires_opt_in}]}.'
+      },
+      { name: 'get_benchmark', type: 'tool',
+        desc: 'Metadata de un benchmark por nombre',
+        params: [
+          { name: 'name', type: 'string', required: true, desc: 'Nombre del loader (truthfulqa, halueval_qa, factscore, ragas_wikiqa, fever)' }
+        ],
+        module: 'mcp_protocol/benchmark_tools.rs',
+        notes: 'Read-only + idempotent. Devuelve {found: true, benchmark: {...}} o {found: false, error}. Sin efectos de red ni de descarga.'
+      },
+    ]
+  },
 ];
 
 // ============================================================
