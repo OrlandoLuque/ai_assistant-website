@@ -564,7 +564,8 @@ body {
 <a href="#concept-76" class="nav-item" data-num="76">76. MIPROv2</a>
 <a href="#concept-77" class="nav-item" data-num="77">77. Prompt Assertions</a>
 <a href="#concept-78" class="nav-item" data-num="78">78. LM Adapters</a>
-<a href="#concept-89" class="nav-item" data-num="89">89. Grammar-Guided Generation (GBNF)</a></div>
+<a href="#concept-89" class="nav-item" data-num="89">89. Grammar-Guided Generation (GBNF)</a>
+<a href="#concept-276" class="nav-item" data-num="276">276. Composable Prompt Fragments</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Agents &amp; Tools<span class="chevron"></span></div>
@@ -591,7 +592,12 @@ body {
 <a href="#concept-124" class="nav-item" data-num="124">124. Agent DevTools</a>
 <a href="#concept-164" class="nav-item" data-num="164">164. Butler Advisor (Optimization Guidance)</a>
 <a href="#concept-168" class="nav-item" data-num="168">168. MCP Configuration &amp; Evaluation Tools</a>
-<a href="#concept-170" class="nav-item" data-num="170">170. Routing DAG &amp; Bandit State Merging</a></div>
+<a href="#concept-170" class="nav-item" data-num="170">170. Routing DAG &amp; Bandit State Merging</a>
+<a href="#concept-277" class="nav-item" data-num="277">277. Permission-Label Adapter</a>
+<a href="#concept-278" class="nav-item" data-num="278">278. In-Crate Stall Detection</a>
+<a href="#concept-279" class="nav-item" data-num="279">279. LLM-Assisted Stall Detection</a>
+<a href="#concept-280" class="nav-item" data-num="280">280. Ephemeral Sub-Agents</a>
+<a href="#concept-281" class="nav-item" data-num="281">281. AgenticLoop Stall Auto-Integration</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Quality &amp; Safety<span class="chevron"></span></div>
@@ -816,7 +822,8 @@ body {
 <a href="#concept-106" class="nav-item" data-num="106">106. LLM-as-Judge (v2)</a>
 <a href="#concept-142" class="nav-item" data-num="142">142. Module Splitting</a>
 <a href="#concept-149" class="nav-item" data-num="149">149. Dead Code Hygiene</a>
-<a href="#concept-167" class="nav-item" data-num="167">167. Benchmark Suite Ecosystem</a></div>
+<a href="#concept-167" class="nav-item" data-num="167">167. Benchmark Suite Ecosystem</a>
+<a href="#concept-282" class="nav-item" data-num="282">282. non_exhaustive Signal Enums</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Misc<span class="chevron"></span></div>
@@ -5233,6 +5240,48 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">275</span>Literature Review Pipeline</h3>
 <div class="card-badges"><span class="badge badge-cat">RAG</span><span class="badge badge-ver">V77</span></div></div>
 <div class="card-body"><p>Automated search &rarr; filter &rarr; synthesize pipeline with 4 styles (Narrative, Systematic, Annotated, Comparative) and 5 bibliography formats.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-276" data-num="276" data-title="Composable Prompt Fragments" data-category="Prompt Engineering">
+<div class="card-header"><h3><span class="concept-num">276</span>Composable Prompt Fragments</h3>
+<div class="card-badges"><span class="badge badge-cat">Prompt Engineering</span><span class="badge badge-ver">V91</span></div></div>
+<div class="card-body"><p><code>PromptBuilder</code> assembles system prompts from named, priority-ordered <code>PromptFragment</code>s with category + platform gating. Ships 11 catalog fragments and 6 presets (<code>Minimal</code>, <code>ToolUseChatbot</code>, <code>RagAssistant</code>, <code>AgenticLoop</code>, <code>ResearchAgent</code>, <code>CodeDeveloper</code>). Deterministic output + <code>AppliedFragments</code> manifest. Behind feature <code>prompt-fragments</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-277" data-num="277" data-title="Permission-Label Adapter" data-category="Agents &amp; Tools">
+<div class="card-header"><h3><span class="concept-num">277</span>Claude Code Permission-Label Adapter</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents &amp; Tools</span><span class="badge badge-ver">V92</span></div></div>
+<div class="card-body"><p>Maps internal <code>PermissionRequirement</code> / <code>DefaultDecision</code> triples to Claude Code's 5 permission labels (<code>ReadOnly</code>, <code>WorkspaceWrite</code>, <code>DangerFullAccess</code>, <code>Prompt</code>, <code>Allow</code>). Table-driven — compiler catches missing variants. Behind feature <code>autonomous</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-278" data-num="278" data-title="In-Crate Stall Detection" data-category="Agents &amp; Tools">
+<div class="card-header"><h3><span class="concept-num">278</span>In-Crate Stall Detection</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents &amp; Tools</span><span class="badge badge-ver">V93-V95</span></div></div>
+<div class="card-body"><p>Cheap deterministic heuristics (no LLM call) to detect when an agent is burning budget without progress. Signals: <code>RepeatedToolCall</code> (FNV-1a hash ring buffer), <code>Overheating</code> (rate-based, V95), <code>Frustrated</code> (emotion detector, EN/ES/FR/DE). Precedence: <code>RepeatedToolCall</code> &gt; <code>Overheating</code> &gt; <code>Frustrated</code>. Privacy invariant: only derived signals stored, never raw text. Behind feature <code>stall-detection</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-279" data-num="279" data-title="LLM-Assisted Stall Detection" data-category="Agents &amp; Tools">
+<div class="card-header"><h3><span class="concept-num">279</span>LLM-Assisted Stall Detection</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents &amp; Tools</span><span class="badge badge-ver">V95</span></div></div>
+<div class="card-body"><p><code>LlmAssistedStallDetector</code> wraps any <code>StallHeuristic</code> with a caller-provided LLM callback on a 30s cooldown (anchored to <code>observe_user_message</code>). LLM sees only tool-name trail (capped at 16) + last user message — no full transcript. Inner cheap heuristic always wins when it fires. Behind feature <code>stall-detection-llm</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-280" data-num="280" data-title="Ephemeral Sub-Agents" data-category="Agents &amp; Tools">
+<div class="card-header"><h3><span class="concept-num">280</span>Ephemeral Sub-Agents (Fork / Teammate / Explore)</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents &amp; Tools</span><span class="badge badge-ver">V94</span></div></div>
+<div class="card-body"><p>Fire-and-forget delegation orthogonal to persistent <code>AgentOrchestrator</code>. Three <code>SubAgentKind</code> patterns mirror Claude Code's <code>Task</code> tool. <code>IsolationLevel</code>: <code>InProcess</code>, <code>ContextIsolated</code>, <code>ExternalProcess</code>. Default LLM-free <code>InProcessSubAgentRunner</code> returns <code>Deferred</code> (not <code>Failed</code>) for unsupported specs, enabling runner chaining. Behind feature <code>sub-agents</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-281" data-num="281" data-title="AgenticLoop Stall Auto-Integration" data-category="Agents &amp; Tools">
+<div class="card-header"><h3><span class="concept-num">281</span>AgenticLoop Stall Auto-Integration</h3>
+<div class="card-badges"><span class="badge badge-cat">Agents &amp; Tools</span><span class="badge badge-ver">V95</span></div></div>
+<div class="card-body"><p><code>AgenticLoop</code> owns an optional <code>Box&lt;dyn StallHeuristic&gt;</code>. Attached via <code>.with_stall_heuristic()</code>; during <code>process()</code>, observes user messages and hashes tool calls automatically. Stalled verdicts set <code>LoopStatus::UserStalled</code> and break the loop. Zero runtime cost when feature is off.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-282" data-num="282" data-title="non_exhaustive Signal Enums" data-category="Code Quality">
+<div class="card-header"><h3><span class="concept-num">282</span><code>#[non_exhaustive]</code> Signal Enums</h3>
+<div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V95</span></div></div>
+<div class="card-body"><p><code>StallSignal</code> and <code>SubAgentKind</code> are <code>#[non_exhaustive]</code>: adding new variants stays a minor bump. Telemetry accepts <code>&amp;str</code> signal names (not the typed enum) so counter code compiles without the feature-gated module.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>

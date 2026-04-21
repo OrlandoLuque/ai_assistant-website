@@ -2091,6 +2091,28 @@
   <p class="small">Enhanced memory consolidation with semantic facts, temporal memory graphs with causal chains, self-evolving procedures via MemRL. Based on academic research including MemAgents (ICLR 2026) and MemRL (ICLR 2026). v5 Phase 9.</p>
 </div>
 
+<h3 style="color:#6366f1">V91-V95 Capabilities (Apr 2026) &mdash; Claude Code Parity</h3>
+
+<div class="gap-strength">
+  <p><span class="tag tag-str">V91</span> <strong>Composable Prompt Fragments</strong></p>
+  <p class="small"><code>PromptBuilder</code> assembles system prompts from named, priority-ordered <code>PromptFragment</code>s (11 catalog, 6 presets: <code>Minimal</code>, <code>ToolUseChatbot</code>, <code>RagAssistant</code>, <code>AgenticLoop</code>, <code>ResearchAgent</code>, <code>CodeDeveloper</code>). Deterministic output + <code>AppliedFragments</code> manifest. Claude Code, Cursor, and LangChain all hand-stitch system prompts; this is the only Rust crate with a structured fragment-composition model + butler-driven preset recommendations. Behind feature <code>prompt-fragments</code>.</p>
+</div>
+
+<div class="gap-strength">
+  <p><span class="tag tag-str">V92</span> <strong>Claude Code Permission-Label Adapter</strong></p>
+  <p class="small">Maps internal <code>PermissionRequirement</code> / <code>DefaultDecision</code> triples to Claude Code's 5 permission labels (<code>ReadOnly</code>, <code>WorkspaceWrite</code>, <code>DangerFullAccess</code>, <code>Prompt</code>, <code>Allow</code>) via a table-driven <code>to_claude_code_label()</code>. Host applications (Claude Code, Cursor, custom IDEs) get native-feeling permission UX without hand-maintaining a second enum. Behind feature <code>autonomous</code>.</p>
+</div>
+
+<div class="gap-strength">
+  <p><span class="tag tag-str">V93-V95</span> <strong>In-Crate Stall Detection</strong></p>
+  <p class="small">Deterministic heuristics (no LLM call needed) detect when an agent burns budget without progress. Signals: <code>RepeatedToolCall</code> (FNV-1a hash ring buffer, hard invariant), <code>Overheating</code> (rate-based), <code>Frustrated</code> (EN/ES/FR/DE lexicons). Precedence: <code>RepeatedToolCall</code> &gt; <code>Overheating</code> &gt; <code>Frustrated</code>. Privacy invariant: only derived signals stored, never raw text. Optional <code>LlmAssistedStallDetector</code> wrapper consults a caller-provided LLM on a 30s cooldown for ambiguous cases. Auto-integrated into <code>AgenticLoop</code> &mdash; zero caller plumbing. LangGraph and AutoGen leave stall detection to the caller; this is the only framework shipping it in-crate. Behind features <code>stall-detection</code> + <code>stall-detection-llm</code>.</p>
+</div>
+
+<div class="gap-strength">
+  <p><span class="tag tag-str">V94</span> <strong>Ephemeral Sub-Agents (Fork / Teammate / Explore)</strong></p>
+  <p class="small">Fire-and-forget delegation orthogonal to the persistent <code>AgentOrchestrator</code>. Three <code>SubAgentKind</code> patterns mirror Claude Code's <code>Task</code> tool. <code>IsolationLevel</code>: <code>InProcess</code>, <code>ContextIsolated</code>, <code>ExternalProcess</code>. Default LLM-free runner + pluggable <code>SubAgentRunner</code> trait. Runners return <code>Deferred</code> (not <code>Failed</code>) when they can't handle a spec, enabling runner chaining (try default, fall back to worktree runner). Behind feature <code>sub-agents</code>.</p>
+</div>
+
 <h3 style="color:#ec4899">v6 New Capabilities (Feb 2026) &mdash; All Competitive Gaps Closed</h3>
 
 <div class="gap-strength">

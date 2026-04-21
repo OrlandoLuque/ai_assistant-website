@@ -786,6 +786,47 @@ let result = session.execute_task(
       </p>
     </div>
 
+    <h3 class="sub-title">Composable Prompt Fragments (v0.2.23)</h3>
+    <div class="prose">
+      <p>
+        The <code>prompt-fragments</code> feature replaces hand-written monolithic
+        system prompts with <code>PromptFragment</code>s &mdash; small, named, priority-ordered
+        chunks composed by <code>PromptBuilder</code>. Each fragment carries a
+        <code>FragmentCategory</code> (<code>Safety</code>, <code>ToolGuidance</code>,
+        <code>Context</code>, <code>Style</code>, <code>ModeSpecific</code>,
+        <code>PlatformSpecific</code>, <code>Custom</code>) and optional
+        <code>Platform</code> gating (<code>ClaudeCode</code>, <code>Gui</code>,
+        <code>Server</code>, <code>Any</code>). The builder filters by
+        <code>PromptContext</code>, sorts by priority, and returns the final prompt
+        plus an <code>AppliedFragments</code> manifest showing exactly what went in.
+      </p>
+      <p>
+        Ships <strong>11 catalog fragments</strong> and <strong>6 presets</strong>:
+        <code>Minimal</code>, <code>ToolUseChatbot</code>, <code>RagAssistant</code>,
+        <code>AgenticLoop</code>, <code>ResearchAgent</code>, <code>CodeDeveloper</code>.
+        Priority ranges are conventionalised: 0-9 Safety, 10-19 ToolGuidance,
+        20-29 Context, 30-39 Style, 40-49 ModeSpecific, 50-59 PlatformSpecific,
+        100+ Custom. <code>Butler::recommend_prompt_fragments()</code> maps keyword
+        intents ("search papers", "write code") to a suggested preset + extras.
+      </p>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>use ai_assistant::{
+    PromptBuilder, PromptContext, PromptPreset, Platform,
+};
+
+let ctx = PromptContext::new()
+    .with_platform(Platform::Server)
+    .with_has_tools(true);
+
+let (prompt, applied) = PromptBuilder::from_preset(PromptPreset::AgenticLoop)
+    .with_context(ctx)
+    .with_custom_fragment("project", "You are working on the ai_assistant crate.", 100)
+    .build();
+
+// prompt: final system prompt string
+// applied: AppliedFragments { fragments: [...], total_priority_ordered: [...] }</pre>
+
     <h3 class="sub-title">Agent Policy (Permissions)</h3>
     <div class="prose">
       <p>
