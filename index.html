@@ -428,15 +428,7 @@ footer {
           Use it from Python, Java, Node.js, Go, C#, curl, or any HTTP client.
           No Rust in your project. Just change <code>base_url</code> to <code>localhost:8090</code> in your existing OpenAI SDK code.
         </p>
-        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Python — works with the standard OpenAI SDK
-from openai import OpenAI
-client = OpenAI(base_url="http://localhost:8090/v1",
-                api_key="not-needed")
-r = client.chat.completions.create(
-    model="llama3.2",
-    messages=[{"role":"user","content":"Hello!"}])
-</code></pre>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">OpenAI-compatible</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">Any language</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(59,130,246,0.12); color: var(--accent);">SSE streaming</span>
@@ -453,11 +445,7 @@ r = client.chat.completions.create(
           review &mdash; the anti-hallucination pipeline checks every claim against the source papers.
           Export citations as BibTeX. No other framework does this.
         </p>
-        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Search + literature review + verified + BibTeX
-ai_cli research "RLHF alignment" \
-  --providers arxiv,scholar --review \
-  --faithfulness --bibtex</code></pre>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">3 academic APIs</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">Anti-hallucination</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(6,182,212,0.12); color: var(--cyan);">BibTeX export</span>
@@ -474,10 +462,7 @@ ai_cli research "RLHF alignment" \
           Scale with <strong>ai_cluster_node</strong> &mdash; nodes auto-discover, sync via CRDTs over QUIC/TLS 1.3.
           Let <strong>butler</strong> scan your environment and <strong>ai_optimize</strong> auto-tune your config with a multi-armed bandit.
         </p>
-        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code># Gateway with security + auto-tuned config
-ai_proxy --upstream localhost:8090
-ai_optimize run --rounds 10</code></pre>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">RBAC + PII + audit</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-scaling cluster</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(236,72,153,0.12); color: var(--pink);">Auto-tuning</span>
@@ -494,16 +479,7 @@ ai_optimize run --rounds 10</code></pre>
           providers, RAG, agents, verification, research, distributed. Compile-time dead code elimination.
           Type-safe API. 6,095 tests. Zero <code>.unwrap()</code> in production code.
         </p>
-        <pre style="font-size: 0.8rem; margin: 0; padding: 12px; line-height: 1.5; border-radius: 8px;"><code>use ai_assistant::{AiAssistant, AiConfig, AiProvider};
-
-let mut ai = AiAssistant::new();
-ai.load_config(AiConfig {
-    provider: AiProvider::Ollama,
-    selected_model: "llama3.2".into(),
-    ..Default::default()
-});
-ai.send_message_simple("Hello!".into());</code></pre>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">61 feature flags</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Type-safe</span>
           <span style="font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(139,92,246,0.12); color: var(--accent2);">Zero overhead</span>
@@ -1145,6 +1121,14 @@ curl -X POST http://localhost:8090/v1/chat/completions \
         <div class="info">
           <h4>Academic Research Guide</h4>
           <p>Search arXiv, Semantic Scholar, PubMed &mdash; generate verified literature reviews with BibTeX export.</p>
+        </div>
+      </a>
+
+      <a class="link-card" href="prompt_fragments.html" style="border-color: var(--accent2);">
+        <img class="icon-img" src="favicons/shield.svg" alt="">
+        <div class="info">
+          <h4>Prompt Fragments Guide</h4>
+          <p>Composable conditional system prompts &mdash; the structural pattern from Claude Code's leaked prompt, as an extensible library primitive.</p>
         </div>
       </a>
 

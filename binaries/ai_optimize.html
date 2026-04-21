@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_optimize &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_optimize</code></nav>
+  <h1>ai_optimize<small>Configuration optimiser (ML-assisted)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Setup &amp; Ops</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_optimize.rs</dd>
+    <dt>required-features</dt><dd>full</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Analyses a running deployment (provider mix, typical workloads, hardware) and proposes configuration changes to squeeze more throughput or lower cost. ML-assisted (V71) &mdash; learns from snapshot data across runs.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_optimize --features full</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_optimize --snapshot cost.json
+ai_optimize --recommend --format json</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

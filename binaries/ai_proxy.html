@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_proxy &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_proxy</code></nav>
+  <h1>ai_proxy<small>Hardened LLM gateway &mdash; rate limit, PII, budget, audit (V78)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Server</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_proxy.rs</dd>
+    <dt>required-features (router)</dt><dd>server-axum</dd>
+    <dt>required-features (full gateway)</dt><dd>server-axum, security</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Production API gateway that sits in front of upstream providers (Ollama, OpenAI, Anthropic, &hellip;). Two feature profiles:</p>
+  <ul>
+    <li><code>--features server-axum</code> &mdash; router + round-robin LB + session affinity + health checks + optional Bearer auth.</li>
+    <li><code>--features "server-axum,security"</code> &mdash; full gateway: rate limit, PII/toxicity/attack guards, budget enforcement, LRU cache, JSONL audit log.</li>
+  </ul>
+
+  <h2>Build</h2>
+  <pre><code># Router only
+cargo build --release --bin ai_proxy --features server-axum
+
+# Hardened gateway (recommended)
+cargo build --release --bin ai_proxy --features "server-axum,security"</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_proxy --config examples/ai_proxy.toml
+ai_proxy --config examples/ai_proxy.toml --dry-run
+ai_proxy --config ai_proxy.toml --port 9000 --disable-cache</code></pre>
+
+  <h2>Middleware pipeline (security on)</h2>
+  <p>Rate limit &rarr; content-length guard &rarr; PII input &rarr; toxicity input &rarr; attack guard &rarr; budget pre-check &rarr; cache lookup &rarr; backend &rarr; PII output &rarr; toxicity output &rarr; budget post-update &rarr; cache store &rarr; audit log.</p>
+
+  <h2>Response headers</h2>
+  <p><code>X-Request-Id</code> on every response. <code>X-Cache: HIT|MISS</code> on <code>/v1/chat/completions</code>. <code>X-Reason</code> on 429/503 (<code>budget-exceeded</code>, <code>rate_limit</code>, <code>output-blocked</code>, <code>middleware-error</code>).</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

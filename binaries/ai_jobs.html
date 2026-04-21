@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_jobs &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_jobs</code></nav>
+  <h1>ai_jobs<small>Cron-like job daemon &mdash; delegated / embedded modes (V77)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Setup &amp; Ops</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_jobs.rs</dd>
+    <dt>required-features</dt><dd>scheduler</dd>
+    <dt>Added in</dt><dd>V77</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Cron-like daemon that runs declared jobs on a schedule. Two runtime modes:</p>
+  <ul>
+    <li><strong>delegated</strong> <em>(default)</em> &mdash; shells out to <code>ai_cli</code> or any shell command. Always available.</li>
+    <li><strong>embedded</strong> &mdash; runs an in-process <code>AiAssistant</code> with access to RAG, tools, memory, and session state. Gated behind <code>--features full</code>.</li>
+  </ul>
+
+  <h2>Build</h2>
+  <pre><code># Delegated mode only (minimal)
+cargo build --release --bin ai_jobs --features scheduler
+
+# Embedded mode (adds RAG / tools / memory inside the daemon)
+cargo build --release --bin ai_jobs --features "scheduler,full"</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_jobs validate examples/jobs.json
+ai_jobs list      examples/jobs.json
+ai_jobs dry-run   examples/jobs.json --minutes 120
+ai_jobs run       examples/jobs.json</code></pre>
+
+  <h2>Security</h2>
+  <ul>
+    <li>Per-job <code>timeout_secs</code> (default 60s)</li>
+    <li><code>MAX_JOBS = 1000</code> hard cap</li>
+    <li><code>std::panic::catch_unwind</code> protects the daemon from job panics</li>
+    <li>Unknown providers downgrade to Ollama with a warning</li>
+    <li>API-key env vars are referenced <strong>by name</strong> &mdash; never logged</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

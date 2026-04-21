@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/shield.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Fragments Guide &mdash; ai_assistant</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626; --cyan: #0891b2; --pink: #db2777;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 720px; margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.9rem; margin-right: 12px; flex-shrink: 0;
+}
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box.danger { border-left-color: var(--red); }
+.info-box strong { color: var(--text-bright); }
+
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="guide_anti_hallucination.html">Anti-Hallucination</a>
+    <a href="guide_research.html">Research</a>
+    <a href="prompt_fragments.html" style="color:var(--text-bright)">Prompt Fragments</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>Prompt Fragments Guide</h1>
+    <p class="tagline">
+      Composable conditional system prompts &mdash; the structural pattern behind
+      Claude Code's ~110 instruction strings, reimagined as an extensible library
+      primitive. Your callers compose; you never fork.
+    </p>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <h2 class="section-title">1. What it is (and what it is not)</h2>
+    <p class="section-sub">
+      Prompt fragments are <strong>instructions</strong> &mdash; not data. They tell
+      the model <em>how</em> to behave based on signals you already have at runtime.
+    </p>
+
+    <div class="info-box">
+      <strong>Fragments are not RAG.</strong> RAG (the <code>rag</code> feature)
+      answers "what data should I put in the context?". Fragments answer "what
+      <em>instructions</em> should I give?". Different primitives, different
+      modules. Do not confuse them.
+    </div>
+
+    <p style="margin-top:16px;color:var(--text-dim);font-size:0.92rem;">
+      The leaked Claude Code system prompt contains roughly 110 small conditional
+      strings, each gated on a runtime signal (platform, mode, tool availability,
+      plan mode, attached IDE, &hellip;). The <strong>value of the pattern</strong>
+      is architectural &mdash; modular, introspectable, override-friendly &mdash;
+      not the specific 110 strings, which are product decisions. We ship the
+      architecture; you ship the content.
+    </p>
+  </div>
+</section>
+
+<section id="why">
+  <div class="container">
+    <h2 class="section-title">2. Why you need it</h2>
+    <p class="section-sub">
+      A static system prompt cannot adapt. Real deployments vary on axes a single
+      string cannot cover without either ballooning the prompt or duplicating it.
+    </p>
+    <ul style="color:var(--text-dim);font-size:0.92rem;line-height:1.9;padding-left:20px;">
+      <li><strong>Platform</strong> &mdash; Windows shell vs. POSIX.</li>
+      <li><strong>Mode</strong> &mdash; plan, execute, review, autonomous.</li>
+      <li><strong>Tools available</strong> &mdash; whether <code>git</code>, <code>retrieve</code>, <code>bash</code> are callable.</li>
+      <li><strong>Region / compliance</strong> &mdash; EU GDPR reminder, US residency, etc.</li>
+      <li><strong>Domain</strong> &mdash; research vs. coding vs. general chat.</li>
+    </ul>
+    <p style="margin-top:16px;color:var(--text-dim);font-size:0.92rem;">
+      Without a composition layer you either (a) write one mega-prompt that
+      tries to cover everything &mdash; wasting tokens and confusing the model
+      &mdash; or (b) maintain <em>N</em> full prompts and branch by hand &mdash;
+      duplicating text and drifting between copies. Fragments give you a third
+      option: small units composed at runtime from the signals you already have.
+    </p>
+  </div>
+</section>
+
+<section id="quickstart">
+  <div class="container">
+    <h2 class="section-title">3. Quick start</h2>
+    <p class="section-sub">Enable the feature, pick a preset, add what you need.</p>
+
+    <div class="step">
+      <span class="step-number">1</span>
+      <h3>Enable the feature flag</h3>
+      <span class="code-label toml">Cargo.toml</span>
+      <pre>[dependencies]
+ai_assistant = { version = "0.2.23", features = ["prompt-fragments"] }</pre>
+    </div>
+
+    <div class="step">
+      <span class="step-number">2</span>
+      <h3>Compose a prompt</h3>
+      <span class="code-label rust">Rust</span>
+      <pre>use ai_assistant::{PromptBuilder, PromptContext, PromptPreset, Platform};
+
+let ctx = PromptContext::default()
+    .with_platform(Platform::detect())
+    .with_tools(vec!["git".into(), "retrieve".into()])
+    .with_locale("en")
+    .with_region("EU");
+
+let prompt: String = PromptBuilder::new()
+    .with_preset(PromptPreset::CodeDeveloper)
+    .add_fragment(ai_assistant::prompt_fragments::catalog::gdpr_eu_notice())
+    .build(&ctx);</pre>
+    </div>
+
+    <div class="step">
+      <span class="step-number">3</span>
+      <h3>Plug into your assistant</h3>
+      <span class="code-label rust">Rust</span>
+      <pre>use ai_assistant::AiAssistant;
+
+let assistant = AiAssistant::with_system_prompt(&prompt);</pre>
+    </div>
+  </div>
+</section>
+
+<section id="catalog">
+  <div class="container">
+    <h2 class="section-title">4. Built-in catalog</h2>
+    <p class="section-sub">
+      Eleven curated fragments under <code>ai_assistant::prompt_fragments::catalog::*</code>.
+      The catalog stays deliberately small &mdash; extend with your own rather
+      than waiting for upstream additions.
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Key</th><th>Category</th><th>Fires when&hellip;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>windows_shell_note</td><td>PlatformSpecific</td><td><code>platform == Windows</code></td></tr>
+        <tr><td>unix_shell_note</td><td>PlatformSpecific</td><td><code>platform in {Linux, MacOS}</code></td></tr>
+        <tr><td>tool_use_guidance_general</td><td>ToolGuidance</td><td><code>!tools_available.is_empty()</code></td></tr>
+        <tr><td>plan_mode_instructions</td><td>ModeSpecific</td><td>always (caller gates by adding)</td></tr>
+        <tr><td>execute_mode_instructions</td><td>ModeSpecific</td><td>always (caller gates by adding)</td></tr>
+        <tr><td>rag_citation_reminder</td><td>Context</td><td>a retrieval tool is listed</td></tr>
+        <tr><td>gdpr_eu_notice</td><td>Safety</td><td><code>region.eq_ignore_ascii_case("EU")</code></td></tr>
+        <tr><td>tdd_workflow</td><td>Domain</td><td>always</td></tr>
+        <tr><td>git_commit_conventions</td><td>Domain</td><td><code>has_tool("git")</code></td></tr>
+        <tr><td>rust_idioms</td><td>Domain</td><td>always</td></tr>
+        <tr><td>academic_citation_style</td><td>Domain</td><td>always</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section id="presets">
+  <div class="container">
+    <h2 class="section-title">5. Presets</h2>
+    <p class="section-sub">
+      Curated seeds for common agent shapes. Mix freely: call
+      <code>.with_preset(&hellip;)</code>, then <code>.add_fragment(&hellip;)</code>
+      for what the preset leaves out.
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead><tr><th>Preset</th><th>Fragments</th></tr></thead>
+      <tbody>
+        <tr><td>Minimal</td><td><em>(empty)</em></td></tr>
+        <tr><td>ToolUseChatbot</td><td>tool_use_guidance_general</td></tr>
+        <tr><td>RagAssistant</td><td>tool_use_guidance_general, rag_citation_reminder</td></tr>
+        <tr><td>AgenticLoop</td><td>tool_use_guidance_general, execute_mode_instructions</td></tr>
+        <tr><td>ResearchAgent</td><td>tool_use_guidance_general, rag_citation_reminder, academic_citation_style</td></tr>
+        <tr><td>CodeDeveloper</td><td>tool_use_guidance_general, tdd_workflow, git_commit_conventions, rust_idioms</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:16px;color:var(--text-dim);font-size:0.92rem;">
+      Adding a fragment with the same key as one the preset installed
+      <strong>replaces</strong> it. This is how you customize without forking.
+    </p>
+  </div>
+</section>
+
+<section id="custom">
+  <div class="container">
+    <h2 class="section-title">6. Writing your own fragments</h2>
+    <p class="section-sub">Custom fragments follow the same shape as the catalog entries.</p>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{PromptFragment, FragmentCategory, PromptContext};
+
+let frag = PromptFragment::new(
+    "company_style_guide",
+    "Use British English. Avoid passive voice.",
+    FragmentCategory::Style,
+    30,
+    |ctx: &amp;PromptContext| {
+        ctx.custom.get("style")
+           .map(|v| v == "british")
+           .unwrap_or(false)
+    },
+);</pre>
+    <p style="color:var(--text-dim);font-size:0.92rem;">
+      For unconditional fragments, skip the closure with
+      <code>PromptFragment::always(key, text, category, priority)</code>.
+    </p>
+  </div>
+</section>
+
+<section id="priority">
+  <div class="container">
+    <h2 class="section-title">7. Priority and ordering</h2>
+    <p class="section-sub">
+      Lower priority appears first. Ties break by insertion order. Suggested
+      ranges so fragments from different sources interleave predictably:
+    </p>
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead><tr><th>Range</th><th>Category</th></tr></thead>
+      <tbody>
+        <tr><td>0&ndash;9</td><td>Safety</td></tr>
+        <tr><td>10&ndash;19</td><td>ToolGuidance</td></tr>
+        <tr><td>20&ndash;29</td><td>Context</td></tr>
+        <tr><td>30&ndash;39</td><td>Style</td></tr>
+        <tr><td>40&ndash;49</td><td>ModeSpecific</td></tr>
+        <tr><td>50&ndash;59</td><td>PlatformSpecific</td></tr>
+        <tr><td>100+</td><td>Domain / Custom</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:16px;color:var(--text-dim);font-size:0.92rem;">
+      These are conventions, not enforced. If you deviate, expect the output
+      order to surprise other readers of your code.
+    </p>
+  </div>
+</section>
+
+<section id="trace">
+  <div class="container">
+    <h2 class="section-title">8. Introspection</h2>
+    <p class="section-sub">
+      <code>build_with_trace</code> returns the applied fragments in exact output
+      order &mdash; useful for debugging and OpenTelemetry spans.
+    </p>
+    <span class="code-label rust">Rust</span>
+    <pre>let (prompt, trace) = builder.build_with_trace(&amp;ctx);
+for applied in &amp;trace {
+    eprintln!("{} [{}] prio={}",
+        applied.key, applied.category, applied.priority);
+}</pre>
+  </div>
+</section>
+
+<section id="security">
+  <div class="container">
+    <h2 class="section-title">9. Security &mdash; fragment text is trusted</h2>
+    <div class="info-box danger">
+      <strong>Never build a fragment directly from end-user input.</strong>
+      Fragment text is concatenated verbatim into the system prompt. User-controlled
+      text there is a direct prompt-injection vector: a malicious user could supply
+      text that overrides your safety fragments or leaks instructions.
+    </div>
+    <p style="margin-top:16px;color:var(--text-dim);font-size:0.92rem;">
+      If you need to surface user-facing values (name, preferences) into the
+      prompt, put them in <code>PromptContext.custom</code> and let a
+      <em>trusted</em> fragment read that key explicitly. The fragment's
+      trusted text controls the framing; the untrusted value becomes a
+      parameter, not free-form text.
+    </p>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="container">
+    <h2 class="section-title">10. Butler integration (Phase 3 &mdash; done)</h2>
+    <p class="section-sub">
+      <code>Butler::recommend_prompt_fragments(intent, &amp;report)</code> returns
+      a seed <code>PromptPreset</code>, a list of overlay fragment keys, and a
+      human-readable justification. Rule-based today; an optional LLM-assisted
+      variant is deferred behind a separate feature flag.
+    </p>
+    <p class="code-label rust">rust</p>
+<pre>use ai_assistant::butler::Butler;
+
+let mut butler = Butler::new();
+let report = butler.scan();
+let rec = butler.recommend_prompt_fragments(
+    "help me refactor this Rust codebase and add tests",
+    &amp;report,
+);
+println!("{}", rec.justification);
+// Use rec.preset as the seed; iterate rec.extra_fragment_keys
+// and add the matching catalog entries to your PromptBuilder.</pre>
+    <p class="section-sub" style="margin-top:16px;">
+      Command-line equivalent:
+    </p>
+    <p class="code-label bash">bash</p>
+<pre>ai_cli butler recommend-prompt --intent "help me refactor this Rust codebase and add tests"</pre>
+    <p class="section-sub" style="margin-top:16px;">
+      Keyword dispatch picks the preset (research / code / RAG / autonomous /
+      chat), with a project-type fallback. Extras overlay on top:
+      <code>git_commit_conventions</code> when a VCS is detected,
+      <code>rust_idioms</code> for Rust projects, and the platform shell notes
+      (the fragment self-gates by host OS, so overlaying both
+      <code>windows_shell_note</code> and <code>unix_shell_note</code> is safe).
+    </p>
+    <div class="info-box success">
+      <strong>Example output.</strong> &ldquo;Recommended preset: CodeDeveloper.
+      Reasons: intent mentions coding / development; git repository detected →
+      add git_commit_conventions; Rust project detected → add rust_idioms.&rdquo;
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>

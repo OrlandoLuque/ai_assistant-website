@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_assistant_server &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_assistant_server</code></nav>
+  <h1>ai_assistant_server<small>HTTP + MCP API server (OpenAI-compatible)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Server</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_assistant_server.rs</dd>
+    <dt>required-features</dt><dd>full</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Reference HTTP server bundling the library behind a REST + SSE API and a Model Context Protocol (MCP) endpoint exposing 40+ tools. OpenAI-compatible on <code>/v1/chat/completions</code>, so it drops into any OpenAI client (Continue.dev, Cursor, LangChain, &hellip;).</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_assistant_server --features full</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_assistant_server
+ai_assistant_server --port 8090 --api-key mysecret</code></pre>
+
+  <h2>Endpoints</h2>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+    <tr><td>GET</td><td><code>/health</code></td><td>Liveness probe</td></tr>
+    <tr><td>GET</td><td><code>/models</code></td><td>List available models</td></tr>
+    <tr><td>POST</td><td><code>/chat</code></td><td>Send a message (JSON body)</td></tr>
+    <tr><td>POST</td><td><code>/chat/stream</code></td><td>SSE streaming</td></tr>
+    <tr><td>POST</td><td><code>/v1/chat/completions</code></td><td>OpenAI-compatible endpoint</td></tr>
+    <tr><td>GET</td><td><code>/config</code></td><td>View current config</td></tr>
+    <tr><td>GET</td><td><code>/metrics</code></td><td>Prometheus metrics</td></tr>
+    <tr><td>GET</td><td><code>/openapi.json</code></td><td>OpenAPI 3.0 spec</td></tr>
+    <tr><td>POST</td><td><code>/mcp</code></td><td>MCP JSON-RPC (40+ tools)</td></tr>
+  </table>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="../api_reference.html">API reference</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

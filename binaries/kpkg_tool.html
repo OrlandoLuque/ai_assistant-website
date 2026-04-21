@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kpkg_tool &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>kpkg_tool</code></nav>
+  <h1>kpkg_tool<small>Knowledge package manager (create, inspect, extract)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Knowledge</dd>
+    <dt>Binary path</dt><dd>src/bin/kpkg_tool.rs</dd>
+    <dt>required-features</dt><dd>rag</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Create, read, inspect, and extract encrypted knowledge packages (<code>.kpkg</code>) used by the RAG pipeline. Uses AES-256-GCM and supports optional Ed25519 signatures for tamper evidence.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin kpkg_tool --features rag</code></pre>
+
+  <h2>Subcommands</h2>
+  <table class="subcmd">
+    <thead><tr><th>Command</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>create</code></td><td>Build a <code>.kpkg</code> from a directory</td></tr>
+      <tr><td><code>list</code></td><td>List entries in a package</td></tr>
+      <tr><td><code>inspect</code></td><td>Show metadata + signature info</td></tr>
+      <tr><td><code>extract</code></td><td>Decrypt a package into a directory</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Usage</h2>
+  <pre><code>kpkg_tool create --input ./docs --output knowledge.kpkg --name "My Docs"
+kpkg_tool list knowledge.kpkg
+kpkg_tool inspect knowledge.kpkg
+kpkg_tool extract --input knowledge.kpkg --output ./extracted</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

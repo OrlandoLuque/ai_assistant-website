@@ -814,6 +814,141 @@ let result = session.execute_task(
     .require_approval_above(RiskLevel::High)
     .build();</pre>
 
+    <h4 class="sub-title" style="font-size:1.05rem;margin-top:20px;">Claude Code permission-label adapter (v0.2.24)</h4>
+    <div class="prose">
+      <p>
+        <code>PermissionRequirement</code> is a presentation-layer adapter that
+        bundles <code>(ActionType, RiskLevel, DefaultDecision)</code> and
+        renders it using Claude Code&rsquo;s vocabulary
+        (<code>ReadOnly</code> / <code>WorkspaceWrite</code> /
+        <code>DangerFullAccess</code> / <code>Prompt</code> / <code>Allow</code>).
+        The runtime permission taxonomy does not change &mdash; this is purely
+        useful for docs, UIs, and examples that prefer the Claude Code naming.
+      </p>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>use ai_assistant::{
+    ActionDescriptor, ActionType, AgentPolicy, PermissionRequirement,
+};
+
+let policy = AgentPolicy::default();
+let action = ActionDescriptor::new(ActionType::FileWrite, "/tmp/notes.md");
+let req = PermissionRequirement::from_policy(&amp;policy, &amp;action);
+
+assert_eq!(req.to_claude_code_label(), "Prompt"); // approved above Medium
+// req.default_decision, req.risk, req.action_type remain available</pre>
+
+    <h4 class="sub-title" style="font-size:1.05rem;margin-top:20px;">StallHeuristic robustness &mdash; Overheating, multi-language, LLM-assisted (v0.2.27)</h4>
+    <div class="prose">
+      <p>
+        V95 adds three extensions to the V93 StallHeuristic, all additive:
+        an <code>Overheating</code> signal (rate-based), per-language
+        frustration lexicons (Spanish / French / German), and a
+        <code>LlmAssistedStallDetector</code> wrapper behind the optional
+        <code>stall-detection-llm</code> feature.
+      </p>
+      <p>
+        Signal precedence in <code>check()</code>:
+        <code>RepeatedToolCall</code> (definite loop) &gt;
+        <code>Overheating</code> (real-time rate) &gt;
+        <code>Frustrated</code> (lagging user signal).
+      </p>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>use std::time::Duration;
+use ai_assistant::{
+    KeywordStallDetector, RateThresholds, StallDecision,
+    StallHeuristic, StallLanguage, StallSignal,
+};
+
+let mut det = KeywordStallDetector::new()
+    .with_language(StallLanguage::Spanish)
+    .with_rate_thresholds(RateThresholds::new(Duration::from_secs(60), 20));
+
+det.observe_user_message("Esto no funciona, estoy harto");
+assert_eq!(det.check(), StallDecision::Stalled(StallSignal::Frustrated));</pre>
+
+    <span class="code-label rust">rust</span>
+    <pre>// stall-detection-llm: plug a caller-provided LLM into the loop.
+use std::sync::Arc;
+use std::time::Duration;
+use ai_assistant::{
+    KeywordStallDetector, LlmAssistedStallDetector, LlmVerdict,
+    LlmVerdictFn, LlmVerdictInput, StallHeuristic, StallSignal,
+};
+
+let verdict_fn: LlmVerdictFn = Arc::new(|input: &amp;LlmVerdictInput| {
+    // Caller wires this into their own LLM stack (Anthropic, Ollama, etc.)
+    if input.last_user_message.contains("stuck") {
+        LlmVerdict::Stalled(StallSignal::Frustrated)
+    } else {
+        LlmVerdict::Continue
+    }
+});
+
+let inner = KeywordStallDetector::new();
+let mut wrapper = LlmAssistedStallDetector::new(inner, verdict_fn)
+    .with_min_interval(Duration::from_secs(30)); // cooldown
+
+wrapper.observe_user_message("I'm stuck on step 3");
+// inner says Continue; LLM overrides to Stalled(Frustrated).</pre>
+
+    <p class="prose" style="margin-top:12px;">
+      <strong>AgenticLoop auto-integration.</strong> Attach any
+      <code>StallHeuristic</code> to an <code>AgenticLoop</code> and the loop
+      forwards user messages and tool calls automatically; a
+      <code>Stalled</code> verdict flips status to <code>UserStalled</code>
+      and breaks.
+    </p>
+    <span class="code-label rust">rust</span>
+    <pre>use ai_assistant::{
+    AgenticLoop, KeywordStallDetector, LoopConfig, LoopStatus,
+};
+
+let mut agent = AgenticLoop::new(LoopConfig::default())
+    .with_stall_heuristic(Box::new(KeywordStallDetector::new()));
+
+let result = agent.process("ugh, this is useless, forget it");
+assert_eq!(result.status, LoopStatus::UserStalled);
+// agent.stall_heuristic() / stall_heuristic_mut() expose the attached detector.</pre>
+
+    <h4 class="sub-title" style="font-size:1.05rem;margin-top:20px;">Ephemeral sub-agent spawning (v0.2.26)</h4>
+    <div class="prose">
+      <p>
+        The <code>sub-agents</code> feature adds a structural equivalent of
+        Claude Code&rsquo;s <code>Task</code> tool: Fork / Teammate / Explore.
+        The main agent produces a <code>SubAgentSpec</code>, a
+        <code>SubAgentRunner</code> executes it, and a single
+        <code>SubAgentResult</code> comes back. Orthogonal to the persistent
+        <code>AgentOrchestrator</code> &mdash; sub-agents are fire-and-forget.
+      </p>
+      <p>
+        True filesystem or process isolation (git worktree, subprocess, remote
+        worker) stays a caller concern. The crate ships the declarative model,
+        a pluggable trait, and a default <code>InProcessSubAgentRunner</code>.
+        Specs with <code>IsolationLevel::ExternalProcess</code> return
+        <code>SubAgentStatus::Deferred</code> so callers can route them to
+        their own runner without ambiguity.
+      </p>
+    </div>
+    <span class="code-label rust">rust</span>
+    <pre>use ai_assistant::{
+    AgentRole, InProcessSubAgentRunner, IsolationLevel,
+    SubAgentKind, SubAgentRunner, SubAgentSpec, SubAgentStatus,
+};
+
+let runner = InProcessSubAgentRunner::new();
+
+let spec = SubAgentSpec::new("review-1", SubAgentKind::Teammate, "review the draft")
+    .with_role(AgentRole::PeerReviewer)
+    .with_context_summary("3-paragraph draft on quantum computing")
+    .with_isolation(IsolationLevel::ContextIsolated)
+    .with_budget_hint(4_000);
+
+let result = runner.run(&amp;spec);
+assert_eq!(result.status, SubAgentStatus::Completed);
+assert_eq!(result.spec_id, "review-1");</pre>
+
     <h3 class="sub-title">Agent Profiles (Pre-made)</h3>
     <div class="prose">
       <p>

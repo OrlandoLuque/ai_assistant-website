@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_cli &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_cli</code></nav>
+
+  <h1>ai_cli<small>Power-user CLI &mdash; scan, query, config, cost, verify, research, quality</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>CLI</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_cli.rs</dd>
+    <dt>required-features</dt><dd>&mdash; (defaults work; richer behaviour with <code>full</code>)</dd>
+    <dt>Recommended</dt><dd>full,diagnostic-logging</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Non-interactive command-line driver for scripting, CI/CD, and one-shot queries. Exposes the full library surface (providers, RAG, tools, cost, anti-hallucination, research, quality gates) as discrete subcommands.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_cli --features "full,diagnostic-logging"</code></pre>
+
+  <h2>Subcommands</h2>
+  <p><code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code> (V77), <code>verify</code> (V88), <code>research</code> (V88, needs <code>research</code>), <code>quality</code> (V88), <code>help</code>.</p>
+
+  <h2>Usage</h2>
+  <pre><code># Provider detection + one-shot query
+ai_cli scan
+ai_cli query -p "Hello" -P ollama
+ai_cli models -P ollama
+ai_cli config
+
+# Verbose diagnostics (feature diagnostic-logging)
+ai_cli -v   scan        # info
+ai_cli -vv  scan        # debug
+ai_cli -vvv scan        # trace
+ai_cli --log-file diag.log scan
+
+# V77 cost
+ai_cli cost report  --snapshot cost.json
+ai_cli cost export  --snapshot cost.json --output cost.csv --force
+
+# V88 verify (anti-hallucination)
+ai_cli verify "Is water wet?" --strategy mark --faithfulness --cove --quality-gates
+
+# V88 research (needs feature "research")
+ai_cli research "transformer attention" --providers arxiv,scholar --bibtex --review</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="../guide_anti_hallucination.html">Anti-hallucination guide</a></li>
+    <li><a href="../guide_research.html">Research guide</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

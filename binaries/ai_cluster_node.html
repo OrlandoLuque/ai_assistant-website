@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_cluster_node &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_cluster_node</code></nav>
+  <h1>ai_cluster_node<small>Distributed cluster node (QUIC mesh, CRDT memory)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Server</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_cluster_node.rs</dd>
+    <dt>required-features</dt><dd>full, server-cluster</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Spawns a distributed node that joins a QUIC mesh for cluster-wide RAG, agent federation, and CRDT-based shared memory. Multiple nodes gossip state via a Kademlia DHT and stay eventually consistent.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_cluster_node --features "full,server-cluster"</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code># First node
+ai_cluster_node --node-id node1 --port 8091 --quic-port 9001
+
+# Joining node (bootstrap from a known peer)
+ai_cluster_node --node-id node2 --port 8092 --quic-port 9002 \
+    --bootstrap-peers 192.168.1.10:9001</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_logs.html">ai_logs</a> &mdash; aggregator for cluster logs</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

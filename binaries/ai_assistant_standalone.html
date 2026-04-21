@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_assistant_standalone &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_assistant_standalone</code></nav>
+  <h1>ai_assistant_standalone<small>Single-binary HTTP service (no MCP, no cluster)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Server</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_assistant_standalone.rs</dd>
+    <dt>required-features</dt><dd>full, server-axum</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Trimmed-down service focused on HTTP only (no MCP, no cluster). Good default for <code>systemd</code>-managed deployments or containers where you want a small surface.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_assistant_standalone --features "full,server-axum"</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_assistant_standalone
+ai_assistant_standalone --port 9090</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_assistant_server.html">ai_assistant_server</a> &mdash; HTTP + MCP variant</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

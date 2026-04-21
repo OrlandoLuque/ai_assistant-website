@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_test_harness &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_test_harness</code></nav>
+  <h1>ai_test_harness<small>Multi-category integration harness</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Testing</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_test_harness.rs</dd>
+    <dt>required-features</dt><dd>full, browser</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Runs feature-gated integration test categories without having to remember every <code>cargo test</code> incantation. Used by CI and by local developers to smoke-test a build against the real provider + browser path.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_test_harness --features "full,browser"</code></pre>
+
+  <h2>Categories (selection)</h2>
+  <table class="subcmd">
+    <thead><tr><th>Flag</th><th>Tests covered</th></tr></thead>
+    <tbody>
+      <tr><td><code>--category anti-hallucination</code></td><td>3 V88 tests</td></tr>
+      <tr><td><code>--category quality-gates</code></td><td>4 V88 tests</td></tr>
+      <tr><td><code>--category faithfulness</code></td><td>2 V88 tests</td></tr>
+      <tr><td><code>--category verification</code></td><td>2 V88 tests</td></tr>
+      <tr><td><code>--category research</code></td><td>4 V88 tests (requires <code>research</code> feature)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Usage</h2>
+  <pre><code>ai_test_harness --list
+ai_test_harness --category anti-hallucination
+ai_test_harness --all</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

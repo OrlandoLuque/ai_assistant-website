@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_assistant_cli &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_assistant_cli</code></nav>
+  <h1>ai_assistant_cli<small>Interactive chat REPL with auto-detection</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>CLI</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_assistant_cli.rs</dd>
+    <dt>required-features</dt><dd>&mdash;</dd>
+    <dt>Recommended</dt><dd>full,butler</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Terminal-based chat REPL. Auto-detects local providers (Ollama / LM Studio), loads a default model, and opens an interactive session with slash-commands. Fastest way to &ldquo;just talk to the thing&rdquo; from a console.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_assistant_cli --features "full,butler"</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_assistant_cli
+ai_assistant_cli --provider ollama --model llama3.2:1b</code></pre>
+
+  <h3>REPL slash-commands</h3>
+  <table>
+    <tr><th>Command</th><th>Effect</th></tr>
+    <tr><td><code>/help</code></td><td>Show command list</td></tr>
+    <tr><td><code>/models</code></td><td>List available models</td></tr>
+    <tr><td><code>/model &lt;name&gt;</code></td><td>Switch model mid-session</td></tr>
+    <tr><td><code>/history</code></td><td>Print transcript</td></tr>
+    <tr><td><code>/clear</code></td><td>Clear conversation buffer</td></tr>
+    <tr><td><code>/save &lt;file&gt;</code></td><td>Persist session to JSON</td></tr>
+    <tr><td><code>/load &lt;file&gt;</code></td><td>Restore a saved session</td></tr>
+    <tr><td><code>/exit</code></td><td>Quit</td></tr>
+  </table>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_logs &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_logs</code></nav>
+  <h1>ai_logs<small>Distributed log aggregator (tail, export)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Setup &amp; Ops</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_logs.rs</dd>
+    <dt>required-features</dt><dd>distributed-network</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Collector / aggregator for logs streamed by other binaries in a cluster. Reads from <code>ai_cluster_node</code> peers over the shared distributed-network transport and exposes a local tail or JSON stream.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_logs --features distributed-network</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_logs tail
+ai_logs tail --node node2 --level warn
+ai_logs export --since 10m --format json &gt; logs.ndjson</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_logs_gui.html">ai_logs_gui</a> &mdash; desktop viewer</li>
+    <li><a href="ai_cluster_node.html">ai_cluster_node</a> &mdash; log source</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

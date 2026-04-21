@@ -275,6 +275,7 @@ footer {
 <section id="summary">
   <div class="container">
     <h2 class="section-title">Summary Table</h2>
+    <p class="section-sub">Each binary has its own detail page &mdash; click a name to open it.</p>
     <table class="bin-table">
       <thead>
         <tr>
@@ -286,26 +287,26 @@ footer {
         </tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td>ai_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Non-interactive CLI (scan, query, bench, test, cost, verify, research, quality, &hellip;)</td></tr>
-        <tr><td>2</td><td>ai_assistant_cli</td><td>CLI</td><td class="feat">&mdash;</td><td>Interactive REPL (chat-style)</td></tr>
-        <tr><td>3</td><td>ai_assistant_server</td><td>Server</td><td class="feat">full</td><td>HTTP + MCP server</td></tr>
-        <tr><td>4</td><td>ai_assistant_standalone</td><td>Server</td><td class="feat">full, server-axum</td><td>Single-binary service (HTTP only)</td></tr>
-        <tr><td>5</td><td>ai_cluster_node</td><td>Server</td><td class="feat">full, server-cluster</td><td>Distributed cluster node (QUIC mesh)</td></tr>
-        <tr><td>6</td><td>ai_proxy</td><td>Server</td><td class="feat">server-axum (+security)</td><td>Production API gateway &mdash; rate limit, PII, toxicity, attack, budget, cache, audit (V78)</td></tr>
-        <tr><td>7</td><td>ai_gui</td><td>GUI</td><td class="feat">gui</td><td>egui desktop chat</td></tr>
-        <tr><td>8</td><td>ai_gui-pro</td><td>GUI</td><td class="feat">gui-pro</td><td>Extended desktop GUI (power users)</td></tr>
-        <tr><td>9</td><td>ai_setup_gui</td><td>GUI</td><td class="feat">gui</td><td>Graphical setup wizard</td></tr>
-        <tr><td>10</td><td>ai_logs_gui</td><td>GUI</td><td class="feat">gui-logs</td><td>Log viewer desktop app</td></tr>
-        <tr><td>11</td><td>ai_setup</td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Terminal setup wizard</td></tr>
-        <tr><td>12</td><td>ai_optimize</td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Configuration optimizer</td></tr>
-        <tr class="new"><td>13</td><td>ai_jobs</td><td>Setup &amp; Ops</td><td class="feat">scheduler</td><td>Cron-like job daemon (delegated + embedded runtime)</td></tr>
-        <tr><td>14</td><td>ai_logs</td><td>Setup &amp; Ops</td><td class="feat">distributed-network</td><td>Distributed log aggregator</td></tr>
-        <tr><td>15</td><td>ai_virtual_mic</td><td>Media</td><td class="feat">audio-io</td><td>Virtual microphone (voice effects)</td></tr>
-        <tr><td>16</td><td>ai_virtual_mic_host</td><td>Media</td><td class="feat">audio</td><td>Host driver for the virtual mic</td></tr>
-        <tr><td>17</td><td>ai_virtual_cam</td><td>Media</td><td class="feat">video-io</td><td>Virtual camera (video effects)</td></tr>
-        <tr><td>18</td><td>kpkg_tool</td><td>Knowledge</td><td class="feat">rag</td><td>Encrypted knowledge package tool (.kpkg)</td></tr>
-        <tr><td>19</td><td>ai_gpu_share</td><td>GPU Sharing</td><td class="feat">full, gpu-sharing</td><td>GPU sharing network CLI</td></tr>
-        <tr><td>20</td><td>ai_test_harness</td><td>Testing</td><td class="feat">full, browser</td><td>Multi-category test harness</td></tr>
+        <tr><td>1</td><td><a href="binaries/ai_cli.html">ai_cli</a></td><td>CLI</td><td class="feat">&mdash;</td><td>Non-interactive CLI (scan, query, bench, test, cost, verify, research, quality, &hellip;)</td></tr>
+        <tr><td>2</td><td><a href="binaries/ai_assistant_cli.html">ai_assistant_cli</a></td><td>CLI</td><td class="feat">&mdash;</td><td>Interactive REPL (chat-style)</td></tr>
+        <tr><td>3</td><td><a href="binaries/ai_assistant_server.html">ai_assistant_server</a></td><td>Server</td><td class="feat">full</td><td>HTTP + MCP server</td></tr>
+        <tr><td>4</td><td><a href="binaries/ai_assistant_standalone.html">ai_assistant_standalone</a></td><td>Server</td><td class="feat">full, server-axum</td><td>Single-binary service (HTTP only)</td></tr>
+        <tr><td>5</td><td><a href="binaries/ai_cluster_node.html">ai_cluster_node</a></td><td>Server</td><td class="feat">full, server-cluster</td><td>Distributed cluster node (QUIC mesh)</td></tr>
+        <tr><td>6</td><td><a href="binaries/ai_proxy.html">ai_proxy</a></td><td>Server</td><td class="feat">server-axum (+security)</td><td>Production API gateway &mdash; rate limit, PII, toxicity, attack, budget, cache, audit (V78)</td></tr>
+        <tr><td>7</td><td><a href="binaries/ai_gui.html">ai_gui</a></td><td>GUI</td><td class="feat">gui</td><td>egui desktop chat</td></tr>
+        <tr><td>8</td><td><a href="binaries/ai_gui-pro.html">ai_gui-pro</a></td><td>GUI</td><td class="feat">gui-pro</td><td>Extended desktop GUI (power users)</td></tr>
+        <tr><td>9</td><td><a href="binaries/ai_setup_gui.html">ai_setup_gui</a></td><td>GUI</td><td class="feat">gui</td><td>Graphical setup wizard</td></tr>
+        <tr><td>10</td><td><a href="binaries/ai_logs_gui.html">ai_logs_gui</a></td><td>GUI</td><td class="feat">gui-logs</td><td>Log viewer desktop app</td></tr>
+        <tr><td>11</td><td><a href="binaries/ai_setup.html">ai_setup</a></td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Terminal setup wizard</td></tr>
+        <tr><td>12</td><td><a href="binaries/ai_optimize.html">ai_optimize</a></td><td>Setup &amp; Ops</td><td class="feat">full</td><td>Configuration optimizer</td></tr>
+        <tr class="new"><td>13</td><td><a href="binaries/ai_jobs.html">ai_jobs</a></td><td>Setup &amp; Ops</td><td class="feat">scheduler</td><td>Cron-like job daemon (delegated + embedded runtime)</td></tr>
+        <tr><td>14</td><td><a href="binaries/ai_logs.html">ai_logs</a></td><td>Setup &amp; Ops</td><td class="feat">distributed-network</td><td>Distributed log aggregator</td></tr>
+        <tr><td>15</td><td><a href="binaries/ai_virtual_mic.html">ai_virtual_mic</a></td><td>Media</td><td class="feat">audio-io</td><td>Virtual microphone (voice effects)</td></tr>
+        <tr><td>16</td><td><a href="binaries/ai_virtual_mic_host.html">ai_virtual_mic_host</a></td><td>Media</td><td class="feat">audio</td><td>Host driver for the virtual mic</td></tr>
+        <tr><td>17</td><td><a href="binaries/ai_virtual_cam.html">ai_virtual_cam</a></td><td>Media</td><td class="feat">video-io</td><td>Virtual camera (video effects)</td></tr>
+        <tr><td>18</td><td><a href="binaries/kpkg_tool.html">kpkg_tool</a></td><td>Knowledge</td><td class="feat">rag</td><td>Encrypted knowledge package tool (.kpkg)</td></tr>
+        <tr><td>19</td><td><a href="binaries/ai_gpu_share.html">ai_gpu_share</a></td><td>GPU Sharing</td><td class="feat">full, gpu-sharing</td><td>GPU sharing network CLI</td></tr>
+        <tr><td>20</td><td><a href="binaries/ai_test_harness.html">ai_test_harness</a></td><td>Testing</td><td class="feat">full, browser</td><td>Multi-category test harness</td></tr>
       </tbody>
     </table>
   </div>

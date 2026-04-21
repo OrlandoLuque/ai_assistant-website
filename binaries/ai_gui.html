@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_gui</code></nav>
+  <h1>ai_gui<small>Desktop chat GUI (egui)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>GUI</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_gui.rs</dd>
+    <dt>required-features</dt><dd>gui</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>egui-based cross-platform desktop chat. Ships with provider auto-detection, model browsing, <code>.kpkg</code> file opening, and a minimal history panel. Good for &ldquo;just give me a window to talk to a local LLM&rdquo;.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_gui --features gui</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_gui</code></pre>
+  <p>On first launch the app scans for Ollama / LM Studio on the default ports and offers to pick a model.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_gui-pro.html">ai_gui-pro</a> &mdash; power-user variant</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

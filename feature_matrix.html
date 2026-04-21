@@ -968,6 +968,10 @@
     <tr><td><code>wasm</code></td><td>No</td><td>web-sys, js-sys, getrandom (solo wasm32)</td></tr>
     <tr><td><code>workflows</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
     <tr><td><code>prompt-signatures</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
+    <tr><td><code>prompt-fragments</code></td><td>No</td><td>Opt-in. Ensamblaje condicional del system prompt a partir de fragmentos keyed. Zero new deps</td></tr>
+    <tr><td><code>stall-detection</code></td><td>No</td><td>Opt-in. Heur&iacute;stica in-crate de user-stall &mdash; 3 se&ntilde;ales: <code>RepeatedToolCall</code>, <code>Overheating</code> (rate-based, sliding window), <code>Frustrated</code>. L&eacute;xicos EN/ES/FR/DE. Compone <code>autonomous + audio + analytics</code>. Zero new deps</td></tr>
+    <tr><td><code>stall-detection-llm</code></td><td>No</td><td>Opt-in. Wrapper <code>LlmAssistedStallDetector</code> sobre cualquier <code>StallHeuristic</code>: segunda opini&oacute;n v&iacute;a callback LLM del caller, con cooldown configurable (30s por defecto). Implica <code>stall-detection</code>. Zero new deps &mdash; el LLM lo provee el caller</td></tr>
+    <tr><td><code>sub-agents</code></td><td>No</td><td>Opt-in. Spawning ef&iacute;mero de sub-agentes (Fork / Teammate / Explore) con trait <code>SubAgentRunner</code> reimplementable. Runner por defecto <code>InProcessSubAgentRunner</code>; callers con worktree/subprocess/remoto implementan el suyo. Compone <code>multi-agent + analytics</code>. Zero new deps</td></tr>
     <tr><td><code>a2a</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
     <tr><td><code>advanced-memory</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
     <tr><td><code>research</code></td><td>S&iacute;</td><td>&mdash;</td></tr>
@@ -1748,6 +1752,10 @@ const GROUPS = [
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['basic_chat','rag_chat','agent_tools','autonomous','multi_agent'],
         notes: 'Feature flag prompt-signatures. Typed prompt contracts con input/output schemas, validation, type-safe prompt composition, signature verification. v5: GEPA (Gradient-free Efficient Prompt Adaptation), MIPROv2 optimizer, assertions framework, LM adapters. v6: SIMBA optimizer (Stochastic Iterative Meta-Bootstrap Adaptation), reasoning traces capture, LLM-as-Judge integration para evaluaci&oacute;n autom&aacute;tica de prompts. 157 tests. v4+v5+v6.' },
+      { tech: 'PromptFragments (composable conditional system prompts)', flag: 'prompt-fragments',
+        cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
+        typical: ['basic_chat','rag_chat','agent_tools','autonomous','multi_agent'],
+        notes: 'Feature flag prompt-fragments. Equivalente estructural a los ~110 strings condicionales del leak de Claude Code, pero extensibles por el caller: Builder + 11 fragments built-in (shell notes, tool-use guidance, plan/execute mode, RAG citation reminder, GDPR-EU notice, TDD, git commits, Rust idioms, academic citations) + 6 presets (Minimal, ToolUseChatbot, RagAssistant, AgenticLoop, ResearchAgent, CodeDeveloper). Override-by-key semantics, introspeccion via build_with_trace, opt-in, zero new deps. 23 tests. v47 (V91).' },
       { tech: 'A2A Protocol (Agent-to-Agent, AGENTS.md, ACP Bridge)', flag: 'a2a',
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['multi_agent','autonomous','distributed','http_server'],

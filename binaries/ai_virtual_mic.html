@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_virtual_mic &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_virtual_mic</code></nav>
+  <h1>ai_virtual_mic<small>Virtual microphone with voice effects</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Media</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_virtual_mic.rs</dd>
+    <dt>required-features</dt><dd>audio-io</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Virtual microphone client with configurable voice effects: anonymiser, distorter, snore detector, pitch shifter, bandpass filter, and more. Sends its output into the virtual-mic host so it can be selected as an input device in meetings or recordings.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_virtual_mic --features audio-io</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_virtual_mic --effect anonymize
+ai_virtual_mic --effect pitch-shift --semitones -3</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_virtual_mic_host.html">ai_virtual_mic_host</a> &mdash; host driver</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>
