@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_skills &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_skills</code></nav>
+  <h1>ai_skills<small>Skill Forge auditor CLI</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Self-Learning (V96)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_skills.rs</dd>
+    <dt>required-features</dt><dd>skill-forge</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Read-only auditor for the Skill Forge registry and hash-chained <code>SkillLedger</code>. List skills in a directory, inspect a single skill, verify content and WASM Blake3 hashes, verify the ledger chain, or export a skill bundle for offline review.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_skills --features skill-forge</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_skills list &lt;SKILLS_DIR&gt;
+ai_skills inspect &lt;SKILL.skill.json&gt;
+ai_skills verify &lt;SKILL.skill.json&gt;
+ai_skills ledger-verify &lt;LEDGER_JSONL&gt;
+ai_skills ledger-show &lt;LEDGER_JSONL&gt; [--last N]
+ai_skills export &lt;SKILL.skill.json&gt; &lt;OUT_DIR&gt;</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_skills_gui.html">ai_skills_gui</a> &mdash; desktop auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

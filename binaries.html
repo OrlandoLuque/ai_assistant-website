@@ -233,6 +233,7 @@ footer {
     <a href="#media">Media</a>
     <a href="#knowledge">Knowledge</a>
     <a href="#testing">Testing</a>
+    <a href="#self-learning">Self-Learning</a>
     <a href="use_cases.html">Use Cases</a>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
   </div>
@@ -243,9 +244,10 @@ footer {
   <div class="container">
     <h1>Binary Catalogue</h1>
     <p class="tagline">
-      Twenty first-class executables shipped by <code>ai_assistant</code>&nbsp;&mdash;
+      Twenty-six first-class executables shipped by <code>ai_assistant</code>&nbsp;&mdash;
       from a single-binary chat server to a cron-like job daemon, a virtual microphone,
-      and a distributed log aggregator. Every binary is gated behind feature flags,
+      a distributed log aggregator, and matched CLI / GUI auditors for every
+      self-learning subsystem. Every binary is gated behind feature flags,
       so you only build what you need.
     </p>
   </div>
@@ -258,7 +260,9 @@ footer {
     <p class="section-sub">
       This page is the authoritative inventory of every binary in the crate and is kept
       in lockstep with <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md"><code>docs/BINARIES.md</code></a>.
-      Total binaries: <strong>20</strong> (as of V77 &mdash; added <code>ai_jobs</code>).
+      Total binaries: <strong>26</strong> (as of V96 &mdash; added six Self-Learning auditors:
+      <code>ai_skills</code>, <code>ai_skills_gui</code>, <code>ai_prompt_synth</code>,
+      <code>ai_prompt_synth_gui</code>, <code>ai_feedback</code>, <code>ai_feedback_gui</code>).
       V79 additionally ships the crate as a <strong>shared and static library</strong>
       with a C ABI &mdash; see <a href="#library-artifacts">Library Artifacts</a> below.
     </p>
@@ -307,6 +311,12 @@ footer {
         <tr><td>18</td><td><a href="binaries/kpkg_tool.html">kpkg_tool</a></td><td>Knowledge</td><td class="feat">rag</td><td>Encrypted knowledge package tool (.kpkg)</td></tr>
         <tr><td>19</td><td><a href="binaries/ai_gpu_share.html">ai_gpu_share</a></td><td>GPU Sharing</td><td class="feat">full, gpu-sharing</td><td>GPU sharing network CLI</td></tr>
         <tr><td>20</td><td><a href="binaries/ai_test_harness.html">ai_test_harness</a></td><td>Testing</td><td class="feat">full, browser</td><td>Multi-category test harness</td></tr>
+        <tr><td>21</td><td><a href="binaries/ai_skills.html">ai_skills</a></td><td>Self-Learning (V96)</td><td class="feat">skill-forge</td><td>Skill Forge auditor CLI (list, inspect, verify, ledger-verify, export)</td></tr>
+        <tr><td>22</td><td><a href="binaries/ai_skills_gui.html">ai_skills_gui</a></td><td>Self-Learning (V96)</td><td class="feat">skill-forge, gui-pro</td><td>Skill Forge auditor GUI (registry browser + chain viewer)</td></tr>
+        <tr><td>23</td><td><a href="binaries/ai_prompt_synth.html">ai_prompt_synth</a></td><td>Self-Learning (V96)</td><td class="feat">prompt-synthesis</td><td>Fragment Synthesis auditor CLI (ledger-show, ledger-verify, arms-summary)</td></tr>
+        <tr><td>24</td><td><a href="binaries/ai_prompt_synth_gui.html">ai_prompt_synth_gui</a></td><td>Self-Learning (V96)</td><td class="feat">prompt-synthesis, gui-pro</td><td>Fragment Synthesis dashboard (per-cluster arms + reward sparklines)</td></tr>
+        <tr><td>25</td><td><a href="binaries/ai_feedback.html">ai_feedback</a></td><td>Self-Learning (V96)</td><td class="feat">feedback-loop</td><td>Feedback Loop auditor CLI (ledger-show, ledger-verify, retractions, stats)</td></tr>
+        <tr><td>26</td><td><a href="binaries/ai_feedback_gui.html">ai_feedback_gui</a></td><td>Self-Learning (V96)</td><td class="feat">feedback-loop, gui-pro</td><td>Feedback Loop dashboard (overview, sinks, drops, retractions, events)</td></tr>
       </tbody>
     </table>
   </div>
@@ -546,12 +556,71 @@ cargo run --bin ai_jobs --features scheduler -- run       examples/jobs.json</pr
   </div>
 </section>
 
+<!-- ════════════════════════ SELF-LEARNING (V96) ═══════════ -->
+<section id="self-learning">
+  <div class="container">
+    <h2 class="section-title">Self-Learning <span style="font-size:0.7em; color:var(--accent);">(V96, new)</span></h2>
+    <p class="section-sub">
+      V96 introduces three on-device learning subsystems &mdash; Skill Forge,
+      Fragment Synthesis, and Feedback Loop &mdash; each persisting state as an
+      append-only Blake3 hash-chained JSONL. Every subsystem ships a matched pair
+      of auditor binaries: a headless CLI for CI/scripting and an egui dashboard
+      for interactive review. All six honour the global freeze switch and verify
+      chain integrity on demand.
+    </p>
+
+    <div class="group">
+      <h4>ai_skills <span class="tag-new">NEW V96</span></h4>
+      <p>Read-only auditor for the Skill Forge registry. Lists skills in a directory, inspects a single <code>.skill.json</code>, verifies content + WASM Blake3 hashes, verifies the <code>SkillLedger</code> chain, or exports a skill bundle for offline review.</p>
+      <span class="code-label bash">bash</span>
+<pre>ai_skills list &lt;SKILLS_DIR&gt;
+ai_skills inspect &lt;SKILL.skill.json&gt;
+ai_skills ledger-verify &lt;LEDGER_JSONL&gt;
+ai_skills export &lt;SKILL.skill.json&gt; &lt;OUT_DIR&gt;</pre>
+
+      <h4>ai_skills_gui <span class="tag-new">NEW V96</span></h4>
+      <p>Desktop companion to <code>ai_skills</code>. Browses a directory of skills, shows metadata, live-verifies hashes, and renders the ledger chain with colour-coded integrity status.</p>
+
+      <h4>ai_prompt_synth <span class="tag-new">NEW V96</span></h4>
+      <p>Read-only auditor for the <code>FragmentLedger</code> produced by <code>FragmentBandit</code> (ε-random + UCB, partitioned by <code>(provider, model)</code> fingerprint and intent cluster).</p>
+      <span class="code-label bash">bash</span>
+<pre>ai_prompt_synth ledger-show    &lt;LEDGER_JSONL&gt; [--last N]
+ai_prompt_synth ledger-verify  &lt;LEDGER_JSONL&gt;
+ai_prompt_synth arms-summary   &lt;LEDGER_JSONL&gt;</pre>
+
+      <h4>ai_prompt_synth_gui <span class="tag-new">NEW V96</span></h4>
+      <p>Dashboard that replays a fragment ledger into per-cluster + per-arm views: selection counts, mean reward, retirement status, and per-arm reward-history sparklines.</p>
+
+      <h4>ai_feedback <span class="tag-new">NEW V96</span></h4>
+      <p>Read-only auditor for the <code>FeedbackDispatcher</code> <code>DispatchLedger</code> and <code>RetractionLedger</code>. Aggregates per-sink dispatch / failure counts and drop-reason stats (including the <code>InsufficientSources</code> reward-hacking gate), and lists the full GDPR-style retraction trail.</p>
+      <span class="code-label bash">bash</span>
+<pre>ai_feedback ledger-show     &lt;DISPATCH_JSONL&gt; [--last N]
+ai_feedback ledger-verify   &lt;DISPATCH_JSONL&gt;
+ai_feedback retractions     &lt;RETRACTION_JSONL&gt;
+ai_feedback stats           &lt;DISPATCH_JSONL&gt;</pre>
+
+      <h4>ai_feedback_gui <span class="tag-new">NEW V96</span></h4>
+      <p>Five-tab dashboard for the Feedback Loop: <strong>Overview</strong> (totals + chain status), <strong>Sinks</strong>, <strong>Drops</strong>, <strong>Retractions</strong>, <strong>Events</strong> (most recent 500 raw events).</p>
+
+      <div class="info-box success">
+        <strong>Shared contract across all three subsystems:</strong>
+        <ul>
+          <li>Append-only JSONL with Blake3 <code>prev_hash &rarr; this_hash</code> chain.</li>
+          <li>Optional Ed25519 signatures via the <code>DispatchSigner</code> trait (default: <code>NoopDispatchSigner</code>).</li>
+          <li>Global freeze switch honoured by every learner (<code>set_frozen(true)</code> short-circuits ingestion).</li>
+          <li>Each subsystem has its own event enum, but the ledger record layout is uniform &mdash; so one mental model audits all three.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ LIBRARY ARTIFACTS (V79) ═══════ -->
 <section id="library-artifacts">
   <div class="container">
     <h2 class="section-title">Library Artifacts <span style="font-size:0.7em; color:var(--accent);">(V79, new)</span></h2>
     <p class="section-sub">
-      Beyond the 20 binaries, V79 ships <code>ai_assistant</code> itself as a shared
+      Beyond the 26 binaries, V79 ships <code>ai_assistant</code> itself as a shared
       <strong>and</strong> static library via the new <code>ffi</code> Cargo feature.
       Downstream C / C++ / C# / Unity / Unreal / Bevy consumers can link directly
       against these outputs without cargo or Rust tooling.

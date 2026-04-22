@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_feedback_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_feedback_gui</code></nav>
+  <h1>ai_feedback_gui<small>Feedback Loop dashboard</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Self-Learning (V96)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_feedback_gui.rs</dd>
+    <dt>required-features</dt><dd>feedback-loop, gui-pro</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Desktop dashboard for the Feedback Loop. Five tabs: <strong>Overview</strong> (totals + chain status), <strong>Sinks</strong> (per-sink dispatch + failure counts), <strong>Drops</strong> (drop-reason breakdown), <strong>Retractions</strong> (GDPR-style retraction trail), <strong>Events</strong> (most recent 500 raw events).</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_feedback_gui --features "feedback-loop gui-pro"</code></pre>
+
+  <h2>Usage</h2>
+  <p>Launch, point the top bar at a dispatch ledger JSONL and (optionally) a retraction ledger JSONL, click <strong>Reload</strong>. Enable <strong>Auto (5s)</strong> for timer reload.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_feedback.html">ai_feedback</a> &mdash; CLI companion</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>
