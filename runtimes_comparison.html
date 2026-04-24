@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons_refined/chart.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runtime Comparison &mdash; Ollama / LM Studio / llama.cpp / vLLM &mdash; ai_assistant</title>
+<style>
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444;
+  --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626;
+  --cyan: #0891b2; --pink: #db2777;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px; transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 720px; margin: 0 auto 0;
+}
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  margin-bottom: 10px;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+.speedup { font-weight: 700; color: var(--green); }
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="runtimes_install.html">Runtimes</a>
+    <a href="runtimes_comparison.html" style="color:var(--text-bright)">Runtime Comparison</a>
+    <a href="guide_research.html">Research</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>Runtime Comparison &mdash; Ollama / LM Studio / llama.cpp / vLLM</h1>
+    <p class="tagline">
+      Given what you're actually doing, which of these four runtimes should you use?
+      This page explains the reasoning behind <code>Butler::recommend_runtime</code>
+      so you can override the butler when you know something it doesn't.
+    </p>
+  </div>
+</section>
+
+<section id="workloads">
+  <div class="container">
+    <h2 class="section-title">1. The Workloads We Consider</h2>
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Workload</th><th>Example</th><th>Characteristic</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Interactive chat</td><td>single user, one prompt at a time</td><td>Latency matters most</td></tr>
+        <tr><td>Code assist (IDE)</td><td>1&ndash;3 concurrent autocomplete requests</td><td>Short prompts, medium frequency</td></tr>
+        <tr><td>Agentic coding</td><td>Aider/Cline-style loops, self-editing</td><td>Long prompts, persistent sessions</td></tr>
+        <tr><td>Research pipeline</td><td>RAG over documents, synthesis</td><td>Long context, sequential queries</td></tr>
+        <tr><td>Multi-agent</td><td>N agents coordinating on one model</td><td>Parallel requests, long contexts</td></tr>
+        <tr><td>Eval batch</td><td>benchmark run over hundreds of prompts</td><td>Fully parallelisable</td></tr>
+        <tr><td>Autonomous scheduler</td><td>cron-driven batch work</td><td>Bursty parallel load</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:16px; font-size:0.9rem; color:var(--text-dim);">
+      The first two are <strong>latency-bound</strong>. The last five are <strong>throughput-bound</strong>.
+    </p>
+  </div>
+</section>
+
+<section id="speedup-table">
+  <div class="container">
+    <h2 class="section-title">2. Speedup Table (rough, single-GPU)</h2>
+    <p class="section-sub">
+      Aggregate-throughput estimates vs. Ollama on the same hardware. Order-of-magnitude,
+      not benchmarks &mdash; run <code>ai_assistant eval_benchmarks</code> against your
+      own workload for exact numbers.
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Workload</th><th>Ollama</th><th>LM Studio</th><th>llama.cpp</th><th>vLLM</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Interactive chat</td><td>1x</td><td>1x</td><td>1x</td><td>1x</td></tr>
+        <tr><td>Code assist (IDE)</td><td>1x</td><td>1x</td><td>1x</td><td>1&ndash;1.5x</td></tr>
+        <tr><td>Agentic coding</td><td>1x</td><td>1x</td><td>1x</td><td><span class="speedup">2&ndash;3x</span></td></tr>
+        <tr><td>Research pipeline</td><td>1x</td><td>1x</td><td>1x</td><td><span class="speedup">2&ndash;4x</span></td></tr>
+        <tr><td>Multi-agent (4+)</td><td>1x</td><td>1x</td><td>1.1x</td><td><span class="speedup">4&ndash;10x</span></td></tr>
+        <tr><td>Eval batch (&ge;100)</td><td>1x</td><td>1x</td><td>1.1x</td><td><span class="speedup">5&ndash;10x</span></td></tr>
+        <tr><td>Autonomous scheduler</td><td>1x</td><td>1x</td><td>1x</td><td><span class="speedup">3&ndash;6x</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="info-box" style="margin-top:16px;">
+      The vLLM wins come from <strong>continuous batching</strong>: new requests fuse into
+      the in-flight batch instead of queueing. Ollama, LM Studio, and llama.cpp
+      process requests sequentially by default.
+    </div>
+  </div>
+</section>
+
+<section id="when-wins">
+  <div class="container">
+    <h2 class="section-title">3. When Each Runtime Wins</h2>
+
+    <div class="step">
+      <h3>Ollama</h3>
+      <ul>
+        <li><strong>Ergonomics.</strong> <code>ollama pull &lt;model&gt;</code> handles discovery, download, quantization choice, and loading in one command.</li>
+        <li><strong>Baseline performance.</strong> For single-user interactive chat, it's within noise of every other option.</li>
+        <li><strong>Cold-start penalty.</strong> Switching models takes seconds. Ollama hot-swaps better than the others for interactive browsing.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>LM Studio</h3>
+      <ul>
+        <li><strong>GUI model browser.</strong> The best UX for trying quantizations side by side without touching a terminal.</li>
+        <li><strong>Model management.</strong> Visual VRAM estimator before loading.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>llama.cpp</h3>
+      <ul>
+        <li><strong>CPU performance.</strong> Best CPU inference of the four.</li>
+        <li><strong>Apple Silicon.</strong> Metal offload is a first-class target.</li>
+        <li><strong>Exotic quants.</strong> <code>Q1_0</code> / ternary kernels on the PrismML fork (Bonsai models).</li>
+        <li><strong>Tight control.</strong> Direct <code>-ngl</code>, <code>-c</code>, <code>-t</code> flags.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>vLLM</h3>
+      <ul>
+        <li><strong>PagedAttention.</strong> KV-cache fragmentation gone. More concurrent sequences fit.</li>
+        <li><strong>Continuous batching.</strong> Requests fuse into the in-flight batch.</li>
+        <li><strong>Tensor parallelism.</strong> <code>--tensor-parallel-size N</code> shards a large model across N GPUs. Butler auto-suggests the power-of-two size &le; <code>gpu_count</code>.</li>
+        <li><strong>Prefix caching.</strong> <code>--enable-prefix-caching</code> re-uses KV cache across turns with the same system prompt (5&ndash;30% latency win for agentic loops). Butler auto-suggests this for agentic workloads.</li>
+        <li><strong>LoRA hot-swap.</strong> <code>--enable-lora</code> + <code>/v1/load_lora_adapter</code> swaps adapters without restarting. Wired as <code>load_lora_adapter / unload_lora_adapter</code>.</li>
+        <li><strong>Structured output.</strong> <code>guided_json / guided_regex / guided_choice</code> constrain generation. Wired as <code>VLlmGuidedOptions</code> + <code>apply_guided</code>.</li>
+        <li><strong>KV-cache fp8.</strong> <code>--kv-cache-dtype fp8</code> halves cache memory with negligible quality loss &mdash; ~2x more concurrent sequences on the same GPU.</li>
+        <li><strong>Speculative decoding.</strong> Big base + tiny draft model (70B + 1B) for 2&ndash;3x lower latency on easy tokens.</li>
+        <li><strong>Prometheus metrics.</strong> <code>/metrics</code> exposes queue depth + cache usage + token counters. Wired as <code>scrape_vllm_metrics</code> + <code>VLlmMetrics::saturated()</code>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="when-loses">
+  <div class="container">
+    <h2 class="section-title">4. When Each Runtime Loses</h2>
+
+    <div class="step">
+      <h3>Ollama</h3>
+      <ul>
+        <li><strong>Concurrent load.</strong> Sequential request handling. A second request waits for the first to finish.</li>
+        <li><strong>Large context.</strong> KV-cache fragmentation limits how many long prompts you can keep resident.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>LM Studio</h3>
+      <ul>
+        <li><strong>Automation.</strong> The GUI is a feature for interactive use and a liability for unattended pipelines.</li>
+        <li><strong>Not available everywhere.</strong> No Linux server install &mdash; macOS / Windows GUI only.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>llama.cpp</h3>
+      <ul>
+        <li><strong>Raw GPU throughput.</strong> Under concurrent load, vLLM wins. The llama.cpp server processes requests sequentially.</li>
+        <li><strong>vRAM efficiency.</strong> Without PagedAttention, KV-cache fragmentation wastes GPU memory on long-context multi-agent workloads.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>vLLM</h3>
+      <ul>
+        <li><strong>Windows.</strong> No native build. WSL2 or Docker only.</li>
+        <li><strong>macOS.</strong> Experimental. Apple Silicon users: stick with llama.cpp.</li>
+        <li><strong>Cold start.</strong> Slower to load a model than Ollama. If you swap models often, the overhead dominates.</li>
+        <li><strong>Non-GGUF.</strong> Loads from HuggingFace repos, not local GGUF files. If your workflow is already GGUF-centric, switching costs effort.</li>
+        <li><strong>Gated repos.</strong> Needs <code>HF_TOKEN</code> for many production-grade models (<code>meta-llama/*</code>, some <code>mistralai/*</code>).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="decision-tree">
+  <div class="container">
+    <h2 class="section-title">5. Decision Tree (what the butler uses)</h2>
+<pre>workload is multi-agent / eval / autonomous / agentic / research?
+├── GPU available?
+│   ├── yes → vLLM  (install hint: pip install vllm)
+│   └── no  → llama.cpp  (caveat: vLLM would be 5-10x faster with a GPU)
+│
+workload is interactive chat or code assist?
+├── Ollama already running?     → Ollama
+├── LM Studio already running?  → LM Studio
+├── llama.cpp already running?  → llama.cpp
+├── vLLM already running?       → vLLM
+└── nothing running             → Ollama  (install hint: ollama.com)
+
+workload is Auto (unknown)?
+├── GPU + vLLM running?  → vLLM
+├── Ollama running?      → Ollama
+├── llama.cpp running?   → llama.cpp
+├── LM Studio running?   → LM Studio
+└── nothing running      → Ollama</pre>
+
+    <div class="info-box" style="margin-top:16px;">
+      Every branch returns a fallback in case the primary isn't installed, plus caveats
+      surfaced in <code>RuntimeRecommendation.caveats</code> (e.g. "vLLM does not support
+      Windows natively").
+    </div>
+  </div>
+</section>
+
+<section id="running-more">
+  <div class="container">
+    <h2 class="section-title">6. Running More Than One at Once</h2>
+    <p class="section-sub">
+      Nothing stops you. Each runtime listens on a different default port
+      (11434 / 1234 / 8080 / 8000). You can have Ollama serving chat on 11434
+      while vLLM serves a multi-agent pipeline on 8000.
+    </p>
+    <p style="color:var(--text-dim); font-size:0.92rem;">
+      The provider is per-<code>AiConfig</code>, so different agents or sessions can
+      point at different runtimes. <code>Butler::recommend_runtime</code> is called
+      once per workload &mdash; pass the right <code>WorkloadHint</code> and the butler
+      picks the right port.
+    </p>
+  </div>
+</section>
+
+<section id="see-also">
+  <div class="container">
+    <h2 class="section-title">7. See Also</h2>
+    <ul style="padding-left:20px; color:var(--text-dim); font-size:0.92rem; line-height:1.8;">
+      <li><a href="runtimes_install.html">Runtimes Install Guide</a> &mdash; per-OS install instructions.</li>
+      <li><a href="binaries.html">Binaries</a> &mdash; pre-built releases of ai_assistant tools.</li>
+      <li><a href="feature_matrix.html">Feature Matrix</a> &mdash; full list of features and feature flags.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Local-first AI framework for Rust.</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  var code = document.createElement('code');
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>

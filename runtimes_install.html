@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons_refined/server.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Inference Runtimes &mdash; Install Guide &mdash; ai_assistant</title>
+<style>
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444;
+  --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626;
+  --cyan: #0891b2; --pink: #db2777;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px; transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 720px; margin: 0 auto 0;
+}
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  margin-bottom: 10px;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box strong { color: var(--text-bright); }
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="runtimes_install.html" style="color:var(--text-bright)">Runtimes</a>
+    <a href="runtimes_comparison.html">Runtime Comparison</a>
+    <a href="guide_research.html">Research</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>Local Inference Runtimes &mdash; Install Guide</h1>
+    <p class="tagline">
+      ai_assistant works with four first-class local runtimes &mdash; Ollama, LM Studio,
+      llama.cpp, and vLLM. All four speak OpenAI-compatible HTTP, so the difference
+      shows up in performance characteristics, not API surface.
+    </p>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="container">
+    <h2 class="section-title">1. At a Glance</h2>
+    <p class="section-sub">
+      Pick a runtime by workload. Single-user chat? Ollama. GPU multi-agent? vLLM.
+      Run <code>ai_setup recommend --workload &lt;kind&gt;</code> to get the butler's pick.
+    </p>
+
+    <div style="overflow-x: auto; border-radius: 10px;">
+    <table class="flag-table">
+      <thead>
+        <tr>
+          <th>Runtime</th>
+          <th>Default port</th>
+          <th>Model format</th>
+          <th>Best for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ollama</td>
+          <td>11434</td>
+          <td>GGUF (pulled)</td>
+          <td>Single-user interactive chat</td>
+        </tr>
+        <tr>
+          <td>LM Studio</td>
+          <td>1234</td>
+          <td>GGUF (GUI-picked)</td>
+          <td>Exploration with a GUI</td>
+        </tr>
+        <tr>
+          <td>llama.cpp</td>
+          <td>8080</td>
+          <td>GGUF (manual)</td>
+          <td>CPU-only, exotic quantizations</td>
+        </tr>
+        <tr>
+          <td>vLLM</td>
+          <td>8000</td>
+          <td>HuggingFace repo</td>
+          <td>GPU multi-agent / batch</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p style="margin-top:20px; font-size:0.9rem; color:var(--text-dim);">Pick one with:</p>
+    <span class="code-label bash">terminal</span>
+<pre>ai_setup recommend --workload &lt;kind&gt;</pre>
+    <p style="font-size:0.9rem; color:var(--text-dim);">Then install with:</p>
+    <span class="code-label bash">terminal</span>
+<pre>ai_setup install &lt;ollama|vllm|llamacpp&gt;</pre>
+  </div>
+</section>
+
+<section id="ollama">
+  <div class="container">
+    <h2 class="section-title">2. Ollama</h2>
+    <p class="section-sub">
+      The easiest local runtime. One command to install, one command to pull a model.
+      If you don't know what you want, pick this.
+    </p>
+
+    <div class="step">
+      <h3>Linux</h3>
+      <span class="code-label bash">terminal</span>
+<pre>curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3.1:8b
+ollama serve   # (most distros run this automatically via systemd)</pre>
+    </div>
+
+    <div class="step">
+      <h3>macOS</h3>
+      <p>Download the installer from <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a>
+      and run it. Creates a menubar app that manages the server.</p>
+    </div>
+
+    <div class="step">
+      <h3>Windows</h3>
+      <p>Download the installer from <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a>.
+      Runs as a user service &mdash; no WSL required.</p>
+    </div>
+
+    <div class="step">
+      <h3>Point ai_assistant at Ollama</h3>
+      <span class="code-label toml">ai_config.toml</span>
+<pre>provider = "ollama"
+selected_model = "llama3.1:8b"
+[urls]
+ollama = "http://localhost:11434"</pre>
+    </div>
+  </div>
+</section>
+
+<section id="lm-studio">
+  <div class="container">
+    <h2 class="section-title">3. LM Studio</h2>
+    <p class="section-sub">
+      GUI-based model browser and server. Best if you want to browse quantizations
+      visually or A/B models side-by-side.
+    </p>
+
+    <div class="step">
+      <h3>Install</h3>
+      <p>Install from <a href="https://lmstudio.ai/" target="_blank" rel="noopener">lmstudio.ai</a>.
+      After picking a model in the UI, enable the <strong>Local Server</strong> tab (defaults to port 1234).</p>
+    </div>
+
+    <div class="step">
+      <h3>Point ai_assistant at LM Studio</h3>
+      <span class="code-label toml">ai_config.toml</span>
+<pre>provider = "lm_studio"
+selected_model = "TheBloke/Llama-3.1-8B-Instruct-GGUF"
+[urls]
+lm_studio = "http://localhost:1234"</pre>
+    </div>
+  </div>
+</section>
+
+<section id="llama-cpp">
+  <div class="container">
+    <h2 class="section-title">4. llama.cpp</h2>
+    <p class="section-sub">
+      The underlying engine behind Ollama and LM Studio, but usable directly.
+    </p>
+
+    <div class="step">
+      <h3>When to pick it</h3>
+      <ul>
+        <li>Quantizations that Ollama doesn't expose (e.g. <code>Q1_0</code> on the PrismML fork for Bonsai models).</li>
+        <li>CPU-only operation on a machine without a supported GPU.</li>
+        <li>Tight control over <code>-c</code> (context), <code>-ngl</code> (GPU layers), <code>-t</code> (threads).</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>Linux</h3>
+      <p>Pre-built CUDA binaries from <a href="https://github.com/ggml-org/llama.cpp/releases" target="_blank" rel="noopener">llama.cpp releases</a>,
+      or build from source:</p>
+      <span class="code-label bash">terminal</span>
+<pre>git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+cmake -B build -DGGML_CUDA=ON
+cmake --build build --config Release -j</pre>
+    </div>
+
+    <div class="step">
+      <h3>macOS</h3>
+      <span class="code-label bash">terminal</span>
+<pre>brew install llama.cpp</pre>
+      <p>Apple Silicon is a first-class target &mdash; Metal offload is on by default.</p>
+    </div>
+
+    <div class="step">
+      <h3>Windows</h3>
+      <span class="code-label bash">powershell</span>
+<pre>winget install ggml.llamacpp</pre>
+      <p>Or download a release zip and add the folder containing <code>llama-server.exe</code> to <code>PATH</code>.</p>
+    </div>
+
+    <div class="step">
+      <h3>Run</h3>
+      <span class="code-label bash">terminal</span>
+<pre>llama-server -m /path/to/model.gguf --host 0.0.0.0 --port 8080</pre>
+    </div>
+
+    <div class="step">
+      <h3>Point ai_assistant at llama.cpp</h3>
+      <span class="code-label toml">ai_config.toml</span>
+<pre>provider = "llama_cpp"
+selected_model = "my-model"
+[urls]
+llama_cpp = "http://localhost:8080"</pre>
+    </div>
+  </div>
+</section>
+
+<section id="vllm">
+  <div class="container">
+    <h2 class="section-title">5. vLLM</h2>
+    <p class="section-sub">
+      GPU-optimised serving engine with PagedAttention and continuous batching.
+      Typically <strong>2&ndash;10x higher throughput</strong> than Ollama/llama.cpp
+      under concurrent load on the same GPU.
+    </p>
+
+    <div class="step">
+      <h3>When to pick it</h3>
+      <ul>
+        <li>Multi-agent orchestration (&ge;2 concurrent requests).</li>
+        <li>Eval batches over many prompts.</li>
+        <li>Long-running autonomous coding loops (Aider/Cline-style).</li>
+        <li>Research pipelines with many sequential queries per document.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3>Linux (native)</h3>
+      <p><strong>Prerequisites:</strong> NVIDIA GPU with CUDA 12.1+, Python 3.9&ndash;3.12.</p>
+      <span class="code-label bash">terminal</span>
+<pre>pip install vllm
+vllm serve Qwen/Qwen2.5-7B-Instruct --host 0.0.0.0 --port 8000</pre>
+    </div>
+
+    <div class="step">
+      <h3>Docker (recommended for Windows, optional elsewhere)</h3>
+      <span class="code-label bash">terminal</span>
+<pre>docker run --rm --gpus all -p 8000:8000 \
+  -v "$HOME/.cache/huggingface":/root/.cache/huggingface \
+  --ipc=host \
+  vllm/vllm-openai:latest \
+  --model Qwen/Qwen2.5-7B-Instruct --port 8000</pre>
+      <p><code>--ipc=host</code> is required &mdash; vLLM uses NCCL shared memory.</p>
+    </div>
+
+    <div class="step">
+      <h3>Windows</h3>
+      <p>vLLM has <strong>no native Windows build</strong>. Two options:</p>
+      <ol style="padding-left:20px; color:var(--text-dim); font-size:0.88rem; margin-top:10px;">
+        <li><strong>WSL2 + Ubuntu:</strong>
+<pre>wsl --install -d Ubuntu
+# inside WSL:
+pip install vllm</pre>
+        </li>
+        <li><strong>Docker Desktop</strong> with GPU passthrough (<code>--gpus all</code>).</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h3>macOS</h3>
+      <p>vLLM on macOS is experimental (CPU/MPS only). For Apple Silicon,
+      <strong>llama.cpp is usually faster</strong> &mdash; stick with llama.cpp
+      until upstream Metal support matures.</p>
+    </div>
+
+    <div class="step">
+      <h3>Gated repos</h3>
+      <p>Some HuggingFace repos (<code>meta-llama/*</code>, some <code>mistralai/*</code>)
+      require license acceptance + an auth token:</p>
+      <span class="code-label bash">terminal</span>
+<pre>export HF_TOKEN=hf_...
+vllm serve meta-llama/Llama-3.1-8B-Instruct --port 8000</pre>
+      <p><code>ai_setup recommend</code> and the curated catalog flag which models are gated.</p>
+    </div>
+
+    <div class="step">
+      <h3>Point ai_assistant at vLLM</h3>
+      <span class="code-label toml">ai_config.toml</span>
+<pre>provider = "vllm"
+selected_model = "Qwen/Qwen2.5-7B-Instruct"
+[urls]
+vllm = "http://localhost:8000"</pre>
+    </div>
+
+    <div class="step">
+      <h3>Tuning flags (V103.1)</h3>
+      <p>Once vLLM is picked, these <code>VLlmLaunchConfig</code> fields
+      cover the tuning most workloads need. All are off by default; set
+      only what your workload requires.</p>
+      <div style="overflow-x: auto; border-radius: 10px;">
+      <table class="flag-table">
+        <thead>
+          <tr>
+            <th>Field / CLI flag</th>
+            <th>When to set</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>enable_prefix_caching</code><br/><code>--enable-prefix-caching</code></td>
+            <td>Agentic / multi-agent / autonomous loops &mdash; reuses KV
+            cache across turns with the same system prompt (5&ndash;30%
+            latency win). Butler auto-suggests this for agentic
+            workloads.</td>
+          </tr>
+          <tr>
+            <td><code>kv_cache_dtype = "fp8"</code><br/><code>--kv-cache-dtype fp8</code></td>
+            <td>VRAM tight. Halves KV-cache memory with negligible
+            quality loss &mdash; lets the same GPU hold ~2x concurrent
+            sequences.</td>
+          </tr>
+          <tr>
+            <td><code>speculative_model</code> + <code>num_speculative_tokens</code></td>
+            <td>Latency-bound generation on a large model. Pair a big
+            base (70B) with a tiny draft (1B) for 2&ndash;3x lower
+            latency on easy tokens.</td>
+          </tr>
+          <tr>
+            <td><code>chat_template</code><br/><code>--chat-template</code></td>
+            <td>Escape hatch for models shipped with a broken or
+            missing <code>tokenizer_config.json</code> chat template.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <h3>Runtime helpers (V103.1)</h3>
+      <ul>
+        <li><code>vllm_wait_until_ready(base_url, timeout, interval)</code>
+        &mdash; poll <code>/health</code> after launch (vLLM can take
+        30&ndash;120s to load weights) and then probe the full
+        capability.</li>
+        <li><code>load_lora_adapter / unload_lora_adapter</code>
+        (<code>src/vllm_lora.rs</code>) &mdash; hot-swap LoRA adapters
+        via <code>/v1/load_lora_adapter</code>. Requires launching with
+        <code>--enable-lora</code>. After load, use
+        <code>lora_name</code> as the <code>model</code> field.</li>
+        <li><code>scrape_vllm_metrics(base_url)</code>
+        (<code>src/vllm_metrics.rs</code>) &mdash; Prometheus
+        <code>/metrics</code> scraper. Returns running / waiting
+        requests, KV-cache usage, cumulative tokens.
+        <code>VLlmMetrics::saturated()</code> flags
+        <code>waiting &ge; 4</code> or <code>cache &ge; 0.9</code>.</li>
+        <li><code>VLlmGuidedOptions</code> + <code>apply_guided</code>
+        (<code>src/vllm_guided.rs</code>) &mdash; inject
+        <code>guided_json</code> / <code>guided_regex</code> /
+        <code>guided_choice</code> into an OpenAI request body for
+        structured output.</li>
+        <li><code>pick_quantization_for_vram(params_b, vram_mb)</code>
+        &mdash; returns <code>Some("awq")</code> when the fp16 model
+        wouldn't fit, <code>None</code> otherwise.
+        <code>RuntimeInfo.gpu_vram_mb</code> is now populated from
+        <code>nvidia-smi</code> automatically.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="rules-of-thumb">
+  <div class="container">
+    <h2 class="section-title">6. Which one? &mdash; Rules of Thumb</h2>
+    <ul style="padding-left:20px; color:var(--text-dim); font-size:0.92rem; line-height:1.8;">
+      <li><strong>Single-user, interactive:</strong> Ollama. Model management is one command.</li>
+      <li><strong>GUI lover / model browser:</strong> LM Studio.</li>
+      <li><strong>No GPU / exotic quants / Apple Silicon:</strong> llama.cpp.</li>
+      <li><strong>GPU + multi-agent / autonomous / eval batch / research pipeline:</strong> vLLM. 2&ndash;10x throughput win under concurrent load.</li>
+    </ul>
+    <div class="info-box success" style="margin-top:20px;">
+      <strong>When in doubt,</strong> run <code>ai_setup recommend --workload &lt;kind&gt;</code> and trust the butler.
+    </div>
+  </div>
+</section>
+
+<section id="see-also">
+  <div class="container">
+    <h2 class="section-title">7. See Also</h2>
+    <ul style="padding-left:20px; color:var(--text-dim); font-size:0.92rem; line-height:1.8;">
+      <li><a href="runtimes_comparison.html">Runtime Comparison</a> &mdash; workload-by-workload speedup table and when each one wins.</li>
+      <li><a href="binaries.html">Binaries</a> &mdash; pre-built releases of ai_assistant tools.</li>
+      <li><a href="feature_matrix.html">Feature Matrix</a> &mdash; full list of features and feature flags.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Local-first AI framework for Rust.</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>
