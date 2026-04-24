@@ -260,7 +260,8 @@ footer {
     <p class="section-sub">
       This page is the authoritative inventory of every binary in the crate and is kept
       in lockstep with <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md"><code>docs/BINARIES.md</code></a>.
-      Total binaries: <strong>26</strong> (as of V96 &mdash; added six Self-Learning auditors:
+      Total binaries: <strong>28</strong> (as of V97 &mdash; added two PromptBreeder auditors:
+      <code>ai_breeder</code>, <code>ai_breeder_gui</code>; and previously six Self-Learning auditors in V96:
       <code>ai_skills</code>, <code>ai_skills_gui</code>, <code>ai_prompt_synth</code>,
       <code>ai_prompt_synth_gui</code>, <code>ai_feedback</code>, <code>ai_feedback_gui</code>).
       V79 additionally ships the crate as a <strong>shared and static library</strong>
@@ -317,6 +318,8 @@ footer {
         <tr><td>24</td><td><a href="binaries/ai_prompt_synth_gui.html">ai_prompt_synth_gui</a></td><td>Self-Learning (V96)</td><td class="feat">prompt-synthesis, gui-pro</td><td>Fragment Synthesis dashboard (per-cluster arms + reward sparklines)</td></tr>
         <tr><td>25</td><td><a href="binaries/ai_feedback.html">ai_feedback</a></td><td>Self-Learning (V96)</td><td class="feat">feedback-loop</td><td>Feedback Loop auditor CLI (ledger-show, ledger-verify, retractions, stats)</td></tr>
         <tr><td>26</td><td><a href="binaries/ai_feedback_gui.html">ai_feedback_gui</a></td><td>Self-Learning (V96)</td><td class="feat">feedback-loop, gui-pro</td><td>Feedback Loop dashboard (overview, sinks, drops, retractions, events)</td></tr>
+        <tr><td>27</td><td><a href="binaries/ai_breeder.html">ai_breeder</a></td><td>PromptBreeder (V97)</td><td class="feat">prompt-breeder</td><td>PromptBreeder auditor CLI (list-runs, show-run, ledger-verify, ledger-show, export-population, compare-runs)</td></tr>
+        <tr><td>28</td><td><a href="binaries/ai_breeder_gui.html">ai_breeder_gui</a></td><td>PromptBreeder (V97)</td><td class="feat">prompt-breeder, gui-pro</td><td>PromptBreeder dashboard (overview, population, lineage, ledger, events, fitness timeline)</td></tr>
       </tbody>
     </table>
   </div>
@@ -602,8 +605,21 @@ ai_feedback stats           &lt;DISPATCH_JSONL&gt;</pre>
       <h4>ai_feedback_gui <span class="tag-new">NEW V96</span></h4>
       <p>Five-tab dashboard for the Feedback Loop: <strong>Overview</strong> (totals + chain status), <strong>Sinks</strong>, <strong>Drops</strong>, <strong>Retractions</strong>, <strong>Events</strong> (most recent 500 raw events).</p>
 
+      <h4>ai_breeder <span class="tag-new">NEW V97</span></h4>
+      <p>Read-only auditor for the PromptBreeder V97 subsystem. Reads atomic <code>*.ckpt</code> snapshots and Blake3 hash-chained ledger JSONL files. Summarises populations (fitness min/mean/max, operator provenance, lineage depth) and verifies chain integrity end-to-end.</p>
+      <span class="code-label bash">bash</span>
+<pre>ai_breeder list-runs         &lt;DIR&gt;
+ai_breeder show-run          &lt;CKPT_FILE&gt;
+ai_breeder ledger-verify     &lt;LEDGER_JSONL&gt;
+ai_breeder ledger-show       &lt;LEDGER_JSONL&gt; [--last N]
+ai_breeder export-population &lt;CKPT_FILE&gt; &lt;OUT_JSON&gt;
+ai_breeder compare-runs      &lt;CKPT_A&gt; &lt;CKPT_B&gt;</pre>
+
+      <h4>ai_breeder_gui <span class="tag-new">NEW V97</span></h4>
+      <p>Six-tab dashboard: <strong>Overview</strong> (config hash, ledger tip, fitness summary), <strong>Population</strong> (per-unit table with operator, fitness, parents, task-prompt preview), <strong>Lineage</strong> (DAG sizing + operator histogram), <strong>Ledger</strong> (chain integrity), <strong>Events</strong> (most recent 500 raw events), <strong>Fitness</strong> (best-per-generation + diversity timeline extracted from the ledger).</p>
+
       <div class="info-box success">
-        <strong>Shared contract across all three subsystems:</strong>
+        <strong>Shared contract across all auditable subsystems:</strong>
         <ul>
           <li>Append-only JSONL with Blake3 <code>prev_hash &rarr; this_hash</code> chain.</li>
           <li>Optional Ed25519 signatures via the <code>DispatchSigner</code> trait (default: <code>NoopDispatchSigner</code>).</li>
