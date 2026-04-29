@@ -27,7 +27,7 @@
   <pre><code>cargo build --release --bin ai_cli --features "full,diagnostic-logging"</code></pre>
 
   <h2>Subcommands</h2>
-  <p><code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code> (V77), <code>verify</code> (V88), <code>research</code> (V88, needs <code>research</code>), <code>quality</code> (V88), <code>help</code>.</p>
+  <p><code>scan</code>, <code>providers</code>, <code>models</code>, <code>config</code>, <code>butler</code>, <code>query</code>, <code>bench</code>, <code>test</code>, <code>cost</code> (V77), <code>verify</code> (V88), <code>research</code> (V88, needs <code>research</code>), <code>quality</code> (V88), <code>help</code>. <code>query</code> and <code>verify</code> accept <code>--image &lt;path|URL&gt;</code> when built with feature <code>vision</code> (V90.18).</p>
 
   <h2>Usage</h2>
   <pre><code># Provider detection + one-shot query
@@ -50,7 +50,12 @@ ai_cli cost export  --snapshot cost.json --output cost.csv --force
 ai_cli verify "Is water wet?" --strategy mark --faithfulness --cove --quality-gates
 
 # V88 research (needs feature "research")
-ai_cli research "transformer attention" --providers arxiv,scholar --bibtex --review</code></pre>
+ai_cli research "transformer attention" --providers arxiv,scholar --bibtex --review
+
+# V90.18 vision (needs feature "vision")
+ai_cli query --image diagram.png "Explain this architecture"
+ai_cli query -P ollama --model llava --image photo.jpg --image notes.png "Compare these"
+ai_cli verify --image chart.png --faithfulness --quality-gates "Summarize the trend"</code></pre>
 
   <h2>See also</h2>
   <ul>

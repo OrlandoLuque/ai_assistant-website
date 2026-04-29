@@ -358,6 +358,32 @@ selected_model = "my-model"
 [urls]
 llama_cpp = "http://localhost:8080"</pre>
     </div>
+
+    <div class="step">
+      <h3>Or let ai_assistant supervise <code>llama-server</code> for you (v0.2.52+)</h3>
+      <p>The <code>vision</code> feature ships an opt-in process supervisor that
+      spawns and watches a local <code>llama-server</code>, validates its
+      <code>--mmproj</code> path, polls <code>/health</code>, and kills the child
+      on <code>Drop</code> &mdash; so a panicking caller never leaks the
+      process. For vision workloads, the catalog and router now prefer
+      <strong>Qwen2.5-VL</strong> over Gemma 3 (Gemma 3 is reserved for the
+      edge / on-device tier).</p>
+      <span class="code-label rust">rust</span>
+<pre>use ai_assistant::embedded_server::{LlamaServerConfig, EmbeddedLlamaServer};
+
+let config = LlamaServerConfig::builder()
+    .binary_path("/usr/local/bin/llama-server")
+    .model_path("/models/Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf")
+    .mmproj("/models/Qwen2.5-VL-7B-Instruct-mmproj-f16.gguf")
+    .port(0)               // 0 = auto-pick a free port
+    .gpu_layers(99)
+    .build()?;
+
+let mut server = EmbeddedLlamaServer::new(config);
+server.start()?;
+server.wait_until_ready(std::time::Duration::from_secs(60))?;
+// server is killed cleanly when it goes out of scope</pre>
+    </div>
   </div>
 </section>
 

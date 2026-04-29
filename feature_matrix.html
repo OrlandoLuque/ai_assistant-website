@@ -1692,7 +1692,7 @@ const GROUPS = [
       { tech: 'Vision / Multimodal', flag: 'vision',
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['basic_chat','rag_chat','agent_tools','autonomous'],
-        notes: 'Feature flag vision. Envío de imágenes al modelo en cualquier contexto.' },
+        notes: 'Feature flag vision. Env&iacute;o de im&aacute;genes al modelo en cualquier contexto. v0.2.38: dispatcher unificado <code>generate_vision_response()</code> + transportes locales para Ollama y servidores OpenAI-compatibles (LM Studio, LocalAI, llama.cpp, vLLM, text-gen-webui) + CLI <code>--image</code> para <code>ai_cli query</code> y <code>ai_cli verify</code> (acepta path o URL, con anti-alucinaci&oacute;n integrada). v0.2.51: validaci&oacute;n <code>mmproj</code> (GGUF magic + traversal + tama&ntilde;o). v0.2.52: <code>EmbeddedLlamaServer</code> opt-in que arranca y supervisa <code>llama-server</code> (health probe, kill on Drop). Catalog y router prefieren <strong>Qwen2.5-VL</strong> sobre Gemma 3 (Gemma 3 reservado al tier edge / on-device).' },
       { tech: 'External Adapters', flag: 'adapters',
         cells: { basic_chat:'feature', rag_chat:'feature', kpkg:'feature', multi_user:'feature', agent_tools:'feature', autonomous:'feature', multi_agent:'feature', http_server:'feature', distributed:'feature', p2p:'feature' },
         typical: ['basic_chat','rag_chat','agent_tools'],
