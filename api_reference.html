@@ -419,6 +419,33 @@ footer {
       </tbody>
     </table>
     </div>
+
+    <h3 style="color: var(--text-bright); font-size: 1rem; margin: 24px 0 12px;">Internal Error Taxonomy (<code>error_taxonomy::ErrorCode</code>)</h3>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 12px;">
+      The HTTP <code>error_code</code> above is the wire-level taxonomy. Internally, every Rust error type that
+      crosses a public boundary implements the <code>ErrorCode</code> trait, exposing a stable fine-grained code
+      (e.g. <code>PROVIDER_RATE_LIMITED</code>, <code>ANTHROPIC_API</code>,
+      <code>RESILIENT_ALL_PROVIDERS_FAILED</code>), structured fields as
+      <code>(&amp;'static str, String)</code> pairs (e.g. <code>("status_code", "429")</code>,
+      <code>("retry_after_ms", "2000")</code>), and an optional category. Localized templates live in
+      <code>errors/en.json</code> and <code>errors/es.json</code> (83 codes each at V116) with <code>{field}</code>
+      placeholders substituted at format time.
+    </p>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 12px;">
+      <code>StructuredError::from_err</code> collapses any <code>ErrorCode</code> implementor into a serializable
+      <code>{ code, fields, category? }</code> shape — the same shape consumed by JSON logs, the i18n resolver,
+      and OTel span attributes (<code>error.code</code>, <code>error.fields.*</code>). At V116, 16 types
+      implement the trait: the <code>AiError</code> umbrella + 8 sub-types
+      (<code>ConfigError</code>, <code>ProviderError</code>, <code>RagError</code>, <code>NetworkError</code>,
+      <code>ValidationError</code>, <code>ResourceLimitError</code>, <code>IoError</code>,
+      <code>SerializationError</code>), the RAG / embeddings subsystem types
+      (<code>RagPipelineError</code>, <code>EmbeddingError</code>, <code>KpkgError</code>), and the
+      provider-call adapters (<code>AnthropicAdapterError</code>, <code>OpenAIAdapterError</code>,
+      <code>HfError</code>, <code>ResilientError</code>). The migration is additive — the inherent
+      <code>code()</code> method on <code>AiError</code> still returns the coarse string
+      (<code>"PROVIDER"</code>, <code>"CONFIG"</code>, &hellip;) for API compatibility; the fine-grained code is
+      reachable via <code>&lt;AiError as ErrorCode&gt;::code(&amp;err)</code>.
+    </p>
   </div>
 </section>
 

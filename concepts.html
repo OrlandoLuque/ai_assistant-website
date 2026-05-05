@@ -823,7 +823,10 @@ body {
 <a href="#concept-142" class="nav-item" data-num="142">142. Module Splitting</a>
 <a href="#concept-149" class="nav-item" data-num="149">149. Dead Code Hygiene</a>
 <a href="#concept-167" class="nav-item" data-num="167">167. Benchmark Suite Ecosystem</a>
-<a href="#concept-282" class="nav-item" data-num="282">282. non_exhaustive Signal Enums</a></div>
+<a href="#concept-282" class="nav-item" data-num="282">282. non_exhaustive Signal Enums</a>
+<a href="#concept-283" class="nav-item" data-num="283">283. ErrorCode Trait</a>
+<a href="#concept-284" class="nav-item" data-num="284">284. StructuredError</a>
+<a href="#concept-285" class="nav-item" data-num="285">285. Additive ErrorCode Migration</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Misc<span class="chevron"></span></div>
@@ -5282,6 +5285,24 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">282</span><code>#[non_exhaustive]</code> Signal Enums</h3>
 <div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V95</span></div></div>
 <div class="card-body"><p><code>StallSignal</code> and <code>SubAgentKind</code> are <code>#[non_exhaustive]</code>: adding new variants stays a minor bump. Telemetry accepts <code>&amp;str</code> signal names (not the typed enum) so counter code compiles without the feature-gated module.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-283" data-num="283" data-title="ErrorCode Trait" data-category="Code Quality">
+<div class="card-header"><h3><span class="concept-num">283</span><code>ErrorCode</code> Trait: Stable Codes + Structured Fields</h3>
+<div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V113</span></div></div>
+<div class="card-body"><p>Free-text <code>Display</code> strings force oncall and dashboards to regex-parse messages. The <code>error_taxonomy::ErrorCode</code> trait fixes that with three obligations: <code>code() -&gt; &amp;'static str</code> (a stable identifier like <code>PROVIDER_RATE_LIMITED</code>), <code>fields() -&gt; Vec&lt;(&amp;'static str, String)&gt;</code> (the variable parts as <code>("retry_after_ms", "2000")</code> tuples), and an optional <code>category()</code>. Localized templates live in <code>errors/en.json</code> and <code>errors/es.json</code> (83 entries each at V116) with <code>{field}</code> placeholders substituted at format time, so the same error renders in any locale without a code change.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-284" data-num="284" data-title="StructuredError" data-category="Code Quality">
+<div class="card-header"><h3><span class="concept-num">284</span><code>StructuredError</code>: One Shape for Logs, Traces, i18n</h3>
+<div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V113</span></div></div>
+<div class="card-body"><p><code>StructuredError::from_err(&amp;dyn ErrorCode)</code> collapses any <code>ErrorCode</code> implementor into a serializable <code>{ code, fields, category? }</code> shape that is the same regardless of which underlying error type produced it. Loggers ship it as JSON; OTel spans (V118) map <code>code &rarr; error.code</code> and each <code>(k, v)</code> field &rarr; <code>error.fields.&lt;k&gt;</code>; the i18n resolver renders it into a user-visible string. The shape is the contract &mdash; callers depend on <code>code</code> and field keys, not on <code>Display</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-285" data-num="285" data-title="Additive ErrorCode Migration" data-category="Code Quality">
+<div class="card-header"><h3><span class="concept-num">285</span>Additive Migration to <code>ErrorCode</code> Without Breaking Tests</h3>
+<div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V114&ndash;V116</span></div></div>
+<div class="card-body"><p>A clean <code>thiserror</code> rewrite would have broken the 22 tests that already pin <code>err.code()</code> against coarse strings (<code>"PROVIDER"</code>, <code>"CONFIG"</code>, &hellip;). The migration is intentionally <strong>additive</strong>: existing <code>Display</code>/<code>Error</code> impls and the inherent <code>code()</code> are untouched; <code>impl ErrorCode for X</code> is layered alongside, providing fine-grained codes via the trait. Callers writing <code>err.code()</code> keep getting the coarse code; fine-grained codes are reachable via <code>&lt;X as ErrorCode&gt;::code(&amp;err)</code>. As of V116, 16 types implement the trait. <code>ResilientError::AllProvidersFailed</code> decomposes its inner <code>(provider, message)</code> list into <code>attempted_count</code>, <code>providers</code> (joined), and <code>detail</code> so dashboards can branch on count or specific providers without parsing the aggregated string.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
