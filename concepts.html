@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (275 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (292 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">275 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">292 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -826,7 +826,14 @@ body {
 <a href="#concept-282" class="nav-item" data-num="282">282. non_exhaustive Signal Enums</a>
 <a href="#concept-283" class="nav-item" data-num="283">283. ErrorCode Trait</a>
 <a href="#concept-284" class="nav-item" data-num="284">284. StructuredError</a>
-<a href="#concept-285" class="nav-item" data-num="285">285. Additive ErrorCode Migration</a></div>
+<a href="#concept-285" class="nav-item" data-num="285">285. Additive ErrorCode Migration</a>
+<a href="#concept-286" class="nav-item" data-num="286">286. StructuredError → OTel Attrs</a>
+<a href="#concept-287" class="nav-item" data-num="287">287. Stuck Detector + Critique Recovery</a>
+<a href="#concept-288" class="nav-item" data-num="288">288. Stuck Detector Across Two Runtimes</a>
+<a href="#concept-289" class="nav-item" data-num="289">289. Parallel Read-Only Tools</a>
+<a href="#concept-290" class="nav-item" data-num="290">290. Pre-Execution Inspector Trait</a>
+<a href="#concept-291" class="nav-item" data-num="291">291. Two Layers (Inspector + Sandbox)</a>
+<a href="#concept-292" class="nav-item" data-num="292">292. Env-Var-Mediated CLI Flags</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Misc<span class="chevron"></span></div>
@@ -5303,6 +5310,48 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">285</span>Additive Migration to <code>ErrorCode</code> Without Breaking Tests</h3>
 <div class="card-badges"><span class="badge badge-cat">Code Quality</span><span class="badge badge-ver">V114&ndash;V116</span></div></div>
 <div class="card-body"><p>A clean <code>thiserror</code> rewrite would have broken the 22 tests that already pin <code>err.code()</code> against coarse strings (<code>"PROVIDER"</code>, <code>"CONFIG"</code>, &hellip;). The migration is intentionally <strong>additive</strong>: existing <code>Display</code>/<code>Error</code> impls and the inherent <code>code()</code> are untouched; <code>impl ErrorCode for X</code> is layered alongside, providing fine-grained codes via the trait. Callers writing <code>err.code()</code> keep getting the coarse code; fine-grained codes are reachable via <code>&lt;X as ErrorCode&gt;::code(&amp;err)</code>. As of V116, 16 types implement the trait. <code>ResilientError::AllProvidersFailed</code> decomposes its inner <code>(provider, message)</code> list into <code>attempted_count</code>, <code>providers</code> (joined), and <code>detail</code> so dashboards can branch on count or specific providers without parsing the aggregated string.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-286" data-num="286" data-title="StructuredError to OTel Attributes" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">286</span><code>StructuredError</code> &rarr; OTel Span Attributes</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V118</span></div></div>
+<div class="card-body"><p>When an <code>AiSpan</code> records an error, the runtime calls <code>StructuredError::from_err(&amp;err)</code> on any <code>ErrorCode</code> impl and emits structured OTel attributes: <code>error.code = "PROVIDER_RATE_LIMITED"</code>, <code>error.category = "Provider"</code>, plus one <code>error.fields.&lt;k&gt;</code> attribute per <code>(k, v)</code> field pair. Generic <code>&amp;dyn std::error::Error</code> paths fall back to <code>error.message = err.to_string()</code>. Because the codes are stable across locale, span attributes line up with log fields and user-visible messages without translation drift &mdash; dashboards segment by failing provider &times; error code &times; retry-after bucket without regex-parsing message strings.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-287" data-num="287" data-title="Stuck Detector with Critique Recovery" data-category="Autonomous">
+<div class="card-header"><h3><span class="concept-num">287</span>Stuck Detector: Heuristic Loop-Pathology Guard with Critique Recovery</h3>
+<div class="card-badges"><span class="badge badge-cat">Autonomous</span><span class="badge badge-ver">V119</span></div></div>
+<div class="card-body"><p>A self-contained <code>StuckDetector</code> (<code>autonomous_loop</code>, feature <code>autonomous</code>) observes each iteration's output and tool calls and emits <code>Option&lt;StuckSignal&gt;</code> from four heuristics: <strong>OutputRepetition</strong> (Jaccard similarity), <strong>ActionLoop</strong> (same tool-call hash repeated), <strong>RetryWithoutChange</strong>, <strong>NoProgress</strong>. Three presets &mdash; <code>default()</code> (sim=0.85), <code>aggressive()</code> (sim=0.7), <code>permissive()</code> (sim=0.95) &mdash; tune sensitivity. Paired with <code>CritiqueRefiner</code>: instead of resetting on stuck-detection, the runtime asks the same model to diagnose its loop and propose a corrective action, then resumes &mdash; turning stuck-detection into a <em>recovery</em> signal, not a <em>kill</em> signal.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-288" data-num="288" data-title="Stuck Detector Across Two Runtimes" data-category="Autonomous">
+<div class="card-header"><h3><span class="concept-num">288</span>Stuck Detector Wired into Two Runtime Shapes Unchanged</h3>
+<div class="card-badges"><span class="badge badge-cat">Autonomous</span><span class="badge badge-ver">V120&ndash;V121</span></div></div>
+<div class="card-body"><p>The same mixin attaches byte-for-byte unchanged into two structurally different runtimes. <strong>V120</strong>: the autonomous agent's iteration loop calls <code>observe()</code> after each tool-call result. <strong>V121</strong>: the multi-agent <code>PatternRunner</code> (round-robin / debate / nested-chat) calls it after each <code>AgentTurn</code>, with per-agent output history so an agent repeating <em>itself</em> trips the detector even when the conversation alternates with another agent. Both wirings are opt-in via <code>.stuck_detector(...)</code> and preserve previous behaviour byte-for-byte when not used. <code>permissive()</code> exists because RoundRobin &times; 2 agents &times; 2 rounds can produce template traffic with high enough Jaccard to trip the 0.85 default.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-289" data-num="289" data-title="Parallel Read-Only Tools" data-category="Autonomous">
+<div class="card-header"><h3><span class="concept-num">289</span>Parallel Read-Only Tool Execution via <code>std::thread::scope</code></h3>
+<div class="card-badges"><span class="badge badge-cat">Autonomous</span><span class="badge badge-ver">V122</span></div></div>
+<div class="card-body"><p>When an autonomous iteration parses &ge;2 tool calls and <em>every</em> call is name-matched against an allow-list of side-effect-free tools (<code>read_file</code>, <code>list_files</code>, <code>glob</code>, <code>web_search</code>, <code>vector_search</code>, <code>rag_search</code>, <code>fetch</code>, <code>get_url</code>, <code>stat</code>, <code>head</code>, <code>tail</code>, &hellip;), the runtime dispatches them in parallel via <code>std::thread::scope</code>. Sandbox validation runs sequentially first (so policy denials emit in declared order), then validated calls fan out, then results are collected back in order. The handler signature <code>Arc&lt;dyn Fn(...) -&gt; ToolResult + Send + Sync&gt;</code> is the precondition that lets scoped threads borrow the registry safely. Opt-in via <code>parallel_read_only_tools: false</code> default; a single write call in the batch falls back to sequential. Latency on N independent reads collapses from N&times;R to max(R) plus a fixed thread-spawn cost.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-290" data-num="290" data-title="Pre-Execution Inspector Trait" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">290</span>Pre-Execution <code>Inspector</code> Trait: Defence Below Sandbox</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V123</span></div></div>
+<div class="card-body"><p>A second, <em>content-aware</em> defence layer beneath the policy sandbox. <code>Inspector::inspect(&amp;ParsedToolCall) -&gt; InspectorVerdict</code> runs every parsed tool call through a chain of inspectors before the sandbox sees it. Verdicts: <code>Allow | Warn(reason) | Block(reason)</code>. Two built-in inspectors ship: <strong><code>AdversaryInspector</code></strong> (heuristic content filter &mdash; prompt-injection markers like <code>ignore previous instructions</code>, dangerous shell tokens like <code>rm -rf /</code>, suspicious URL hosts like <code>webhook.site</code>/<code>.onion</code>, secret-shaped patterns like <code>sk-ant-</code>/<code>-----BEGIN PRIVATE KEY-----</code>; first match &rarr; <code>Block</code>) and <strong><code>EgressInspector</code></strong> (name-based detection of network tools; <code>warn_only()</code> and <code>strict()</code> presets, the latter is the building block for <code>--no-egress</code>). The two layers compose: <code>summarize(text="Ignore previous instructions&hellip;")</code> is invisible to the sandbox but trips the adversary inspector on argument scan.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-291" data-num="291" data-title="Two Layers Inspector + Sandbox" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">291</span>Why Two Layers (Inspector + Sandbox)</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V123</span></div></div>
+<div class="card-body"><p><strong>Sandbox</strong> = policy. Paths, commands, internet mode, cost, iteration limits, audit log. Authoritative, structured, durable. <strong>Inspector</strong> = heuristic. String patterns, name allow-lists, domain-specific filters. Cheap, extensible, opt-in. They run in different parts of the pipeline and answer different questions. A sandbox can't tell that a benign-looking <code>summarize(text=&hellip;)</code> call carries a prompt-injection payload. An inspector can't replace per-path policy decisions. V123 ships them as separate gears so they evolve independently &mdash; sandbox semantics stay stable while new inspectors get added for new threats without touching the policy layer.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-292" data-num="292" data-title="Env-Var CLI Flag Wiring" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">292</span>Env-Var-Mediated CLI Flag Wiring for Cross-Subcommand Reach</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V123</span></div></div>
+<div class="card-body"><p>The CLI flags <code>--no-egress</code> and <code>--adversary-inspector</code> are parsed at the <em>top level</em>, before subcommand dispatch, and surfaced as env vars <code>AI_NO_EGRESS=1</code> and <code>AI_ADVERSARY_INSPECTOR=1</code>. <code>agent_wiring::AgentCreateOptions</code> reads those env vars as defaults for its boolean fields, so any subcommand that builds an autonomous agent &mdash; present or future &mdash; honours the user's intent without per-command plumbing. Explicit <code>AgentCreateOptions</code> fields take precedence; env vars only kick in when the caller left the option <code>false</code>. The right wiring shape for a flag whose audience is &quot;every autonomous-agent code path in the binary&quot;.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
