@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (301 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (303 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">301 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">303 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -842,7 +842,9 @@ body {
 <a href="#concept-298" class="nav-item" data-num="298">298. GDPR Purge in One Transaction</a>
 <a href="#concept-299" class="nav-item" data-num="299">299. Runbooks Catalog</a>
 <a href="#concept-300" class="nav-item" data-num="300">300. Tag-Triggered Release</a>
-<a href="#concept-301" class="nav-item" data-num="301">301. LLM-on-LLM CoVe Verifier</a></div>
+<a href="#concept-301" class="nav-item" data-num="301">301. LLM-on-LLM CoVe Verifier</a>
+<a href="#concept-302" class="nav-item" data-num="302">302. External Catalog as Optional Bridge</a>
+<a href="#concept-303" class="nav-item" data-num="303">303. Calibrate CI Gates On First Real Run</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Misc<span class="chevron"></span></div>
@@ -5415,6 +5417,18 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">301</span>LLM-on-LLM CoVe Verifier as Opt-In Callback</h3>
 <div class="card-badges"><span class="badge badge-cat">Reliability</span><span class="badge badge-ver">V132</span></div></div>
 <div class="card-body"><p><code>ChainOfVerification::with_llm_verifier(F: Fn(&amp;str) -&gt; Option&lt;String&gt;)</code> attaches an optional LLM callback. When set, <code>verify_claim()</code> constructs a <em>Supported / Contradicted / Unsupported</em> ternary prompt against the relevant context and asks the LLM directly &mdash; the actual mechanism from the CoVe paper. When unset, the engine retains the V81&ndash;V88 word-overlap fallback verbatim. Same engine, two operating modes; pick the right one for the latency/cost budget. Closes the gap where V81's Jaccard fallback gave perfect 0.00 CoVe accuracy on every fabricated response &mdash; the metric finally tracks reality. Two 19-fact knowledge corpora ship as regression fixtures: faithful &rarr; <code>grounding &ge; 0.7</code>, off-topic &rarr; <code>&le; 0.4</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-302" data-num="302" data-title="External Catalog as Optional Bridge" data-category="Engineering">
+<div class="card-header"><h3><span class="concept-num">302</span>External Catalog as Optional Bridge, Not Hard Dependency</h3>
+<div class="card-badges"><span class="badge badge-cat">Engineering</span><span class="badge badge-ver">V133</span></div></div>
+<div class="card-body"><p>The models.dev catalog ships ~1,000 model entries with pricing, context window, and capability flags. Mirroring that data into the library would mean shipping a stale snapshot that ages out the moment a new model lands. V133 takes the opposite path: <code>models_dev::ModelRegistry</code> stays a <em>parser</em> over a JSON the caller fetches, with bridge helpers (<code>provider_from_key</code>, <code>to_model_info</code>, <code>extend_from_models_dev</code>) that lift parsed entries into the in-crate <code>models::ModelInfo</code> graph. The library never reaches the network and ships no bundled snapshot &mdash; consumers pull fresh data when they want it, then hand the parsed catalog to the library. The catalog parser had existed since V104.9 as 565 lines of unwired dead code; V133 finally exposed it through <code>lib.rs</code>.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-303" data-num="303" data-title="Calibrate CI Gates On First Real Run" data-category="Engineering">
+<div class="card-header"><h3><span class="concept-num">303</span>Calibrate CI Gates The First Time They Actually Run</h3>
+<div class="card-badges"><span class="badge badge-cat">Engineering</span><span class="badge badge-ver">V134</span></div></div>
+<div class="card-body"><p>V125 added the <code>Supply Chain</code> workflow (<code>cargo-deny</code>) and V126 added the <code>bench-budget</code> gate. Both shipped tested but neither ran on origin until V133 pushed nine accumulated local commits at once. On first execution: cargo-deny rejected five transitive license sets (egui fonts, Mozilla CA bundle, whisper bindings) plus the workspace's own PolyForm LICENSE; bench-budget reported <code>bpe_token_count_200_words</code> 9&times; over budget because the V126 numbers were calibrated on a laptop, not GH-hosted single-vCPU runners. Neither is a regression. The discipline V134 codifies: when a CI gate first runs on real infrastructure, its <em>calibration</em> is the first deliverable &mdash; before fighting alarm fatigue from a chronically red pipeline. Per-crate <code>[[licenses.exceptions]]</code> beats broadening the global <code>allow</code> list (a future bad license still trips the gate). Realistic budgets with documented runner-vs-local notes beat tight budgets that always lie.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
