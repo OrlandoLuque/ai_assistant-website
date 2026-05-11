@@ -437,6 +437,30 @@ let cove_config = CoVeConfig {
 
 // result.corrected_response contains the verified output
 // result.overall_accuracy gives the ratio of supported claims</pre>
+      <h4 style="margin-top: 1.5rem;">LLM-backed verification (v0.2.79+)</h4>
+      <p>By default <code>verify_claim()</code> falls back to word-overlap
+        between the claim and the verification context. Attach an LLM
+        callback via <code>with_llm_verifier</code> to get the full
+        CoVe behaviour &mdash; the engine sends a
+        <em>Supported / Contradicted / Unsupported</em> prompt to the
+        model and uses its verdict.</p>
+      <span class="code-label rust">Rust</span>
+      <pre>let cove_engine = ChainOfVerification::new(cove_config)
+    .with_llm_verifier(|prompt: &amp;str| -&gt; Option&lt;String&gt; {
+        my_llm_client.complete(prompt).ok()
+    });</pre>
+      <p><code>ai_cli verify --cove --knowledge &lt;file&gt;</code> wires
+        this for you and sets
+        <code>verification_source = VerificationSource::Both</code> so
+        that file-sourced contexts are not filtered out. Demo
+        corpora <code>examples/knowledge_earth.txt</code> and
+        <code>examples/knowledge_rust.txt</code> let you try the flow
+        end-to-end:</p>
+      <span class="code-label bash">bash</span>
+      <pre>ai_cli verify --provider ollama --model "mistral:7b-instruct" \
+  --knowledge examples/knowledge_earth.txt \
+  --cove --quality-gates \
+  "Tell me about Earth"</pre>
     </div>
   </div>
 </section>
