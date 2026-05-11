@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant - Conceptual Guide (292 Concepts)</title>
+<title>AI Assistant - Conceptual Guide (301 Concepts)</title>
 <style>
 :root {
   --bg: #0f172a;
@@ -514,7 +514,7 @@ body {
 <header class="page-header">
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle sidebar">&#9776;</button>
   <h1>ai_assistant Conceptual Guide</h1>
-  <span class="header-subtitle">292 Concepts &mdash; by Lander</span>
+  <span class="header-subtitle">301 Concepts &mdash; by Lander</span>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search concepts..." autocomplete="off">
   </div>
@@ -833,7 +833,16 @@ body {
 <a href="#concept-289" class="nav-item" data-num="289">289. Parallel Read-Only Tools</a>
 <a href="#concept-290" class="nav-item" data-num="290">290. Pre-Execution Inspector Trait</a>
 <a href="#concept-291" class="nav-item" data-num="291">291. Two Layers (Inspector + Sandbox)</a>
-<a href="#concept-292" class="nav-item" data-num="292">292. Env-Var-Mediated CLI Flags</a></div>
+<a href="#concept-292" class="nav-item" data-num="292">292. Env-Var-Mediated CLI Flags</a>
+<a href="#concept-293" class="nav-item" data-num="293">293. Adaptive Trace Sampling</a>
+<a href="#concept-294" class="nav-item" data-num="294">294. Supply-Chain Bundle</a>
+<a href="#concept-295" class="nav-item" data-num="295">295. Performance Budgets Enforced</a>
+<a href="#concept-296" class="nav-item" data-num="296">296. Stability Macro</a>
+<a href="#concept-297" class="nav-item" data-num="297">297. Encrypted+Signed Backup</a>
+<a href="#concept-298" class="nav-item" data-num="298">298. GDPR Purge in One Transaction</a>
+<a href="#concept-299" class="nav-item" data-num="299">299. Runbooks Catalog</a>
+<a href="#concept-300" class="nav-item" data-num="300">300. Tag-Triggered Release</a>
+<a href="#concept-301" class="nav-item" data-num="301">301. LLM-on-LLM CoVe Verifier</a></div>
 </div>
 <div class="nav-category">
 <div class="nav-category-title" onclick="this.parentElement.classList.toggle('collapsed')">Misc<span class="chevron"></span></div>
@@ -5352,6 +5361,60 @@ DFA:  D0{S0} ──[Domain(&quot;code&quot;)]──→ D1{S1,S2} (accept: &quot;
 <div class="card-header"><h3><span class="concept-num">292</span>Env-Var-Mediated CLI Flag Wiring for Cross-Subcommand Reach</h3>
 <div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V123</span></div></div>
 <div class="card-body"><p>The CLI flags <code>--no-egress</code> and <code>--adversary-inspector</code> are parsed at the <em>top level</em>, before subcommand dispatch, and surfaced as env vars <code>AI_NO_EGRESS=1</code> and <code>AI_ADVERSARY_INSPECTOR=1</code>. <code>agent_wiring::AgentCreateOptions</code> reads those env vars as defaults for its boolean fields, so any subcommand that builds an autonomous agent &mdash; present or future &mdash; honours the user's intent without per-command plumbing. Explicit <code>AgentCreateOptions</code> fields take precedence; env vars only kick in when the caller left the option <code>false</code>. The right wiring shape for a flag whose audience is &quot;every autonomous-agent code path in the binary&quot;.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-293" data-num="293" data-title="Adaptive Trace Sampling" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">293</span>Adaptive Trace Sampling Tied to Error Rate</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V124</span></div></div>
+<div class="card-body"><p><code>AdaptiveSampler</code> is an OTel sampler whose rate floats with the observed error rate &mdash; 1 % under green, 50 % under elevated, 100 % under incident. Pair-shipped with <code>PromptRedactor</code> which masks eight PII classes (email, phone, SSN, credit card, AWS key, GitHub token, JWT, ed25519 signature) inside span attributes <em>before</em> export. Static samplers either miss the incident or drown the dashboard; adaptive sampling escapes the dilemma by sampling cheaply when nothing is wrong and expensively only when it matters. Redaction at the sampler layer (not the collector) means a sudden incident-rate spike that pulls 100 % of spans also redacts them on the way out &mdash; dashboards stay debuggable without becoming a data-exfil channel.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-294" data-num="294" data-title="Supply-Chain Hardening Bundle" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">294</span><code>cargo-deny</code> + SBOM + Renovate as One Bundle</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V125</span></div></div>
+<div class="card-body"><p>V125 landed three supply-chain tools as one coordinated bundle rather than three separate adoptions. <code>cargo-deny.toml</code> denies copyleft licenses + unmaintained dependencies + open advisories; CycloneDX SBOM generation ships with every release artifact; Renovate config keeps <code>Cargo.lock</code> current without merge-conflict storms. The bundling matters: each tool alone is incremental, but together they make the dependency audit chain inheritable &mdash; downstream commercial licensees can rely on the SBOM, the policy, and the keep-up cadence without rolling their own.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-295" data-num="295" data-title="Performance Budgets Enforced" data-category="Observability">
+<div class="card-header"><h3><span class="concept-num">295</span>Performance Budgets as Enforced Cancellation Tokens</h3>
+<div class="card-badges"><span class="badge badge-cat">Observability</span><span class="badge badge-ver">V126</span></div></div>
+<div class="card-body"><p><code>PerfBudget { route, deadline_ms }</code> attaches to every long-running operation. When the deadline passes, the budget <em>cancels</em> the operation with <code>E_BUDGET_EXCEEDED</code> and the operation degrades gracefully &mdash; RAG returns whatever chunks it has, generation returns the streamed prefix, multi-agent returns the last completed step. A budget that doesn't cancel is a metric, not a budget. The novel piece is the graceful-degradation contract: cancellable operations return a <code>Partial(T)</code> shape so callers see &ldquo;I got 7 of 10 chunks because we ran out of time&rdquo; instead of &ldquo;errored.&rdquo; Combined with the <code>StructuredError</code> taxonomy, callers can branch on the code to retry with a relaxed budget, fall back to a smaller model, or surface a &ldquo;took too long&rdquo; UX state.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-296" data-num="296" data-title="Stability Macro With Compile Warnings" data-category="Engineering">
+<div class="card-header"><h3><span class="concept-num">296</span>Feature &amp; API Lifecycle Macro With Compile-Time Warnings</h3>
+<div class="card-badges"><span class="badge badge-cat">Engineering</span><span class="badge badge-ver">V127</span></div></div>
+<div class="card-body"><p><code>#[stability(stable | experimental | deprecated_since = "0.2.x")]</code> attribute on every public surface. Deprecation is a two-cycle contract: 1 minor cycle of <code>deprecated_since</code> (emits a <code>compile_warning!</code> for callers outside the crate) + 1 minor cycle of <code>#[deprecated]</code> before removal. CI scripts diff <code>deprecated_since</code> annotations across versions &mdash; symbols that skipped the warning cycle fail CI. Lets downstream commercial licensees plan migrations: they know exactly when symbols will disappear and have two cycles of warning. The experimental marker emits the warning only for external callers, so internal use of experimental APIs is silent but external use is loud &mdash; the right asymmetry for a crate with both in-tree and external consumers.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-297" data-num="297" data-title="Encrypted+Signed Backup Bundle" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">297</span>Encrypted/Signed Backup With Mandatory-Verify Restore</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V128</span></div></div>
+<div class="card-body"><p><code>ai_backup</code> CLI: snapshot &rarr; AES-256-GCM encrypt &rarr; Ed25519 sign &rarr; sink (local / S3 / custom). Restore <em>refuses</em> to proceed if the signature doesn't verify &mdash; not &ldquo;warns and continues,&rdquo; refuses, exits non-zero, leaves destination untouched. Most backup tools sign metadata (filename, timestamp) but proceed when the ciphertext was tampered with; this module signs the ciphertext directly, so any byte flip post-encryption is caught. Mandatory-verify-on-restore prevents the most common backup attack: silently corrupted backups that get restored under pressure during an incident.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-298" data-num="298" data-title="GDPR Purge in One Transaction" data-category="Security">
+<div class="card-header"><h3><span class="concept-num">298</span>GDPR Article 17 Implemented as One Transaction</h3>
+<div class="card-badges"><span class="badge badge-cat">Security</span><span class="badge badge-ver">V129</span></div></div>
+<div class="card-body"><p><code>gdpr::purge_user(user_id)</code> traverses every persistence path in the crate (conversations, RAG documents, embeddings, audit logs, feedback, telemetry buffers, autonomous-loop state) and deletes every record keyed on the user &mdash; within a single SQLite-WAL transaction. Either every trace of the user is gone, or nothing changed. Most &ldquo;GDPR purge&rdquo; implementations are a list of admin endpoints that each handle one subsystem &mdash; if any endpoint fails (network blip, partial backend down), the user has been partially deleted, which is <em>worse</em> than not having been deleted because audit logs then claim compliance. The single-transaction implementation rules this out at the code level. Code, not just policy; a DPIA template ships alongside for the legal sign-off.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-299" data-num="299" data-title="Operational Runbooks Catalog" data-category="Engineering">
+<div class="card-header"><h3><span class="concept-num">299</span>Operational Runbooks as a Tracked Catalog</h3>
+<div class="card-badges"><span class="badge badge-cat">Engineering</span><span class="badge badge-ver">V130</span></div></div>
+<div class="card-body"><p><code>docs/runbooks/INDEX.md</code> catalogs every incident class (stuck inference, OTel pipeline down, vector-DB corruption, GDPR purge request, anti-hallucination quality regression, &hellip;) with a 1-page playbook each. Runbooks are part of the crate, not an external wiki &mdash; they version-bump with the code, and a code change that invalidates a runbook is a code-review concern. The catalog format is uniform: <em>What broke / How to detect / What to do / How to verify recovery</em>. Each runbook is callable by an operator with no prior context; the index lets oncall find the right playbook in seconds.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-300" data-num="300" data-title="Tag-Triggered Release Pipeline" data-category="Engineering">
+<div class="card-header"><h3><span class="concept-num">300</span>Tag-Triggered Reproducible Release With Attached SBOM</h3>
+<div class="card-badges"><span class="badge badge-cat">Engineering</span><span class="badge badge-ver">V131</span></div></div>
+<div class="card-body"><p>Pushing a signed tag (<code>vX.Y.Z</code>) triggers <code>.github/workflows/release.yml</code>: build binary &rarr; <code>cosign sign-blob</code> the artifact &rarr; <code>cargo-cyclonedx</code> SBOM &rarr; <code>gh release upload</code> zip + SHA256 + SBOM + signature. Every release has the same artifact shape; there is no manual &ldquo;build and upload&rdquo; step. Gated on a signed tag so a leaked GitHub token can't ship a release. A post-release verification job fails if the binary attachment is missing &mdash; the pipeline can't quietly regress. <code>scripts/verify-release.sh</code> ships so downstream consumers audit a release with one command.</p></div>
+<a href="#top" class="back-to-top">Back to top</a></article>
+
+<article class="concept-card" id="concept-301" data-num="301" data-title="LLM-on-LLM CoVe Verifier" data-category="Reliability">
+<div class="card-header"><h3><span class="concept-num">301</span>LLM-on-LLM CoVe Verifier as Opt-In Callback</h3>
+<div class="card-badges"><span class="badge badge-cat">Reliability</span><span class="badge badge-ver">V132</span></div></div>
+<div class="card-body"><p><code>ChainOfVerification::with_llm_verifier(F: Fn(&amp;str) -&gt; Option&lt;String&gt;)</code> attaches an optional LLM callback. When set, <code>verify_claim()</code> constructs a <em>Supported / Contradicted / Unsupported</em> ternary prompt against the relevant context and asks the LLM directly &mdash; the actual mechanism from the CoVe paper. When unset, the engine retains the V81&ndash;V88 word-overlap fallback verbatim. Same engine, two operating modes; pick the right one for the latency/cost budget. Closes the gap where V81's Jaccard fallback gave perfect 0.00 CoVe accuracy on every fabricated response &mdash; the metric finally tracks reality. Two 19-fact knowledge corpora ship as regression fixtures: faithful &rarr; <code>grounding &ge; 0.7</code>, off-topic &rarr; <code>&le; 0.4</code>.</p></div>
 <a href="#top" class="back-to-top">Back to top</a></article>
 
 <div class="no-results" id="noResults">No concepts match your search.</div>
