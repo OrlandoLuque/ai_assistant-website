@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_local_infer_audit_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_local_infer_audit_gui</code></nav>
+  <h1>ai_local_infer_audit_gui<small>Local-inference SLO auditor (desktop)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Local inference</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_local_infer_audit_gui.rs</dd>
+    <dt>required-features</dt><dd><code>gui-local-inference</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>egui desktop companion to <a href="ai_local_infer_audit.html"><code>ai_local_infer_audit</code></a>: browse SLO log files, inspect individual generation records, and see aggregate latency/throughput at a glance. Read-only.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_local_infer_audit_gui --features gui-local-inference</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_local_infer_audit.html">ai_local_infer_audit</a> &mdash; the CLI auditor</li>
+    <li><a href="ai_local_infer.html">ai_local_infer</a> &mdash; the inference runner</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_breeder &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_breeder</code></nav>
+  <h1>ai_breeder<small>PromptBreeder auditor CLI (read-only)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Self-learning &mdash; PromptBreeder (V97)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_breeder.rs</dd>
+    <dt>required-features</dt><dd><code>prompt-breeder</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Read-only auditor for PromptBreeder evolutionary prompt-optimization runs. Inspect run checkpoints and their populations, verify and pretty-print the tamper-evident ledger of mutations, export a population to JSON, and compare two runs. Never mutates any artifact &mdash; safe to point at a live run directory.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_breeder --features prompt-breeder</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_breeder list-runs         &lt;DIR&gt;
+ai_breeder show-run          &lt;CKPT_FILE&gt;
+ai_breeder ledger-verify     &lt;LEDGER_JSONL&gt;
+ai_breeder ledger-show       &lt;LEDGER_JSONL&gt; [--last N]
+ai_breeder export-population &lt;CKPT_FILE&gt; &lt;OUT_JSON&gt;
+ai_breeder compare-runs      &lt;CKPT_A&gt; &lt;CKPT_B&gt;</code></pre>
+
+  <h2>Defenses</h2>
+  <ul>
+    <li>Strictly read-only: opens checkpoints and ledgers for inspection, never writes back.</li>
+    <li>Ledger integrity: <code>ledger-verify</code> walks the append-only JSONL hash chain and exits non-zero on any break.</li>
+    <li>Bounded output: <code>ledger-show --last N</code> caps how much of a long ledger is rendered.</li>
+    <li>Export goes to an explicit output path you name &mdash; no in-place modification of the run.</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_breeder_gui.html">ai_breeder_gui</a> &mdash; desktop dashboard</li>
+    <li><a href="ai_feedback.html">ai_feedback</a> &mdash; feedback-loop auditor</li>
+    <li><a href="ai_prompt_synth.html">ai_prompt_synth</a> &mdash; fragment-synthesis auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

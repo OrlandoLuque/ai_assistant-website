@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_breeder_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_breeder_gui</code></nav>
+  <h1>ai_breeder_gui<small>PromptBreeder dashboard (desktop)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Self-learning &mdash; PromptBreeder (V97)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_breeder_gui.rs</dd>
+    <dt>required-features</dt><dd><code>prompt-breeder</code>, <code>gui-pro</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>egui desktop dashboard for inspecting PromptBreeder runs, the visual companion to the <a href="ai_breeder.html"><code>ai_breeder</code></a> CLI. Read-only: it renders a run's checkpoints, population, lineage, and ledger without ever mutating them.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_breeder_gui --features "prompt-breeder,gui-pro"</code></pre>
+
+  <h2>The six tabs</h2>
+  <ul>
+    <li><strong>Overview</strong> &mdash; config hash, ledger tip, fitness summary.</li>
+    <li><strong>Population</strong> &mdash; per-unit table with operator, fitness, parents, and a task-prompt preview.</li>
+    <li><strong>Lineage</strong> &mdash; DAG sizing + operator histogram.</li>
+    <li><strong>Ledger</strong> &mdash; chain integrity view.</li>
+    <li><strong>Events</strong> &mdash; the most recent 500 raw events.</li>
+    <li><strong>Fitness</strong> &mdash; best-per-generation + diversity timeline extracted from the ledger.</li>
+  </ul>
+
+  <h2>Shared auditor contract</h2>
+  <p>Like every auditable subsystem (<code>ai_feedback</code>, <code>ai_prompt_synth</code>, <code>ai_breeder</code>), the underlying ledger is an append-only JSONL with a Blake3 <code>prev_hash &rarr; this_hash</code> chain, optional Ed25519 signatures via the <code>DispatchSigner</code> trait, and a global freeze switch honoured by every learner. One mental model audits all three.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_breeder.html">ai_breeder</a> &mdash; the CLI auditor</li>
+    <li><a href="ai_feedback_gui.html">ai_feedback_gui</a> &mdash; feedback-loop dashboard</li>
+    <li><a href="ai_prompt_synth_gui.html">ai_prompt_synth_gui</a> &mdash; fragment-synthesis dashboard</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

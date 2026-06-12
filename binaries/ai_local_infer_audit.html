@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_local_infer_audit &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_local_infer_audit</code></nav>
+  <h1>ai_local_infer_audit<small>Local-inference SLO log auditor (read-only)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Local inference</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_local_infer_audit.rs</dd>
+    <dt>required-features</dt><dd><code>local-inference</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Read-only auditor for the SLO records that <a href="ai_local_infer.html"><code>ai_local_infer</code></a> persists on every generation. List logs with a per-file summary, pretty-print one file's records, or run an aggregate audit that exits non-zero on a breach &mdash; usable as a CI gate.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_local_infer_audit --features local-inference</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_local_infer_audit list   [--dir D]            # list logs with per-file summary
+ai_local_infer_audit show   &lt;FILE&gt;              # pretty-print a log file's records
+ai_local_infer_audit audit  [--dir D] [--strict]  # aggregate audit; non-zero on breach
+
+# Default --dir: ./.ai_assistant/local_infer_logs</code></pre>
+
+  <h2>Defenses</h2>
+  <ul>
+    <li>Strictly read-only &mdash; never writes to the log directory.</li>
+    <li><code>--strict</code> turns warnings into a non-zero exit so the audit can gate CI.</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_local_infer.html">ai_local_infer</a> &mdash; the inference runner</li>
+    <li><a href="ai_local_infer_audit_gui.html">ai_local_infer_audit_gui</a> &mdash; desktop auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

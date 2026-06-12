@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_acp_audit_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_acp_audit_gui</code></nav>
+  <h1>ai_acp_audit_gui<small>ACP SLO auditor (egui desktop)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Editor integration (Phase A.2, V107)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_acp_audit_gui.rs</dd>
+    <dt>required-features</dt><dd><code>gui-acp</code> (= <code>acp</code> + <code>dep:eframe</code>)</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Visual read-only auditor for ACP SLO log files. Pairs with <code>ai_acp_audit</code>. Shows: list panel of discovered <code>.jsonl</code> log files, per-file records table with red-coded SLO breaches, summary panel showing handshake / prompt / first-chunk breach counts, status badge (<strong>OK</strong> / <strong>BREACH</strong>).</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_acp_audit_gui --features gui-acp</code></pre>
+
+  <h2>Run</h2>
+  <pre><code>cargo run --release --bin ai_acp_audit_gui --features gui-acp</code></pre>
+
+  <p>Default directory: <code>./.ai_assistant/acp_logs</code>. Change in the toolbar and click <em>Reload</em>.</p>
+
+  <h2>Why a separate <code>gui-acp</code> feature?</h2>
+  <p>The auditor only needs <code>eframe</code> + the <code>acp</code> module &mdash; it does not pull in the rest of the desktop stack (graph viz, file dialogs, RAG, butler) that <code>gui-pro</code> brings. Users who want only the ACP auditor pay only for that.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_acp_audit.html">ai_acp_audit</a> &mdash; CLI auditor</li>
+    <li><a href="ai_acp.html">ai_acp</a> &mdash; ACP server</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

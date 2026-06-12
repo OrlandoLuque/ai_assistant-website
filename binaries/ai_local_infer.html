@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_local_infer &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_local_infer</code></nav>
+  <h1>ai_local_infer<small>Local inference runner + benchmark</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Local inference</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_local_infer.rs</dd>
+    <dt>required-features</dt><dd><code>local-inference</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Drive the in-crate local-inference backends directly: probe backend availability and VRAM, stream a single prompt while persisting an SLO record, or repeat a generation N times to print a throughput/latency summary. Pluggable backend (<code>stub</code> for tests, <code>candle</code>, <code>llama-cpp</code>).</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_local_infer --features local-inference</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_local_infer info                           # backend availability + VRAM detection
+ai_local_infer generate [opts]                # stream one prompt; persist SLO record
+ai_local_infer bench    [opts] [--iters N]    # repeat generate N times; print summary
+
+# Common options for generate / bench:
+#   --backend &lt;stub|candle|llama-cpp&gt;   (default: stub)
+#   --model   &lt;path&gt;                    (required for non-stub backends)
+#   --prompt  &lt;text&gt;                    (default: 'Hello, world.')
+#   --max-tokens &lt;N&gt;                    (default: 256)
+#   --temperature &lt;T&gt;  --top-p &lt;T&gt;</code></pre>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>Every <code>generate</code> writes an SLO record to <code>./.ai_assistant/local_infer_logs</code> &mdash; audit it with <a href="ai_local_infer_audit.html"><code>ai_local_infer_audit</code></a>.</li>
+    <li>The <code>stub</code> backend needs no model file and is used by the test harness.</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_local_infer_audit.html">ai_local_infer_audit</a> &mdash; SLO log auditor</li>
+    <li><a href="ai_local_infer_audit_gui.html">ai_local_infer_audit_gui</a> &mdash; desktop auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

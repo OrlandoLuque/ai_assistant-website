@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_acp &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_acp</code></nav>
+  <h1>ai_acp<small>Agent Client Protocol server</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Editor integration (Phase A.2, V107)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_acp.rs</dd>
+    <dt>required-features</dt><dd><code>acp</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Server implementation of the <a href="https://agentclientprotocol.com/">Agent Client Protocol</a> v1 over JSON-RPC 2.0 / stdio. Lets any ACP-conformant editor (Zed, VS Code, JetBrains) embed <code>ai_assistant</code> as a coding agent the same way they embed OpenHands, Goose, Hermes, or Gemini-CLI. The editor launches <code>ai_acp serve</code> as a subprocess, talks over <code>stdin</code>/<code>stdout</code>, and gets streamed responses back through <code>session/update</code> notifications.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_acp --features acp</code></pre>
+
+  <h2>Verbs</h2>
+  <pre><code>ai_acp serve [--provider PROV --model MODEL [--url URL] [--log-dir DIR]]
+ai_acp probe &lt;cmd&gt; [args...]</code></pre>
+
+  <ul>
+    <li><code>serve</code> &mdash; runs the ACP server on stdio with <code>AiAssistant</code> as the LLM backend. Persists per-session SLO records (handshake / prompt / first-chunk timings) to <code>./.ai_assistant/acp_logs/acp_&lt;ts&gt;_&lt;pid&gt;.jsonl</code>. <code>--provider</code>/<code>--model</code>/<code>--url</code> override the defaults; <code>$ACP_MODEL</code> is read if <code>--model</code> is absent.</li>
+    <li><code>probe</code> &mdash; diagnostic. Spawns the given command as an ACP server, runs handshake + one prompt, prints handshake / first-chunk / chunks-per-sec timings.</li>
+  </ul>
+
+  <h2>SLO targets (in-CI)</h2>
+  <ul>
+    <li>Handshake &lt; 200 ms</li>
+    <li>First chunk &lt; 1 s</li>
+    <li>Sustained throughput &ge; 30 chunks/s</li>
+  </ul>
+  <p>Two unit tests assert the handshake and throughput targets against stub generators &mdash; SLOs are validated at compile time, not just monitored in production.</p>
+
+  <h2>Capabilities advertised</h2>
+  <p><code>embeddedContext: true</code>. <code>image</code>, <code>audio</code>, <code>mcpCapabilities</code>, and <code>loadSession</code> default off until each is wired through the corresponding subsystem.</p>
+
+  <h2>Why no <code>agent-client-protocol</code> crate dependency?</h2>
+  <p>The official crate is at 0.11.x and currently undergoing the SACP redesign. Tracking a moving 0.x API is more maintenance than the JSON-RPC envelope itself (~120 lines, hand-rolled). Re-deriving the ~80 schema types is a <code>serde</code> exercise; we save the dep, the version-tracking burden, and any RFD churn.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_acp_audit.html">ai_acp_audit</a> &mdash; CLI auditor</li>
+    <li><a href="ai_acp_audit_gui.html">ai_acp_audit_gui</a> &mdash; GUI auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

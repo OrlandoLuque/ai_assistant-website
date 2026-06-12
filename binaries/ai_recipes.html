@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_recipes &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_recipes</code></nav>
+  <h1>ai_recipes<small>Recipes auditor CLI</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Workflows (Phase A.1, V106)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_recipes.rs</dd>
+    <dt>required-features</dt><dd>(none &mdash; <code>recipes</code> module always compiled)</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Read-only auditor for declarative YAML recipes (apiVersion <code>recipes/v1</code>) discovered under <code>./.ai_assistant/recipes/</code> or a chosen directory. Inspect metadata + variables + steps, validate against the schema, render the sub-recipe call graph, or run an aggregate audit that exits non-zero on issues.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_recipes</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_recipes list [--dir &lt;PATH&gt;]
+ai_recipes inspect &lt;FILE|NAME&gt; [--dir &lt;PATH&gt;]
+ai_recipes validate &lt;FILE|NAME&gt; [--dir &lt;PATH&gt;]
+ai_recipes graph [--dir &lt;PATH&gt;]
+ai_recipes audit [--dir &lt;PATH&gt;]</code></pre>
+
+  <h2>Defenses</h2>
+  <ul>
+    <li>File size cap 256 KiB, symlinks rejected, UTF-8 only.</li>
+    <li>Sub-recipe depth &le; 8 (prevents recursion).</li>
+    <li>Steps per recipe &le; 64.</li>
+    <li><code>shell</code> step type rejected unless caller opts in.</li>
+    <li>Subset-YAML parser: anchors, references, tags, and flow mappings <code>{...}</code> all rejected.</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_recipes_gui.html">ai_recipes_gui</a> &mdash; desktop auditor</li>
+    <li><a href="ai_cli.html">ai_cli</a> &mdash; <code>recipes &lt;list|show|validate|init|run|share&gt;</code></li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

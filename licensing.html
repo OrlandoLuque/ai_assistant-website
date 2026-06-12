@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/home.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commercial Licensing &mdash; ai_assistant</title>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-assistant.runawaybrains.com/licensing.html">
+<meta property="og:title" content="Commercial Licensing — ai_assistant">
+<meta property="og:description" content="ai_assistant is free for personal, academic, and non-commercial use under PolyForm Noncommercial 1.0.0. Commercial use requires a negotiated license — contact for a quote.">
+<meta property="og:image" content="https://ai-assistant.runawaybrains.com/og-image.png">
+<meta property="og:site_name" content="ai_assistant">
+
+<meta name="description" content="ai_assistant commercial licensing: free for personal, academic, and non-commercial use under PolyForm Noncommercial 1.0.0; commercial use requires a negotiated license. Contact for a quote.">
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626; --cyan: #0891b2; --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px; transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+section { padding: 56px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+h1 { font-size: 2.1rem; color: var(--text-bright); margin-bottom: 14px; line-height: 1.2; }
+h2 { font-size: 1.4rem; color: var(--text-bright); margin-bottom: 16px; margin-top: 8px; }
+h3 { font-size: 1.05rem; color: var(--text-bright); margin-bottom: 8px; }
+p { color: var(--text-dim); margin-bottom: 14px; }
+.lead { font-size: 1.05rem; color: var(--text); }
+code { background: var(--surface); border: 1px solid var(--border); border-radius: 5px;
+  padding: 1px 6px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85em; color: var(--cyan); }
+.gradient-text { background: var(--gradient); background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  justify-content: center; max-width: 1100px; }
+nav a { color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s; }
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto; }
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── License-specific ─────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+@media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+.card.free { border-color: var(--green); }
+.card.commercial { border-color: var(--yellow); }
+.card h3 { display: flex; align-items: center; gap: 8px; }
+.card ul { list-style: none; margin-top: 10px; }
+.card li { color: var(--text-dim); font-size: 0.9rem; padding: 4px 0 4px 22px; position: relative; }
+.card li::before { position: absolute; left: 0; }
+.card.free li::before { content: "✓"; color: var(--green); }
+.card.commercial li::before { content: "→"; color: var(--yellow); }
+.badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.badge.free { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid var(--green); }
+.badge.commercial { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+.cta { background: var(--surface); border: 1px solid var(--accent); border-radius: 14px;
+  padding: 30px; text-align: center; margin-top: 8px; }
+.cta a.button { display: inline-block; background: var(--accent); color: #fff; font-weight: 700;
+  padding: 12px 26px; border-radius: 10px; margin-top: 12px; font-size: 0.95rem; }
+.cta a.button:hover { text-decoration: none; opacity: 0.92; }
+.faq { margin-top: 8px; }
+.faq details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px; margin-bottom: 12px; }
+.faq summary { cursor: pointer; font-weight: 600; color: var(--text-bright); font-size: 0.95rem; }
+.faq details[open] summary { margin-bottom: 10px; }
+.faq p { font-size: 0.9rem; margin-bottom: 0; }
+.note { font-size: 0.85rem; color: var(--text-dim); border-left: 3px solid var(--accent2);
+  padding-left: 14px; margin-top: 18px; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
+footer p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-brand">ai_assistant</a>
+    <a href="index.html#easy">Overview</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="product_overview.html">Product</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="licensing.html">Licensing</a>
+    <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener" style="margin-left:auto; margin-right:4px;">GitHub</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section>
+  <div class="container">
+    <h1>Commercial <span class="gradient-text">Licensing</span></h1>
+    <p class="lead">
+      ai_assistant is released under <strong>PolyForm Noncommercial&nbsp;1.0.0</strong>.
+      It is <strong>free</strong> for personal use, academic research, and any
+      non-commercial project. <strong>Commercial use requires a separate,
+      negotiated license.</strong>
+    </p>
+    <div style="margin-top:18px;">
+      <span class="badge free">Personal &amp; academic — free</span>
+      &nbsp;
+      <span class="badge commercial">Commercial — contact for a license</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ WHAT'S COVERED ════════════════════════ -->
+<section>
+  <div class="container">
+    <h2>What the noncommercial license allows</h2>
+    <div class="two-col">
+      <div class="card free">
+        <h3><span class="badge free">Free</span> Allowed under PolyForm Noncommercial</h3>
+        <ul>
+          <li>Personal projects and experimentation</li>
+          <li>Academic research and teaching</li>
+          <li>Evaluation and proofs of concept</li>
+          <li>Non-profit and open-source non-commercial work</li>
+          <li>Modifying and self-hosting for the above uses</li>
+        </ul>
+      </div>
+      <div class="card commercial">
+        <h3><span class="badge commercial">License</span> Needs a commercial license</h3>
+        <ul>
+          <li>Use in a product or service you sell or monetize</li>
+          <li>Internal use at a for-profit company's operations</li>
+          <li>Offering it (or a derivative) as a hosted/SaaS service</li>
+          <li>Any use whose purpose is commercial advantage</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">
+      This summary is for orientation only and is not legal advice. The binding
+      terms are the full <code>LICENSE</code> file (PolyForm Noncommercial&nbsp;1.0.0)
+      at the repository root. When in doubt about whether your use qualifies as
+      commercial, get in touch and we'll clarify.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ HOW IT WORKS ════════════════════════ -->
+<section>
+  <div class="container">
+    <h2>How a commercial license works</h2>
+    <p>
+      ai_assistant is a single-author project. Commercial licenses are negotiated
+      <strong>case by case</strong> — terms and price depend on your use,
+      scale, and which capabilities you need. There is no self-service checkout
+      and no SaaS sign-up: you reach out, we scope it together, and you get a
+      license that fits.
+    </p>
+    <p>
+      To make the first email useful, it helps to mention: what you're building,
+      roughly how it will be deployed, and which parts of the library you expect
+      to rely on (for example LLM orchestration, RAG, multi-agent, security, or
+      the distributed runtime).
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════ CONTACT ════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="cta">
+      <h2 style="margin-bottom:6px;">Request a commercial license</h2>
+      <p style="margin-bottom:0;">
+        Email the author directly. Replies are personal, not automated.
+      </p>
+      <a class="button"
+         href="mailto:orlando.luque@gmail.com?subject=%5BCommercial%20License%5D%20ai_assistant&amp;body=Hi%20Orlando%2C%0A%0AWe%27re%20interested%20in%20a%20commercial%20license%20for%20ai_assistant.%0A%0A-%20What%20we%27re%20building%3A%0A-%20Deployment%20%2F%20scale%3A%0A-%20Capabilities%20we%20need%3A%0A%0AThanks%21">
+        Email orlando.luque@gmail.com
+      </a>
+      <p style="margin-top:14px;font-size:0.82rem;">
+        Or copy: <code>orlando.luque@gmail.com</code>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FAQ ════════════════════════ -->
+<section>
+  <div class="container">
+    <h2>Frequently asked</h2>
+    <div class="faq">
+      <details>
+        <summary>Is it really free for personal and academic use?</summary>
+        <p>Yes. PolyForm Noncommercial 1.0.0 grants broad rights for any
+           non-commercial purpose at no cost, including modifying and
+           self-hosting. You only need a commercial license when the purpose
+           of your use is commercial.</p>
+      </details>
+      <details>
+        <summary>What counts as "commercial"?</summary>
+        <p>Broadly, any use intended for commercial advantage or monetary
+           compensation — selling a product built on it, running it inside a
+           for-profit company's operations, or offering it as a hosted service.
+           If you're unsure, email and describe your case; we'll tell you
+           straight.</p>
+      </details>
+      <details>
+        <summary>How much does a commercial license cost?</summary>
+        <p>It's negotiated per case — there's no fixed price list yet. Cost
+           depends on your use, scale, and the capabilities you rely on. Reach
+           out with a short description and you'll get a concrete answer.</p>
+      </details>
+      <details>
+        <summary>Can I evaluate it commercially before licensing?</summary>
+        <p>Evaluation and proofs of concept are fine under the noncommercial
+           license. Moving an evaluation into commercial production is the point
+           where a commercial license is needed — talk to us before that step.</p>
+      </details>
+      <details>
+        <summary>Do you accept outside contributions?</summary>
+        <p>Not yet. This is a single-author project; a Contributor License
+           Agreement (CLA) will be required before any third-party code is
+           accepted.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a> &middot; <a href="index.html#license">License summary</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

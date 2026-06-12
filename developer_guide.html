@@ -11,6 +11,7 @@
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Developer Guide &mdash; ai_assistant</title>
+<meta name="description" content="Developer guide for ai_assistant: architecture, the 500-file module layout, 90+ feature flags, the public API surface, and how to extend the crate.">
 <style>
 /* ── Theme Variables ──────────────────────────────────────── */
 :root {
@@ -302,7 +303,7 @@ footer {
     <h2 class="section-title">Architecture Overview</h2>
     <div class="prose">
       <p>
-        ai_assistant is a <strong>single Rust crate</strong> (~410K LOC, 360 source files) organized as a modular
+        ai_assistant is a <strong>single Rust crate</strong> (~520K LOC, 500 source files) organized as a modular
         library with feature-flag-based compilation. The central type is <code>AiAssistant</code>, which provides
         a unified interface to all subsystems.
       </p>
@@ -423,7 +424,7 @@ footer {
 
     <div class="info-box">
       <strong>Full module list:</strong> See the <a href="feature_matrix.html">Feature Matrix</a> for the complete list
-      of 360 source files with their feature gates and test counts.
+      of 500 source files with their feature gates and test counts.
     </div>
   </div>
 </section>
@@ -1224,7 +1225,7 @@ session.add_agent("fixer", fixer);</pre>
 
     <div class="info-box success">
       <strong>Audit results:</strong> 5 Critical + 12 High + 14 Medium findings &mdash; all resolved.
-      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 360 files.
+      Zero <code>unsafe</code> except volatile zeroization. Zero hardcoded secrets across 500 files.
     </div>
   </div>
 </section>
@@ -1531,14 +1532,14 @@ pub trait LlmProvider {
   <div class="container">
     <h2 class="section-title">Testing</h2>
     <div class="prose">
-      <p>The project maintains 7,492 tests across multiple layers:</p>
+      <p>The project maintains 8,400+ tests across multiple layers:</p>
     </div>
 
     <div style="overflow-x: auto;">
     <table class="doc-table">
       <thead><tr><th>Category</th><th>Count</th><th>Command</th></tr></thead>
       <tbody>
-        <tr><td>Unit tests (all features)</td><td>~7,492</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
+        <tr><td>Unit tests (all features)</td><td>~8,400+</td><td><code>cargo test --features "full,..." --lib</code></td></tr>
         <tr><td>Integration tests</td><td>38</td><td><code>cargo test --features full --test '*'</code></td></tr>
         <tr><td>Test harness (CLI)</td><td>~436</td><td><code>cargo run --bin ai_test_harness -- --all</code></td></tr>
         <tr><td>Distributed networking</td><td>115</td><td><code>cargo test --features "full,distributed-network" --lib</code></td></tr>

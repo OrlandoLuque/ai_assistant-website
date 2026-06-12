@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_acp_audit &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_acp_audit</code></nav>
+  <h1>ai_acp_audit<small>ACP SLO auditor CLI</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Editor integration (Phase A.2, V107)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_acp_audit.rs</dd>
+    <dt>required-features</dt><dd><code>acp</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Read-only auditor for SLO log files emitted by <code>ai_acp serve</code>. Reads JSONL records (one per <code>handshake</code> / <code>prompt</code> / <code>first_chunk</code> event), checks them against the SLO targets, and either prints a summary or exits non-zero if <code>--strict</code> is passed.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_acp_audit --features acp</code></pre>
+
+  <h2>Verbs</h2>
+  <pre><code>ai_acp_audit list   [--dir D]
+ai_acp_audit show   &lt;FILE&gt;
+ai_acp_audit audit  [--dir D] [--strict]</code></pre>
+
+  <p>Default <code>--dir</code>: <code>./.ai_assistant/acp_logs</code>. <code>--strict</code> makes <code>audit</code> exit 1 on any breach &mdash; drops directly into CI as a regression gate.</p>
+
+  <h2>SLO targets</h2>
+  <ul>
+    <li>Handshake &le; 200 ms</li>
+    <li>First chunk &le; 1000 ms</li>
+    <li>Sustained throughput &ge; 30 chunks/s</li>
+  </ul>
+
+  <h2>Example</h2>
+  <pre><code>$ ai_acp_audit list
+FILE                                              RECORDS   SESSIONS
+acp_1777806862_71464.jsonl                              2          1
+
+$ ai_acp_audit audit --strict
+ACP audit (.ai_assistant/acp_logs)
+  Files:                     1
+  Records:                   2
+  Handshakes:                1 (breach &gt;200ms: 0)
+  Prompts:                   1 (breach &lt;30 chunks/s: 0)
+  First-chunk records:       0 (breach &gt;1000ms: 0)
+OK: all records within SLO targets</code></pre>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_acp.html">ai_acp</a> &mdash; ACP server</li>
+    <li><a href="ai_acp_audit_gui.html">ai_acp_audit_gui</a> &mdash; GUI auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

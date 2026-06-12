@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_recipes_gui &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_recipes_gui</code></nav>
+  <h1>ai_recipes_gui<small>Recipes auditor (egui desktop)</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Workflows (Phase A.1, V106)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_recipes_gui.rs</dd>
+    <dt>required-features</dt><dd><code>gui-recipes</code> (= <code>dep:eframe</code>)</dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Visual read-only auditor for recipes. Pairs with the CLI auditor <code>ai_recipes</code>. Shows: list panel of discovered recipes, metadata grid, per-recipe validation status, sub-recipe call-graph view (with MISSING flagged in red), aggregate summary panel.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_recipes_gui --features gui-recipes</code></pre>
+
+  <h2>Run</h2>
+  <pre><code>cargo run --release --bin ai_recipes_gui --features gui-recipes</code></pre>
+
+  <p>Default directory: <code>./.ai_assistant/recipes</code>. Change in the toolbar and click <em>Reload</em>.</p>
+
+  <h2>Why a separate <code>gui-recipes</code> feature?</h2>
+  <p>The auditor only needs <code>eframe</code> &mdash; it does not pull in the rest of the desktop stack (graph viz, file dialogs, RAG, butler) that <code>gui-pro</code> brings. Users who want only the recipes auditor pay only for that.</p>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_recipes.html">ai_recipes</a> &mdash; CLI auditor</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>

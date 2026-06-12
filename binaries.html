@@ -11,6 +11,7 @@
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Binary Catalogue &mdash; ai_assistant</title>
+<meta name="description" content="The 37 binaries shipped by ai_assistant: CLIs, HTTP/MCP servers, desktop GUIs, ledger auditors, and ops tools — each with its build command and required feature flags.">
 <style>
 /* ── Theme Variables ──────────────────────────────────────── */
 :root {
@@ -260,10 +261,10 @@ footer {
     <p class="section-sub">
       This page is the authoritative inventory of every binary in the crate and is kept
       in lockstep with <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md"><code>docs/BINARIES.md</code></a>.
-      Total binaries: <strong>28</strong> (as of V97 &mdash; added two PromptBreeder auditors:
-      <code>ai_breeder</code>, <code>ai_breeder_gui</code>; and previously six Self-Learning auditors in V96:
-      <code>ai_skills</code>, <code>ai_skills_gui</code>, <code>ai_prompt_synth</code>,
-      <code>ai_prompt_synth_gui</code>, <code>ai_feedback</code>, <code>ai_feedback_gui</code>).
+      Total user-facing binaries: <strong>37</strong> (plus an internal <code>mock_llama_server</code>
+      used only by the test harness). Recent additions: the Recipes auditors (V106), the ACP
+      auditors, the encrypted <code>ai_backup</code> tool (V128), the local-inference runner +
+      auditors, and the PromptBreeder auditors (V97).
       V79 additionally ships the crate as a <strong>shared and static library</strong>
       with a C ABI &mdash; see <a href="#library-artifacts">Library Artifacts</a> below.
     </p>
@@ -320,6 +321,15 @@ footer {
         <tr><td>26</td><td><a href="binaries/ai_feedback_gui.html">ai_feedback_gui</a></td><td>Self-Learning (V96)</td><td class="feat">feedback-loop, gui-pro</td><td>Feedback Loop dashboard (overview, sinks, drops, retractions, events)</td></tr>
         <tr><td>27</td><td><a href="binaries/ai_breeder.html">ai_breeder</a></td><td>PromptBreeder (V97)</td><td class="feat">prompt-breeder</td><td>PromptBreeder auditor CLI (list-runs, show-run, ledger-verify, ledger-show, export-population, compare-runs)</td></tr>
         <tr><td>28</td><td><a href="binaries/ai_breeder_gui.html">ai_breeder_gui</a></td><td>PromptBreeder (V97)</td><td class="feat">prompt-breeder, gui-pro</td><td>PromptBreeder dashboard (overview, population, lineage, ledger, events, fitness timeline)</td></tr>
+        <tr><td>29</td><td><a href="binaries/ai_recipes.html">ai_recipes</a></td><td>Workflows (V106)</td><td class="feat">&mdash;</td><td>Recipes auditor CLI (list, inspect, validate, graph, audit) for declarative YAML recipes</td></tr>
+        <tr><td>30</td><td><a href="binaries/ai_recipes_gui.html">ai_recipes_gui</a></td><td>Workflows (V106)</td><td class="feat">gui-recipes</td><td>Recipes auditor desktop app</td></tr>
+        <tr><td>31</td><td><a href="binaries/ai_acp.html">ai_acp</a></td><td>Agent Protocol (ACP)</td><td class="feat">acp</td><td>Agent Client Protocol endpoint / client</td></tr>
+        <tr><td>32</td><td><a href="binaries/ai_acp_audit.html">ai_acp_audit</a></td><td>Agent Protocol (ACP)</td><td class="feat">acp</td><td>ACP log auditor CLI (list, show, audit)</td></tr>
+        <tr><td>33</td><td><a href="binaries/ai_acp_audit_gui.html">ai_acp_audit_gui</a></td><td>Agent Protocol (ACP)</td><td class="feat">gui-acp</td><td>ACP log auditor desktop app</td></tr>
+        <tr><td>34</td><td><a href="binaries/ai_backup.html">ai_backup</a></td><td>Setup &amp; Ops (V128)</td><td class="feat">backup</td><td>Encrypted (AES-256-GCM), Ed25519-signed archive tool (create, verify, restore)</td></tr>
+        <tr><td>35</td><td><a href="binaries/ai_local_infer.html">ai_local_infer</a></td><td>Local inference</td><td class="feat">local-inference</td><td>Local inference runner + benchmark (info, generate, bench) over stub/candle/llama-cpp backends</td></tr>
+        <tr><td>36</td><td><a href="binaries/ai_local_infer_audit.html">ai_local_infer_audit</a></td><td>Local inference</td><td class="feat">local-inference</td><td>Local-inference SLO log auditor CLI (list, show, audit)</td></tr>
+        <tr><td>37</td><td><a href="binaries/ai_local_infer_audit_gui.html">ai_local_infer_audit_gui</a></td><td>Local inference</td><td class="feat">gui-local-inference</td><td>Local-inference SLO auditor desktop app</td></tr>
       </tbody>
     </table>
   </div>

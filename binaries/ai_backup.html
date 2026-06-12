@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai_backup &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_backup</code></nav>
+  <h1>ai_backup<small>Encrypted, signed archive tool</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Setup &amp; Ops (V128)</dd>
+    <dt>Binary path</dt><dd>src/bin/ai_backup.rs</dd>
+    <dt>required-features</dt><dd><code>backup</code></dd>
+  </dl>
+
+  <h2>Purpose</h2>
+  <p>Create an AES-256-GCM-encrypted, optionally Ed25519-signed, content-addressable archive of one or more source paths &mdash; then verify or restore it. Backs the <code>backup::{create,verify,restore}_backup</code> library API. Opt-in so users who only need providers don't pull crypto deps.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --release --bin ai_backup --features backup</code></pre>
+
+  <h2>Usage</h2>
+  <pre><code>ai_backup create  --source &lt;path&gt; [--source &lt;path&gt;]... --output &lt;base&gt; \
+                  [--passphrase-env VAR] [--sign-key &lt;path&gt;] [--label &lt;text&gt;]
+ai_backup verify  --input &lt;archive&gt; [--passphrase-env VAR] [--verify-key &lt;path&gt;]
+ai_backup restore --input &lt;archive&gt; --output &lt;dir&gt; [--passphrase-env VAR] [--verify-key &lt;path&gt;]</code></pre>
+
+  <h2>Defenses</h2>
+  <ul>
+    <li>The CLI never reads passphrases from argv &mdash; <code>--passphrase-env</code> names an environment variable instead.</li>
+    <li><code>--sign-key</code> / <code>--verify-key</code> are 32-byte raw Ed25519 keys on disk.</li>
+    <li>Without a passphrase the archive is plain but still SHA-256-summed; a <code>.sha256</code> sidecar is always written, a <code>.sig</code> when a signing key is supplied.</li>
+    <li>AES-256-GCM provides authenticated encryption: tampering with the ciphertext fails decryption atomically.</li>
+    <li>Verify before restore: <code>verify</code> checks the SHA-256 and (when present) the Ed25519 signature without unpacking anything.</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="kpkg_tool.html">kpkg_tool</a> &mdash; encrypted knowledge packages (.kpkg)</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>
