@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noai, noimageai">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mock_llama_server &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>mock_llama_server</code></nav>
+  <h1>mock_llama_server<small>Internal test stand-in for llama-server</small></h1>
+
+  <dl class="meta">
+    <dt>Group</dt><dd>Internal &mdash; test harness only</dd>
+    <dt>Binary path</dt><dd>src/bin/mock_llama_server.rs</dd>
+    <dt>required-features</dt><dd><code>vision</code> (the binary is gated <code>#![cfg(feature = "vision")]</code>)</dd>
+  </dl>
+
+  <p style="border-left:3px solid #f59e0b; background:rgba(245,158,11,0.08); padding:10px 14px; border-radius:4px;"><strong>Not a user-facing tool.</strong> This binary exists only to back integration tests of <code>embedded_server</code> and the <code>ai_proxy</code> streaming path. It is never shipped or run by end users &mdash; it's listed here for completeness so every binary in the crate has a reference page.</p>
+
+  <h2>Purpose</h2>
+  <p>A tiny hand-rolled HTTP server (<code>std::net::TcpListener</code>, no async runtime, no extra deps) that impersonates an external <code>llama-server</code> so the test suite can exercise the proxy, the embedded-server launcher, and the V150 SSE streaming passthrough without a real model.</p>
+
+  <h2>Build</h2>
+  <pre><code>cargo build --bin mock_llama_server --features vision</code></pre>
+
+  <h2>Routes</h2>
+  <pre><code>GET  /health                                  200 after an optional MOCK_LLAMA_DELAY_MS ramp
+GET  /v1/models                               single dummy model entry
+GET  /sse-test?chunks=N&amp;gap_ms=M&amp;stall_after=K  text/event-stream with N chunks, M ms apart;
+                                              stall_after=K emits K chunks then hangs (drives
+                                              the per-chunk-timeout test)
+POST /v1/chat/completions                     SSE when the body contains "stream":true, else
+                                              a single JSON chat response
+GET  /__shutdown                              graceful exit</code></pre>
+
+  <h2>Env knobs</h2>
+  <ul>
+    <li><code>MOCK_LLAMA_DELAY_MS</code> &mdash; ramp-up before <code>/health</code> returns 200 (simulates slow boot).</li>
+    <li><code>MOCK_SSE_CHUNKS</code> / <code>MOCK_SSE_GAP_MS</code> &mdash; default chunk count and inter-chunk gap for the SSE endpoints.</li>
+    <li><code>MOCK_SSE_STALL_AFTER</code> &mdash; emit this many chunks then hang forever (per-chunk-timeout coverage).</li>
+  </ul>
+
+  <h2>See also</h2>
+  <ul>
+    <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_proxy.html">ai_proxy</a> &mdash; the streaming gateway these tests target</li>
+    <li><a href="ai_test_harness.html">ai_test_harness</a> &mdash; the multi-category test runner</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>
