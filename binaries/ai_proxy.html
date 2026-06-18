@@ -37,17 +37,18 @@
     <li><strong>Append-only JSONL audit log</strong> with rotation, symlink-safe open, and API keys stored only as SHA-256 hashes.</li>
     <li><strong>SSE streaming passthrough</strong> (V150) with a per-chunk inactivity timeout (anti slow-loris) and Prometheus <code>/metrics</code>.</li>
     <li><strong>Request dedupe + multi-hop loop guard</strong> (V149) via <code>x-request-id</code> / <code>x-forward-hops</code>.</li>
+    <li><strong>HTTPS / TLS termination</strong> (V159) &mdash; serve TLS 1.3 directly via <code>--tls-cert</code> / <code>--tls-key</code> (build with <code>server-axum-tls</code>). No reverse proxy required.</li>
+    <li><strong>Streaming output guardrails</strong> (V160) &mdash; PII / toxicity / prompt-injection guards run <em>chunk-by-chunk over the live SSE stream</em>; a response that turns bad mid-stream is terminated and the offending tail never reaches the client.</li>
   </ul>
   </div>
 
-  <h2>What it can&rsquo;t do (by design / yet)</h2>
+  <h2>What it can&rsquo;t do (by design)</h2>
   <div style="border-left:3px solid var(--yellow); background:rgba(245,158,11,0.08); padding:12px 16px; border-radius:4px;">
   <ul>
-    <li><strong>It is not a model server.</strong> It forwards to your backends &mdash; it never runs inference itself.</li>
-    <li><strong>Output guardrails don&rsquo;t run over a live stream.</strong> When <code>stream:&nbsp;true</code> is honoured, the body is passed through; if guards are active the response is buffered instead and the proxy sets <code>x-streaming-disabled: output-guard-active</code> so you can tell.</li>
-    <li><strong>Streams are not cached</strong> (the cache layer is bypassed for streaming requests).</li>
-    <li><strong>No built-in TLS termination.</strong> Put it behind a reverse proxy / load balancer for HTTPS, or use the dedicated TLS-capable servers.</li>
+    <li><strong>It is not a model server.</strong> It forwards to your backends &mdash; it never runs inference itself (that&rsquo;s the job of the backends, or the <a href="ai_local_infer.html"><code>ai_local_infer</code></a> runner). Deliberate separation.</li>
+    <li><strong>Streams are not cached.</strong> The LRU cache is bypassed for streaming requests (caching a token stream would need record/replay). Non-stream responses cache normally.</li>
     <li>The <code>security</code> guardrails are <strong>opt-in</strong> &mdash; the router profile (without <code>security</code>) does load balancing only.</li>
+    <li>Streaming guards catch violations <strong>mid-stream</strong>: they stop the leak from continuing, but can&rsquo;t un-send tokens already streamed before the trigger. (The honest contract of any streaming guardrail.)</li>
   </ul>
   </div>
 
@@ -56,7 +57,24 @@
 cargo build --release --bin ai_proxy --features server-axum
 
 # Hardened gateway (recommended for anything public)
-cargo build --release --bin ai_proxy --features "server-axum,security"</code></pre>
+cargo build --release --bin ai_proxy --features "server-axum,security"
+
+# ...plus direct HTTPS termination (V159)
+cargo build --release --bin ai_proxy \
+    --features "server-axum,security,server-axum-tls"</code></pre>
+
+  <h2>HTTPS (V159)</h2>
+  <p>Set both a cert and key &mdash; via <code>[tls]</code> in the config or the
+  <code>--tls-cert</code> / <code>--tls-key</code> flags &mdash; and the proxy
+  terminates TLS 1.3 itself (no reverse proxy needed). Streaming output
+  guards (V160) are controlled by the same <code>enable_pii_output</code> /
+  <code>enable_toxicity_output</code> / <code>enable_attack_filter</code>
+  middleware flags, which now cover the SSE path too. Watch the
+  <code>proxy_stream_guard_blocks_total</code> /
+  <code>proxy_stream_guard_flags_total</code> counters on <code>/metrics</code>.</p>
+  <pre><code>ai_proxy --config ai_proxy.toml \
+    --tls-cert /etc/ssl/ai_proxy/fullchain.pem \
+    --tls-key  /etc/ssl/ai_proxy/privkey.pem</code></pre>
 
   <!-- ───────────── Tutorial ───────────── -->
   <h2>Tutorial: a hardened gateway in 5 steps</h2>
