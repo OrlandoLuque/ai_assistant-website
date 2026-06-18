@@ -5,48 +5,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai_proxy &mdash; ai_assistant</title>
+  <meta name="description" content="ai_proxy: a hardened, OpenAI-compatible LLM gateway — load balancing, rate limiting, PII/toxicity/attack guards, budget enforcement, response cache, and an append-only audit log. Build, configure, and stand one up in minutes.">
   <link rel="stylesheet" href="binary_page.css">
 </head>
 <body>
 <main class="page">
   <nav class="crumbs"><a href="../index.html">ai_assistant</a> &rsaquo; <a href="../binaries.html">Binaries</a> &rsaquo; <code>ai_proxy</code></nav>
-  <h1>ai_proxy<small>Hardened LLM gateway &mdash; rate limit, PII, budget, audit (V78)</small></h1>
+  <h1>ai_proxy<small>Hardened, OpenAI-compatible LLM gateway</small></h1>
 
   <dl class="meta">
     <dt>Group</dt><dd>Server</dd>
     <dt>Binary path</dt><dd>src/bin/ai_proxy.rs</dd>
-    <dt>required-features (router)</dt><dd>server-axum</dd>
-    <dt>required-features (full gateway)</dt><dd>server-axum, security</dd>
+    <dt>required-features (router)</dt><dd><code>server-axum</code></dd>
+    <dt>required-features (full gateway)</dt><dd><code>server-axum, security</code></dd>
   </dl>
 
-  <h2>Purpose</h2>
-  <p>Production API gateway that sits in front of upstream providers (Ollama, OpenAI, Anthropic, &hellip;). Two feature profiles:</p>
+  <p>Drop <code>ai_proxy</code> in front of one or more upstream LLM backends (Ollama, LM&nbsp;Studio, OpenAI, Anthropic, &hellip;) and every client keeps talking plain OpenAI&#8209;compatible HTTP &mdash; while the proxy adds load balancing, safety guardrails, cost control, caching, and an audit trail. It is the same binary at two strengths: a thin <strong>router</strong>, or a fully <strong>hardened gateway</strong>.</p>
+
+  <!-- ───────────── Can / Can't ───────────── -->
+  <h2>What it can do</h2>
+  <div style="border-left:3px solid var(--green); background:rgba(16,185,129,0.08); padding:12px 16px; border-radius:4px;">
   <ul>
-    <li><code>--features server-axum</code> &mdash; router + round-robin LB + session affinity + health checks + optional Bearer auth.</li>
-    <li><code>--features "server-axum,security"</code> &mdash; full gateway: rate limit, PII/toxicity/attack guards, budget enforcement, LRU cache, JSONL audit log.</li>
+    <li><strong>Multi-backend load balancing</strong> across upstreams with round-robin and <strong>session affinity</strong> (sticky routing per session).</li>
+    <li><strong>Model-aware routing</strong> (V149): send each request to a backend that actually advertises the requested model; aggregated <code>GET /v1/models</code> shows the whole fleet.</li>
+    <li><strong>Health checks</strong> that take unhealthy backends out of rotation automatically.</li>
+    <li><strong>Bearer auth</strong> gate (optional) with the key compared safely and never logged in clear.</li>
+    <li><strong>Rate limiting</strong> per key (sliding window, keyed <code>sha256(bearer) &rarr; session &rarr; ip</code>).</li>
+    <li><strong>Guardrails</strong>: PII redaction (input&nbsp;+&nbsp;output), toxicity filtering, and prompt-injection / attack detection.</li>
+    <li><strong>Budget enforcement</strong>: returns <code>429</code> with <code>X-Reason: budget-exceeded</code> when a key blows its cost ceiling.</li>
+    <li><strong>Response cache</strong> (LRU, PII-safe &mdash; tainted responses are never stored).</li>
+    <li><strong>Append-only JSONL audit log</strong> with rotation, symlink-safe open, and API keys stored only as SHA-256 hashes.</li>
+    <li><strong>SSE streaming passthrough</strong> (V150) with a per-chunk inactivity timeout (anti slow-loris) and Prometheus <code>/metrics</code>.</li>
+    <li><strong>Request dedupe + multi-hop loop guard</strong> (V149) via <code>x-request-id</code> / <code>x-forward-hops</code>.</li>
   </ul>
+  </div>
+
+  <h2>What it can&rsquo;t do (by design / yet)</h2>
+  <div style="border-left:3px solid var(--yellow); background:rgba(245,158,11,0.08); padding:12px 16px; border-radius:4px;">
+  <ul>
+    <li><strong>It is not a model server.</strong> It forwards to your backends &mdash; it never runs inference itself.</li>
+    <li><strong>Output guardrails don&rsquo;t run over a live stream.</strong> When <code>stream:&nbsp;true</code> is honoured, the body is passed through; if guards are active the response is buffered instead and the proxy sets <code>x-streaming-disabled: output-guard-active</code> so you can tell.</li>
+    <li><strong>Streams are not cached</strong> (the cache layer is bypassed for streaming requests).</li>
+    <li><strong>No built-in TLS termination.</strong> Put it behind a reverse proxy / load balancer for HTTPS, or use the dedicated TLS-capable servers.</li>
+    <li>The <code>security</code> guardrails are <strong>opt-in</strong> &mdash; the router profile (without <code>security</code>) does load balancing only.</li>
+  </ul>
+  </div>
 
   <h2>Build</h2>
-  <pre><code># Router only
+  <pre><code># Router only (LB + health + optional auth)
 cargo build --release --bin ai_proxy --features server-axum
 
-# Hardened gateway (recommended)
+# Hardened gateway (recommended for anything public)
 cargo build --release --bin ai_proxy --features "server-axum,security"</code></pre>
 
-  <h2>Usage</h2>
-  <pre><code>ai_proxy --config examples/ai_proxy.toml
-ai_proxy --config examples/ai_proxy.toml --dry-run
+  <!-- ───────────── Tutorial ───────────── -->
+  <h2>Tutorial: a hardened gateway in 5 steps</h2>
+  <ol>
+    <li><strong>Start two backends</strong> (e.g. two Ollama instances on <code>127.0.0.1:11434</code> and <code>11435</code>).</li>
+    <li><strong>Copy the example config</strong> and edit the backend list:
+      <pre><code>cp examples/ai_proxy.toml ai_proxy.toml
+# edit [[backends]] addr = "127.0.0.1:11434" / ":11435"</code></pre>
+    </li>
+    <li><strong>Set an API key</strong> via env (wins over the file and the deprecated flag):
+      <pre><code>export AI_PROXY_API_KEY="sk-your-gateway-key"</code></pre>
+    </li>
+    <li><strong>Dry-run</strong> to validate the merged config before binding a port:
+      <pre><code>ai_proxy --config ai_proxy.toml --dry-run</code></pre>
+    </li>
+    <li><strong>Run it</strong> and point any OpenAI client at it:
+      <pre><code>ai_proxy --config ai_proxy.toml --port 9000
+
+curl http://localhost:9000/v1/chat/completions \
+  -H "Authorization: Bearer sk-your-gateway-key" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llama3","messages":[{"role":"user","content":"hi"}]}'</code></pre>
+    </li>
+  </ol>
+  <p>Watch <code>X-Request-Id</code>, <code>X-Cache</code>, and the audit log fill in as you send traffic. Hit <code>/metrics</code> for Prometheus counters and <code>/v1/models</code> for the aggregated fleet.</p>
+
+  <!-- ───────────── Use cases ───────────── -->
+  <h2>Common use cases</h2>
+  <ul>
+    <li><strong>One safe endpoint for a team</strong> &mdash; a single Bearer-gated URL in front of several local models, with per-key rate limits and budgets so nobody runs away with the GPU.</li>
+    <li><strong>PII firewall</strong> &mdash; force PII redaction on input and output so prompts/responses are scrubbed before they reach (or leave) the model.</li>
+    <li><strong>Cost guardrail for a shared model</strong> &mdash; set a budget per key; the gateway 429s once it&rsquo;s exhausted, with an auditable trail of who spent what.</li>
+    <li><strong>Model fleet behind one address</strong> &mdash; model-aware routing + aggregated <code>/v1/models</code> let clients ask for any model and land on a backend that serves it.</li>
+    <li><strong>Drop-in cache</strong> &mdash; identical chat requests are served from an LRU cache (PII-safe), cutting load on the backends.</li>
+  </ul>
+
+  <h2>Configuration reference</h2>
+  <pre><code>ai_proxy --config ai_proxy.toml             # TOML config (recommended)
+ai_proxy --config ai_proxy.toml --dry-run   # validate + print merged config, exit
 ai_proxy --config ai_proxy.toml --port 9000 --disable-cache</code></pre>
+  <p>CLI flags (all optional, all override the file): <code>--config</code>, <code>--port</code>, <code>--backends a:p,b:p</code>, <code>--health-interval</code>, <code>--audit-log</code>, <code>--audit-max-files</code>, <code>--enable-pii-redaction</code>, <code>--disable-cache</code>, <code>--cost-snapshot</code>, <code>--dry-run</code>, <code>--api-key</code>&nbsp;<em>(deprecated &mdash; prefer the env var)</em>.</p>
+  <p>Environment: <code>AI_PROXY_API_KEY</code> &mdash; Bearer key; <strong>wins</strong> over both the config file and <code>--api-key</code>.</p>
+  <p>Response headers: <code>X-Request-Id</code> (every response), <code>X-Cache: HIT|MISS</code> (chat path), <code>X-Reason</code> on 429/503 (<code>budget-exceeded</code>, <code>rate_limit</code>, <code>output-blocked</code>, <code>middleware-error</code>).</p>
 
   <h2>Middleware pipeline (security on)</h2>
-  <p>Rate limit &rarr; content-length guard &rarr; PII input &rarr; toxicity input &rarr; attack guard &rarr; budget pre-check &rarr; cache lookup &rarr; backend &rarr; PII output &rarr; toxicity output &rarr; budget post-update &rarr; cache store &rarr; audit log.</p>
+  <p>rate limit &rarr; content-length guard &rarr; PII input &rarr; toxicity input &rarr; attack guard &rarr; budget pre-check &rarr; cache lookup &rarr; backend &rarr; PII output &rarr; toxicity output &rarr; budget post-update &rarr; cache store &rarr; audit log.</p>
 
-  <h2>Response headers</h2>
-  <p><code>X-Request-Id</code> on every response. <code>X-Cache: HIT|MISS</code> on <code>/v1/chat/completions</code>. <code>X-Reason</code> on 429/503 (<code>budget-exceeded</code>, <code>rate_limit</code>, <code>output-blocked</code>, <code>middleware-error</code>).</p>
+  <h2>Docs &amp; references</h2>
+  <ul>
+    <li><a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md" target="_blank" rel="noopener">docs/BINARIES.md</a> &mdash; the authoritative binary catalogue (canonical source for this page).</li>
+    <li><a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/IMPROVEMENTS_V78.md" target="_blank" rel="noopener">docs/IMPROVEMENTS_V78.md</a> &mdash; the gateway design + the security mitigations.</li>
+    <li><a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/examples/ai_proxy.toml" target="_blank" rel="noopener">examples/ai_proxy.toml</a> &mdash; the fully-commented config to copy from.</li>
+  </ul>
 
   <h2>See also</h2>
   <ul>
     <li><a href="../binaries.html">Binary catalogue</a></li>
+    <li><a href="ai_assistant_server.html">ai_assistant_server</a> &mdash; the reference HTTP + MCP server it can sit in front of</li>
+    <li><a href="ai_cluster_node.html">ai_cluster_node</a> &mdash; distributed mesh node for cluster-wide federation</li>
   </ul>
 
   <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
