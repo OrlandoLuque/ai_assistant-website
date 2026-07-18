@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AI Training Opt-Out -->
+    <meta name="robots" content="noai, noimageai">
+    <meta name="CCBot" content="nofollow">
+    <meta name="GPTBot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicons/shield.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>pre code.hljs{background:transparent;padding:0}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant - Local Models: Context, Onboarding &amp; QA</title>
+<style>
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  --bg: #0f172a; --bg-alt: #0c1322; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f1f5f9;
+  --border: #334155; --accent: #3b82f6; --accent2: #8b5cf6;
+  --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --cyan: #06b6d4; --pink: #ec4899;
+  --gradient: linear-gradient(90deg, #60a5fa 0%, #a78bfa 25%, #f472b6 50%, #60a5fa 75%, #a78bfa 100%);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --surface2: #e2e8f0;
+  --text: #1e293b; --text-dim: #64748b; --text-bright: #0f172a;
+  --border: #cbd5e1; --accent: #2563eb; --accent2: #7c3aed;
+  --green: #059669; --yellow: #d97706; --red: #dc2626; --cyan: #0891b2; --pink: #db2777;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--bg-alt); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+[data-theme="light"] nav { background: rgba(248, 250, 252, 0.92); }
+nav .container {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+nav a {
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; transition: all .2s;
+}
+nav a:hover { color: var(--text-bright); text-decoration: none; background: var(--surface); }
+.nav-brand { color: var(--text-bright) !important; font-weight: 700; font-size: 0.95rem; }
+.theme-toggle {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); cursor: pointer; padding: 5px 12px; font-size: 0.8rem;
+  font-weight: 600; transition: all .2s; margin-left: auto;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--gradient); background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 12px; line-height: 1.2;
+}
+.hero .tagline {
+  font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto 0;
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 24px; color: var(--text-bright);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+.section-sub {
+  color: var(--text-dim); max-width: 720px;
+  margin: 0 0 28px; font-size: 0.92rem;
+}
+
+/* ── Code blocks ──────────────────────────────────────────── */
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.6; margin: 16px 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.88em;
+}
+:not(pre) > code {
+  background: var(--surface); padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--border); font-size: 0.85em;
+}
+.code-label {
+  display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem;
+  font-weight: 700; padding: 2px 10px; border-radius: 6px 6px 0 0;
+  margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em;
+}
+.code-label.rust { background: #e43717; }
+.code-label.toml { background: #8b5cf6; }
+.code-label.bash { background: #10b981; }
+.code-label.json { background: #f59e0b; color: #1e293b; }
+.code-label.yaml { background: #06b6d4; }
+.code-label.http { background: #3b82f6; }
+
+/* ── Step cards ───────────────────────────────────────────── */
+.step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; margin: 20px 0; transition: border-color .2s;
+}
+.step:hover { border-color: var(--accent); }
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800;
+  font-size: 0.9rem; margin-right: 12px; flex-shrink: 0;
+}
+.step h3 {
+  font-size: 1.08rem; font-weight: 700; color: var(--text-bright);
+  display: inline; vertical-align: middle;
+}
+.step p, .step ul { font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+.step ul { padding-left: 20px; }
+.step ul li { margin-bottom: 6px; }
+
+/* ── Info boxes ───────────────────────────────────────────── */
+.info-box {
+  border-left: 4px solid var(--accent); background: var(--surface);
+  padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0;
+  font-size: 0.86rem; color: var(--text-dim);
+}
+.info-box.warning { border-left-color: var(--yellow); }
+.info-box.success { border-left-color: var(--green); }
+.info-box.danger { border-left-color: var(--red); }
+.info-box strong { color: var(--text-bright); }
+
+/* ── Feature flag table ───────────────────────────────────── */
+.flag-table {
+  width: 100%; border-collapse: collapse; font-size: 0.84rem;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.flag-table th, .flag-table td {
+  padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.flag-table th {
+  background: var(--surface2); font-weight: 700; color: var(--text-bright);
+}
+.flag-table td:first-child { font-family: 'Cascadia Code', monospace; font-weight: 600; color: var(--accent); }
+.flag-table tbody tr:hover td { background: rgba(59, 130, 246, 0.06); }
+.flag-table tbody tr:last-child td { border-bottom: none; }
+.tag-yes { color: var(--green); font-weight: 700; }
+.tag-no { color: var(--text-dim); }
+.tag-partial { color: var(--yellow); font-weight: 700; }
+
+/* ── Pipeline visual ─────────────────────────────────────── */
+.pipeline-step {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 14px 0; border-left: 3px solid var(--accent);
+  margin-left: 16px; padding-left: 24px; position: relative;
+}
+.pipeline-step::before {
+  content: attr(data-num);
+  position: absolute; left: -14px; top: 12px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 0.72rem;
+  font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+.pipeline-step:last-child { border-left-color: transparent; }
+.pipeline-step .ps-title { font-weight: 700; color: var(--text-bright); font-size: 0.92rem; }
+.pipeline-step .ps-desc { font-size: 0.82rem; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Next steps grid ──────────────────────────────────────── */
+.next-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px; margin-top: 24px;
+}
+.next-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; display: flex; gap: 14px; align-items: center;
+  transition: border-color .2s, transform .15s; text-decoration: none;
+}
+.next-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+.next-card .info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+.next-card .info p { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 32px 0; font-size: 0.78rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.7rem; }
+  section { padding: 32px 0; }
+  pre { padding: 14px; font-size: 0.78rem; }
+  .step { padding: 20px; }
+  nav .container { gap: 6px; }
+  nav a { font-size: 0.75rem; padding: 3px 6px; }
+  .next-grid { grid-template-columns: 1fr; }
+  .pipeline-step { margin-left: 8px; padding-left: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="container">
+    <span class="nav-brand">ai_assistant</span>
+    <a href="index.html">Home</a>
+    <a href="quickstart.html">Quickstart</a>
+    <a href="feature_matrix.html">Features</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="binaries.html">Binaries</a>
+    <a href="use_cases.html">Use Cases</a>
+    <a href="guide_anti_hallucination.html">Anti-Hallucination</a>
+    <a href="guide_research.html">Research</a>
+    <a href="prompt_fragments.html">Prompt Fragments</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <h1>Local Models: Context, Onboarding &amp; Conversation-QA</h1>
+    <p class="tagline">
+      Why the assistant used to lose context and invent facts &mdash; and everything
+      fixed so the shipped binaries auto-detect a model, keep the conversation on track,
+      and are measured by a real conversation-quality harness (V192&ndash;V201).
+    </p>
+  </div>
+</section>
+
+<section><div class="container">
+  <h2>1. Root cause: the <code>num_ctx</code> truncation bug</h2>
+  <p>Every Ollama chat request sent only <code>temperature</code> and <b>never <code>num_ctx</code></b>,
+  so Ollama fell back to its ~2048-token window and <b>silently truncated</b> the prompt &mdash; dropping
+  injected knowledge and earlier turns. Fixed by auto-sizing <code>num_ctx</code> (VRAM-safe ceiling,
+  quantized, capped at the model window). A/B with the same 145&nbsp;KB knowledge on <code>llama3.1:8b</code>:</p>
+  <table>
+    <tr><th>Request</th><th>Answer</th></tr>
+    <tr><td>without <code>num_ctx</code> (old)</td><td>&ldquo;no tengo informaci&oacute;n&hellip;&rdquo; &#10060;</td></tr>
+    <tr><td>with <code>num_ctx = 32768</code></td><td><b>490</b> &#9989;</td></tr>
+  </table>
+  <p><b>Caveat:</b> an over-large <code>num_ctx</code> does not error &mdash; it <b>OOM-crashes the Ollama
+  server</b> (observed at 65536 on an 8B). Auto-sizing is deliberately conservative; larger windows are opt-in.</p>
+</div></section>
+
+<section><div class="container">
+  <h2>2. &ldquo;Just works&rdquo; onboarding</h2>
+  <ul>
+    <li><b>Model discovery</b> probed providers sequentially with retries; dead <code>localhost</code> ports
+    stalled the scan. Now concurrent, single-attempt, short-timeout.</li>
+    <li><b>Detectors missed a running Ollama</b> and <code>scan</code> took 27&nbsp;s: <code>ureq</code> tries
+    IPv6 <code>::1</code> first. Switched local defaults to <code>127.0.0.1</code> and parallelized the scan
+    &rarr; Ollama detected in ~2.3&nbsp;s.</li>
+    <li>The shipped binaries lacked the (dependency-free) <code>butler</code> feature &rarr; now in
+    <code>full</code>, so auto-detection ships by default.</li>
+  </ul>
+</div></section>
+
+<section><div class="container">
+  <h2>3. Runtime profiles (incl. a mobile tune)</h2>
+  <p><code>ai_cli profiles</code> lists them; <code>--profile &lt;name&gt;</code> applies one (also in the GUIs).</p>
+  <table>
+    <tr><th>Profile</th><th>temp</th><th>num_ctx</th><th>retrieval</th><th>tuned for</th></tr>
+    <tr><td><b>mobile</b></td><td>0.3</td><td>4096</td><td>on</td><td>1&ndash;3B: llama3.2:1b/3b, qwen2.5:1.5b, gemma2:2b</td></tr>
+    <tr><td>local-balanced <i>(default)</i></td><td>0.7</td><td>auto</td><td>on</td><td>7&ndash;9B: llama3.1:8b, qwen2.5:7b, mistral:7b</td></tr>
+    <tr><td>local-quality</td><td>0.7</td><td>auto</td><td>on</td><td>14B+</td></tr>
+    <tr><td>coding</td><td>0.2</td><td>auto</td><td>on</td><td>qwen2.5-coder, deepseek-coder</td></tr>
+    <tr><td>precise</td><td>0.2</td><td>auto</td><td>on</td><td>factual</td></tr>
+    <tr><td>creative</td><td>1.0</td><td>auto</td><td>off</td><td>varied output</td></tr>
+  </table>
+</div></section>
+
+<section><div class="container">
+  <h2>4. The conversation-QA harness &mdash; what each test means</h2>
+  <p><code>ai_cli qa</code> runs multi-turn scenarios through one assistant (turn N can ask about turn 1) and
+  scores answers with deterministic keyword checks. It is a <b>bare baseline</b>: Conversation mode, no
+  memory/RAG-store/anti-hallucination/quality-gates &mdash; so results are honest.</p>
+  <ul>
+    <li><b>context_recall</b> &mdash; basic memory across a distraction turn.</li>
+    <li><b>grounded_price</b> &mdash; read a fact from injected knowledge instead of guessing.</li>
+    <li><b>multi_fact_tracking</b> &mdash; hold four facts at once, recall different ones after distractions (the hardest).</li>
+    <li><b>fact_update</b> &mdash; a fact is corrected mid-conversation; the answer must use the latest value.</li>
+    <li><b>multi_grounded</b> &mdash; several prices across turns from a large document (grounding + retrieval + multi-turn).</li>
+  </ul>
+</div></section>
+
+<section><div class="container">
+  <h2>5. Measured results across local models</h2>
+  <table>
+    <tr><th>Model</th><th>Quant</th><th>context</th><th>grounded</th><th>multi-fact</th><th>update</th><th>multi-grounded</th><th>Total</th></tr>
+    <tr><td>llama3.1:8b</td><td>Q4</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td><b>5/5</b></td></tr>
+    <tr><td>llama3.2:3b <i>(mobile)</i></td><td>Q4</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td><b>5/5</b></td></tr>
+    <tr><td>Bonsai-4B (PrismML)</td><td>1-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#9989;</td><td>&#9989;</td><td>4/5</td></tr>
+    <tr><td>Bonsai-8B (PrismML)</td><td>1-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#10060;</td><td>&#9989;</td><td>3/5</td></tr>
+    <tr><td>Ternary-Bonsai-4B (PrismML)</td><td>~1.58-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#9989;</td><td>&#9989;</td><td>4/5</td></tr>
+  </table>
+  <p><b>Findings.</b> Q4 small models are excellent for complex conversations &mdash; even the mobile 3B scores 5/5.
+  Extreme 1-bit / 1.58-bit models handle simple recall/grounding but fail simultaneous multi-fact tracking, and do
+  not improve with size (the 8B 1-bit is worse than the 4B on updates). Best of the extreme-quant class is
+  Ternary-Bonsai-4B at 4/5; <b>no 1-bit-class model reaches 5/5</b>. For a real conversational assistant, prefer a
+  <b>Q4 model of 3B+</b>.</p>
+</div></section>
+
+<section><div class="container">
+  <h2>6. FreshContext &amp; retrieval (lexical vs semantic)</h2>
+  <p><b>FreshContext</b> sends only the latest turn to the model. It used to drop the rest, so recall failed. Now
+  it retrieves what the turn needs from the full conversation &mdash; the <b>most recent</b> turns verbatim
+  (so a correction is never dropped) plus <b>relevant older</b> turns &mdash; and passes all 5 scenarios on 8B and 3B.</p>
+  <p><b>Stores &amp; rankers.</b> The default <code>rag.db</code> is SQLite <b>FTS5 (lexical)</b>; semantic/vector
+  (LanceDB, embeddings) is an opt-in tier. Ad-hoc <code>--knowledge</code> / FreshContext retrieval defaults to
+  <b>semantic</b> (Ollama <code>nomic-embed-text</code> embeddings, cosine), falling back to <b>lexical</b> when
+  the embedder is unreachable. Semantic is the default because it is strictly better when embeddings are available;
+  lexical is kept as the offline, zero-dependency fallback (<code>--lexical</code> forces it).</p>
+  <p><b>Why it matters</b> &mdash; a 30&nbsp;KB doc with &ldquo;encargada de las <b>finanzas</b> es Carlos Vega&rdquo;
+  buried, queried with the paraphrase &ldquo;&iquest;qui&eacute;n <b>gestiona el dinero</b>?&rdquo; (no shared words):</p>
+  <table>
+    <tr><th>Ranker</th><th>Result</th></tr>
+    <tr><td>lexical (<code>--lexical</code>)</td><td>&ldquo;no information found&rdquo; &#10060;</td></tr>
+    <tr><td>semantic (default)</td><td><b>&ldquo;Carlos Vega.&rdquo;</b> &#9989;</td></tr>
+  </table>
+</div></section>
+
+<section><div class="container">
+  <h2>7. Quick reference</h2>
+  <pre><code>ai_cli scan                        # auto-detect providers
+ai_cli models                      # list local models
+ai_cli profiles                    # list runtime profiles
+ai_cli query --profile mobile --model llama3.2:3b --knowledge big.md "..."
+ai_cli qa --model llama3.1:8b      # conversation-quality scenarios
+ai_cli qa --fresh-context ...      # run them in FreshContext mode
+ai_cli query --num-ctx 32768 ...   # raise the Ollama window
+ai_cli query --lexical ...         # lexical retrieval (default is semantic)</code></pre>
+  <p style="color:var(--text-dim)">Full engineering record: <code>docs/LOCAL_MODELS_CONTEXT_AND_QA.md</code> in the repository.</p>
+</div></section>
+
+<!-- ════════════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <div class="container">
+    <p>ai_assistant &mdash; Complete AI infrastructure in a single Rust crate</p>
+    <p style="margin-top:8px;"><a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub Repository</a></p>
+    <p style="margin-top:4px;">&copy; 2026 Orlando Jos&eacute; Luque Moraira. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ THEME TOGGLE JS ════════════ -->
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+</script>
+
+<script>
+(function() {
+  var els = document.querySelectorAll('.hero h1');
+  if (!els.length) return;
+  var offset = 0;
+  function tick() {
+    offset = (offset + 0.015) % 200;
+    for (var i = 0; i < els.length; i++) els[i].style.backgroundPosition = offset + '% 0';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+  if (pre.querySelector('code')) return;
+  if (pre.closest('.cli-block')) return;
+  var code = document.createElement('code');
+  var label = pre.previousElementSibling;
+  if (label && label.classList.contains('code-label')) {
+    var map = {rust:'rust',toml:'ini',bash:'bash',json:'json',yaml:'yaml',python:'python',js:'javascript'};
+    var keys = Object.keys(map);
+    for (var i = 0; i < keys.length; i++) {
+      if (label.classList.contains(keys[i])) {
+        code.className = 'language-' + map[keys[i]];
+        break;
+      }
+    }
+  }
+  code.innerHTML = pre.innerHTML;
+  pre.innerHTML = '';
+  pre.appendChild(code);
+});
+hljs.highlightAll();
+</script>
+</body>
+</html>
