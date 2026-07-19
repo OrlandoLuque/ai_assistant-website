@@ -362,13 +362,44 @@ footer {
 </div></section>
 
 <section><div class="container">
-  <h2>7. Quick reference</h2>
+  <h2>7. Mobile &amp; on-device</h2>
+  <p>What this work established about running the assistant <b>on a phone</b> &mdash; kept here so we
+  don't lose the thread for future work.</p>
+  <table>
+    <tr><th>Class</th><th>Q4 size</th><th>Runs on</th><th>Speed (flagship)</th></tr>
+    <tr><td>1&ndash;1.5B <i>(llama3.2:1b, qwen2.5:1.5b)</i></td><td>~0.7&ndash;1.1 GB</td><td>most modern phones (6 GB+)</td><td>~15&ndash;30+ tok/s</td></tr>
+    <tr><td>2&ndash;3B <i>(gemma2:2b, llama3.2:3b)</i></td><td>~1.6&ndash;2.3 GB</td><td>flagships / 8 GB+ RAM</td><td>~5&ndash;15 tok/s</td></tr>
+    <tr><td>7B+</td><td>~4.5 GB+</td><td>not practical on-device</td><td>&mdash;</td></tr>
+  </table>
+  <p><b>3B Q4 is the practical sweet spot</b> &mdash; needs ~3&ndash;4 GB free RAM and scored <b>6/6</b> on the
+  full harness, so a phone-sized model is genuinely capable, not just runnable. On-device runtimes: llama.cpp,
+  MLC-LLM, Google AI Edge, Apple MLX. The whole stack runs <b>server-free</b>: the <code>mobile</code> profile,
+  the in-process embedder (<code>all-MiniLM</code>, ~90 MB) for semantic retrieval, and the structured fact
+  ledger (<code>--memory</code>).</p>
+  <p><b>What we improved for a small/local model:</b> grounding stopped inventing prices (the <code>num_ctx</code>
+  fix), paraphrase retrieval works without a server (in-process embedder), fact-correction is robust on weak
+  models (<code>--memory</code> rescues <code>fact_update</code> on the 1-bit 4B), and onboarding works out of the box.</p>
+  <h3 style="margin-top:1.5rem">Futurible: rescue a cheap local model with a capable remote one</h3>
+  <p>Fact extraction is <b>infrequent and small</b> (one short structured output per turn), so it's cheap to
+  offload to a <b>capable model on a stronger machine</b> &mdash; and with the library's <b>distributed / p2p</b>
+  layer that machine can be a home desktop, not the phone. The phone keeps a cheap, private, low-latency chat
+  model; a capable model does the occasional extraction. The local heuristic covers common cases for free, and
+  the heuristic-authoritative merge means a slow/absent/wrong remote extractor can't corrupt a known fact.
+  <b>Today</b> <code>--memory-llm</code> uses the <i>same</i> model (so a weak extractor is counterproductive);
+  the natural next step is a <b>separate, configurable extractor endpoint</b> pointed at a capable (optionally
+  remote) model. Not built yet &mdash; noted so we don't lose it.</p>
+</div></section>
+
+<section><div class="container">
+  <h2>8. Quick reference</h2>
   <pre><code>ai_cli scan                        # auto-detect providers
 ai_cli models                      # list local models
 ai_cli profiles                    # list runtime profiles
 ai_cli query --profile mobile --model llama3.2:3b --knowledge big.md "..."
 ai_cli qa --model llama3.1:8b      # conversation-quality scenarios
 ai_cli qa --fresh-context ...      # run them in FreshContext mode
+ai_cli qa --memory ...             # structured fact ledger (heuristic)
+ai_cli qa --memory-llm ...         # + LLM fact extraction (use a capable model)
 ai_cli query --num-ctx 32768 ...   # raise the Ollama window
 ai_cli query --lexical ...         # lexical retrieval (default is semantic)</code></pre>
   <p style="color:var(--text-dim)">Full engineering record: <code>docs/LOCAL_MODELS_CONTEXT_AND_QA.md</code> in the repository.</p>
