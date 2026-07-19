@@ -305,7 +305,8 @@ footer {
   <ul>
     <li><b>context_recall</b> &mdash; basic memory across a distraction turn.</li>
     <li><b>grounded_price</b> &mdash; read a fact from injected knowledge instead of guessing.</li>
-    <li><b>multi_fact_tracking</b> &mdash; hold four facts at once, recall different ones after distractions (the hardest).</li>
+    <li><b>multi_fact_tracking</b> &mdash; hold four facts at once, recall different ones after distractions. <i>(The profession check matches the stem <code>arquitect</code>, not the exact <code>arquitecta</code> &mdash; we test recall, not grammatical gender.)</i></li>
+    <li><b>multi_fact_hard</b> &mdash; six facts, four distraction turns: a harder stress test of raw-context tracking.</li>
     <li><b>fact_update</b> &mdash; a fact is corrected mid-conversation; the answer must use the latest value.</li>
     <li><b>multi_grounded</b> &mdash; several prices across turns from a large document (grounding + retrieval + multi-turn).</li>
   </ul>
@@ -313,21 +314,32 @@ footer {
 
 <section><div class="container">
   <h2>5. Measured results across local models</h2>
-  <p style="color:var(--text-dim)">Deterministic (greedy, temperature 0) so scores reproduce. The
-  <code>fact_update</code> cell shows Conversation &rarr; FreshContext.</p>
+  <div class="note" style="border-left:3px solid var(--accent);padding:.6rem 1rem;margin:1rem 0;background:rgba(255,255,255,.03)">
+    <b>Two measurement fixes (V205) changed the picture.</b> An earlier version reported the extreme-quant models
+    failing multi-fact tracking and updates. Re-measuring found two flaws:
+    <b>(1)</b> <code>--url</code> was silently ignored for the <code>llamacpp</code> provider (written to the wrong
+    config field), so every PrismML run hit the same default <code>:8080</code> server &mdash; the per-model rows were
+    all one server. <b>(2)</b> a gender-inflection scoring artifact: the check required <code>arquitecta</code> but the
+    models correctly recalled the profession as the masculine <code>arquitecto</code>. Both fixed &mdash; and most of
+    the "wall" was the harness, not the models.
+  </div>
+  <p style="color:var(--text-dim)">Deterministic (greedy, temperature 0). Full 6-scenario suite, each model on its own endpoint.</p>
   <table>
-    <tr><th>Model</th><th>Quant</th><th>context</th><th>grounded</th><th>multi-fact</th><th>update</th><th>multi-grnd</th><th>Conv.</th><th>Fresh</th></tr>
-    <tr><td>llama3.1:8b</td><td>Q4</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td><b>5/5</b></td><td><b>5/5</b></td></tr>
-    <tr><td>llama3.2:3b <i>(mobile)</i></td><td>Q4</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td><b>5/5</b></td><td><b>5/5</b></td></tr>
-    <tr><td>Bonsai-4B (PrismML)</td><td>1-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#10060;&rarr;&#9989;</td><td>&#9989;</td><td>3/5</td><td><b>4/5</b></td></tr>
-    <tr><td>Bonsai-8B (PrismML)</td><td>1-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#10060;&rarr;&#9989;</td><td>&#9989;</td><td>3/5</td><td><b>4/5</b></td></tr>
-    <tr><td>Ternary-Bonsai-4B (PrismML)</td><td>~1.58-bit</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td><td>&#10060;&rarr;&#9989;</td><td>&#9989;</td><td>3/5</td><td><b>4/5</b></td></tr>
+    <tr><th>Model</th><th>Quant</th><th>baseline</th><th>--memory</th><th>note</th></tr>
+    <tr><td>llama3.2:3b <i>(mobile)</i></td><td>Q4</td><td><b>6/6</b></td><td>6/6</td><td>Ollama; fully capable</td></tr>
+    <tr><td>Bonsai-8B (PrismML)</td><td>1-bit</td><td><b>6/6</b></td><td>6/6</td><td>already tracks &amp; updates state</td></tr>
+    <tr><td>Bonsai-4B (PrismML)</td><td>1-bit</td><td>5/6</td><td><b>6/6</b></td><td><code>--memory</code> rescues fact_update</td></tr>
+    <tr><td>Ternary-Bonsai-4B (PrismML)</td><td>~1.58-bit</td><td>&mdash;</td><td>&mdash;</td><td>excluded (too slow via streaming client)</td></tr>
   </table>
-  <p><b>Findings.</b> Q4 small models are excellent for complex conversations &mdash; even the mobile 3B scores 5/5
-  in both modes. Extreme 1-bit / 1.58-bit models score 3/5 in Conversation (failing multi-fact tracking AND updates)
-  and do not improve with size. <b>FreshContext reliably rescues <code>fact_update</code></b> (3/5 &rarr; 4/5) via its
-  recency-kept recent turns; the <b>multi-fact-tracking wall persists in both modes</b> &mdash; <b>no 1-bit-class model
-  reaches 5/5</b>. For a real conversational assistant, prefer a <b>Q4 model of 3B+</b>.</p>
+  <p><b>Findings.</b> With the two fixes the "multi-fact wall" largely dissolves: the real 1-bit <b>Bonsai-8B is 6/6</b>
+  unaided, and even the 1-bit <b>Bonsai-4B is 5/6</b> (only fact_update missing). The mobile <b>Q4 3B is 6/6</b>.
+  The <b>structured fact ledger</b> (<code>--memory</code>) <b>rescues fact_update on Bonsai-4B (5/6 &rarr; 6/6)</b>:
+  it records personal facts as a latest-wins ledger (<code>color favorito: rojo</code> overwrites <code>azul</code>)
+  and re-injects them, so the weak model reads the current value instead of being confused by raw history (baseline
+  answered <code>&iexcl;7!</code>). <b>LLM extraction (<code>--memory-llm</code>) is only as good as the extractor</b>
+  &mdash; a weak model can misread a correction, so the deterministic heuristic stays authoritative and the LLM only
+  adds facts it misses. Recommendation: prefer a <b>Q4 model of 3B+</b>; enable <code>--memory</code> on extreme-quant
+  models for robust fact-correction.</p>
 </div></section>
 
 <section><div class="container">
