@@ -379,15 +379,18 @@ footer {
   <p><b>What we improved for a small/local model:</b> grounding stopped inventing prices (the <code>num_ctx</code>
   fix), paraphrase retrieval works without a server (in-process embedder), fact-correction is robust on weak
   models (<code>--memory</code> rescues <code>fact_update</code> on the 1-bit 4B), and onboarding works out of the box.</p>
-  <h3 style="margin-top:1.5rem">Futurible: rescue a cheap local model with a capable remote one</h3>
+  <h3 style="margin-top:1.5rem">Rescue a cheap local model with a capable remote one <span style="color:var(--accent)">(built)</span></h3>
   <p>Fact extraction is <b>infrequent and small</b> (one short structured output per turn), so it's cheap to
   offload to a <b>capable model on a stronger machine</b> &mdash; and with the library's <b>distributed / p2p</b>
   layer that machine can be a home desktop, not the phone. The phone keeps a cheap, private, low-latency chat
   model; a capable model does the occasional extraction. The local heuristic covers common cases for free, and
-  the heuristic-authoritative merge means a slow/absent/wrong remote extractor can't corrupt a known fact.
-  <b>Today</b> <code>--memory-llm</code> uses the <i>same</i> model (so a weak extractor is counterproductive);
-  the natural next step is a <b>separate, configurable extractor endpoint</b> pointed at a capable (optionally
-  remote) model. Not built yet &mdash; noted so we don't lose it.</p>
+  the heuristic-authoritative merge means a slow/absent/wrong remote extractor can't corrupt a known fact.</p>
+  <p><b>Now built:</b> the extractor is a separate, configurable model/endpoint via
+  <code>--extractor-provider / --extractor-url / --extractor-model</code>. It works with <b>every</b>
+  "model on another machine" mechanism &mdash; remote Ollama/llama.cpp/vLLM, the OpenAI-compatible
+  <code>ai_proxy</code> mesh gateway, a gpu-sharing/distributed node, or a cloud API &mdash; because they are all
+  consumed as an HTTP endpoint and the extractor (<code>SelfChatEnhancer</code>) is a full multi-provider client.
+  <i>Validated: chat on Bonsai-4B (llama.cpp) + extractor on llama3.2:3b (Ollama, a different provider/endpoint) &rarr; 6/6.</i></p>
 </div></section>
 
 <section><div class="container">
@@ -399,7 +402,9 @@ ai_cli query --profile mobile --model llama3.2:3b --knowledge big.md "..."
 ai_cli qa --model llama3.1:8b      # conversation-quality scenarios
 ai_cli qa --fresh-context ...      # run them in FreshContext mode
 ai_cli qa --memory ...             # structured fact ledger (heuristic)
-ai_cli qa --memory-llm ...         # + LLM fact extraction (use a capable model)
+ai_cli qa --memory-llm ...         # + LLM fact extraction (same model)
+ai_cli qa --memory-llm --extractor-provider ollama --extractor-url http://host:11434 \
+          --extractor-model llama3.2:3b ...   # extractor on a different/remote model
 ai_cli query --num-ctx 32768 ...   # raise the Ollama window
 ai_cli query --lexical ...         # lexical retrieval (default is semantic)</code></pre>
   <p style="color:var(--text-dim)">Full engineering record: <code>docs/LOCAL_MODELS_CONTEXT_AND_QA.md</code> in the repository.</p>
