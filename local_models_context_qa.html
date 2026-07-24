@@ -327,6 +327,8 @@ footer {
   <table>
     <tr><th>Model</th><th>Quant</th><th>baseline</th><th>--memory</th><th>note</th></tr>
     <tr><td>llama3.2:3b <i>(mobile)</i></td><td>Q4</td><td><b>6/6</b></td><td>6/6</td><td>Ollama; fully capable</td></tr>
+    <tr><td>qwen2.5:1.5b-instruct</td><td>Q4</td><td>5/6</td><td><b>6/6</b></td><td><code>--memory</code> (and <code>--memory-llm</code> self) rescue fact_update</td></tr>
+    <tr><td>llama3.2:1b</td><td>Q4</td><td>4/6</td><td>4/6</td><td>floor: not rescued (see findings)</td></tr>
     <tr><td>Bonsai-8B (PrismML)</td><td>1-bit</td><td><b>6/6</b></td><td>6/6</td><td>already tracks &amp; updates state</td></tr>
     <tr><td>Bonsai-4B (PrismML)</td><td>1-bit</td><td>5/6</td><td><b>6/6</b></td><td><code>--memory</code> rescues fact_update</td></tr>
     <tr><td>Ternary-Bonsai-4B (PrismML)</td><td>~1.58-bit</td><td>&mdash;</td><td>&mdash;</td><td>excluded (too slow via streaming client)</td></tr>
@@ -339,7 +341,11 @@ footer {
   answered <code>&iexcl;7!</code>). <b>LLM extraction (<code>--memory-llm</code>) is only as good as the extractor</b>
   &mdash; a weak model can misread a correction, so the deterministic heuristic stays authoritative and the LLM only
   adds facts it misses. Recommendation: prefer a <b>Q4 model of 3B+</b>; enable <code>--memory</code> on extreme-quant
-  models for robust fact-correction.</p>
+  models for robust fact-correction. <b>This reproduces on mainstream Ollama models &mdash; and has a floor</b>
+  (2026-07-24): <code>qwen2.5:1.5b-instruct</code> matches the Bonsai-4B profile (5/6 &rarr; <b>6/6</b> via both
+  <code>--memory</code> and <code>--memory-llm</code> self-extraction), but <code>llama3.2:1b</code> stays
+  <b>4/6</b> even with a 14B extractor &mdash; its misses (<code>multi_fact_hard</code>, <code>multi_grounded</code>)
+  are a chat-model capability gap the ledger can't fill, so 3B remains the reliable sweet spot.</p>
 </div></section>
 
 <section><div class="container">
