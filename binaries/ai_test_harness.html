@@ -36,6 +36,20 @@
       <tr><td><code>--category code_gen_bench</code></td><td>execution-verified code-gen pass@1 (11 tasks); backend configurable via <code>AI_BENCH_*</code> env (Ollama / llama.cpp / &hellip;)</td></tr>
       <tr><td><code>--category agentic_code</code></td><td>a live model drives the built-in <code>AutonomousAgent</code> over write/read/run tools to build &amp; fix code, execution-verified (5 tasks)</td></tr>
       <tr><td><code>--category agentic_multi</code></td><td>multi-step agentic coding (build&nbsp;&rarr;&nbsp;extend&nbsp;&rarr;&nbsp;fix) on one persistent workspace</td></tr>
+      <tr><td><code>--category agentic_rust</code></td><td>the same agentic loop in <strong>Rust</strong>: a throwaway cargo crate per task, verified with <code>cargo test</code> so the type and borrow checkers gate every answer (12 tasks)</td></tr>
+      <tr><td><code>--category agentic_rust_multi</code></td><td>multi-step Rust on one persistent crate, including refactoring a concrete type into a generic one (6 tasks)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Benchmark knobs (live-model categories)</h2>
+  <table class="subcmd">
+    <thead><tr><th>Env var</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>AI_BENCH_PROVIDER</code> / <code>AI_BENCH_MODEL</code> / <code>AI_BENCH_URL</code></td><td>which backend and model the tasks run against (Ollama, llama.cpp, LM Studio, vLLM&hellip;)</td></tr>
+      <tr><td><code>AI_BENCH_TEMP</code></td><td>sampling temperature (default 0.0 for reproducibility)</td></tr>
+      <tr><td><code>AI_BENCH_SCAFFOLD=n</code></td><td>give the agent <em>n</em> verify&rarr;feedback&rarr;retry rounds, feeding it the real compiler output on failure</td></tr>
+      <tr><td><code>AI_BENCH_SAMPLES=n</code></td><td>best-of-N: <em>n</em> independent attempts per task, pass if any succeeds</td></tr>
+      <tr><td><code>AGENTIC_DEBUG=1</code></td><td>dump each step's model reply and resulting artifact</td></tr>
     </tbody>
   </table>
 
