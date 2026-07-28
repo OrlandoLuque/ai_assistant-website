@@ -41,6 +41,13 @@
     </tbody>
   </table>
 
+  <h2>Benchmarks vs regression suite</h2>
+  <p>Five categories (<code>code_gen_bench</code>, <code>agentic_code</code>, <code>agentic_multi</code>, <code>agentic_rust</code>, <code>agentic_rust_multi</code>) <strong>measure a model, not the code</strong>: their pass/fail depends on which model <code>AI_BENCH_MODEL</code> points at. They are therefore excluded from <code>--all</code>, which stays a pure regression gate, and are run deliberately:</p>
+  <pre><code>ai_test_harness --all           # regression only (609 tests)
+ai_test_harness --benchmarks    # only the model-measuring categories
+ai_test_harness --list          # marks which is which</code></pre>
+  <p>Benchmark results are tracked over time in the project's <code>docs/MODEL_BENCHMARKS.md</code> lab notebook rather than as a pass/fail gate.</p>
+
   <h2>Benchmark knobs (live-model categories)</h2>
   <table class="subcmd">
     <thead><tr><th>Env var</th><th>Effect</th></tr></thead>
