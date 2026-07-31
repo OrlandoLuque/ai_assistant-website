@@ -38,11 +38,12 @@
       <tr><td><code>--category agentic_multi</code></td><td>multi-step agentic coding (build&nbsp;&rarr;&nbsp;extend&nbsp;&rarr;&nbsp;fix) on one persistent workspace</td></tr>
       <tr><td><code>--category agentic_rust</code></td><td>the same agentic loop in <strong>Rust</strong>: a throwaway cargo crate per task, verified with <code>cargo test</code> so the type and borrow checkers gate every answer (12 tasks)</td></tr>
       <tr><td><code>--category agentic_rust_multi</code></td><td>multi-step Rust on one persistent crate, including refactoring a concrete type into a generic one (6 tasks)</td></tr>
+      <tr><td><code>--category agentic_test_gen</code></td><td>inverted: the model is handed a <strong>correct</strong> implementation and must write the test suite, scored by mutation &mdash; its tests must accept the reference <em>and</em> kill every planted bug (12 tasks)</td></tr>
     </tbody>
   </table>
 
   <h2>Benchmarks vs regression suite</h2>
-  <p>Five categories (<code>code_gen_bench</code>, <code>agentic_code</code>, <code>agentic_multi</code>, <code>agentic_rust</code>, <code>agentic_rust_multi</code>) <strong>measure a model, not the code</strong>: their pass/fail depends on which model <code>AI_BENCH_MODEL</code> points at. They are therefore excluded from <code>--all</code>, which stays a pure regression gate, and are run deliberately:</p>
+  <p>Six categories (<code>code_gen_bench</code>, <code>agentic_code</code>, <code>agentic_multi</code>, <code>agentic_rust</code>, <code>agentic_rust_multi</code>, <code>agentic_test_gen</code>) <strong>measure a model, not the code</strong>: their pass/fail depends on which model <code>AI_BENCH_MODEL</code> points at. They are therefore excluded from <code>--all</code>, which stays a pure regression gate, and are run deliberately:</p>
   <pre><code>ai_test_harness --all           # regression only (609 tests)
 ai_test_harness --benchmarks    # only the model-measuring categories
 ai_test_harness --list          # marks which is which</code></pre>
@@ -53,10 +54,13 @@ ai_test_harness --list          # marks which is which</code></pre>
     <thead><tr><th>Env var</th><th>Effect</th></tr></thead>
     <tbody>
       <tr><td><code>AI_BENCH_PROVIDER</code> / <code>AI_BENCH_MODEL</code> / <code>AI_BENCH_URL</code></td><td>which backend and model the tasks run against (Ollama, llama.cpp, LM Studio, vLLM&hellip;)</td></tr>
-      <tr><td><code>AI_BENCH_TEMP</code></td><td>sampling temperature (default 0.0 for reproducibility)</td></tr>
+      <tr><td><code>AI_BENCH_TEMP</code></td><td>sampling temperature (default <strong>0.5</strong>). Do <em>not</em> set 0 to chase determinism &mdash; the seed is what buys that, and near-greedy sampling can abort the llama.cpp runner outright</td></tr>
+      <tr><td><code>AI_BENCH_SEED</code></td><td>sampling seed (default <strong>42</strong>, or <code>none</code> to randomise). This is what makes a run reproducible</td></tr>
+      <tr><td><code>AI_BENCH_REPEATS=n</code></td><td>runs per task (default <strong>3</strong>), scored as a pass <em>rate</em>. One live-model run is a single sample of a stochastic process, not a measurement</td></tr>
       <tr><td><code>AI_BENCH_SCAFFOLD=n</code></td><td>give the agent <em>n</em> verify&rarr;feedback&rarr;retry rounds, feeding it the real compiler output on failure</td></tr>
       <tr><td><code>AI_BENCH_SAMPLES=n</code></td><td>best-of-N: <em>n</em> independent attempts per task, pass if any succeeds</td></tr>
       <tr><td><code>AGENTIC_DEBUG=1</code></td><td>dump each step's model reply and resulting artifact</td></tr>
+      <tr><td><code>AGENTIC_TRACE=1</code></td><td>fingerprint every prompt and reply, to tell a drifting prompt from a non-reproducible backend</td></tr>
     </tbody>
   </table>
 
