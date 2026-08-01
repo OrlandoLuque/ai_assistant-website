@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- AI Training Opt-Out -->
+  <meta name="robots" content="noai, noimageai">
+  <meta name="CCBot" content="nofollow">
+  <meta name="GPTBot" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Running Local Models Well &mdash; ai_assistant</title>
+  <link rel="stylesheet" href="binaries/binary_page.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs"><a href="index.html">ai_assistant</a> &rsaquo; Running local models well</nav>
+  <h1>Running Local Models Well<small>Quantization, KV cache, hardware</small></h1>
+
+  <p>A <strong>reference</strong> on the things that decide whether a local model fits and performs on a given card. Its companion is the model-benchmark lab notebook (<code>docs/MODEL_BENCHMARKS.md</code>), which records <em>measured results</em>; this page explains the concepts those measurements sit on.</p>
+
+  <p><strong>Status of the claims here.</strong> Anything marked <em>measured</em> was measured by this project's own execution-verified harness and is reproducible. Everything else comes from vendor docs, papers or community sources, cited inline &mdash; treat it as a hypothesis until the harness confirms it. That distinction is the point: the reason this project has an execution-verified benchmark is that model-card claims are not evidence.</p>
+
+  <p>The reference hardware throughout is the development machine: <strong>RTX 4080 SUPER, 16&nbsp;GB, compute capability 8.9 (Ada Lovelace)</strong>.</p>
+
+  <h2>1. Quantization</h2>
+  <p>Storing weights at lower precision than the 16 bits they were trained in. A 14B model is ~28&nbsp;GB at FP16 and ~8&nbsp;GB at 4 bits &mdash; this is what makes local inference possible at all on consumer cards.</p>
+
+  <h3>Reading the names</h3>
+  <table class="subcmd">
+    <thead><tr><th>Part of <code>Q4_K_M</code></th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>Q4</code></td><td>4 bits per weight</td></tr>
+      <tr><td><code>_K</code></td><td><em>k-quant</em>: mixed precision <strong>within</strong> the tensor, not a uniform cast</td></tr>
+      <tr><td><code>_M</code></td><td>medium variant (<code>_S</code> small, <code>_L</code>/<code>_XL</code> large) &mdash; how many tensors are promoted to higher precision</td></tr>
+    </tbody>
+  </table>
+  <p><code>IQ*</code> names (e.g. <code>IQ4_XS</code>) are <strong>importance-matrix</strong> quants, which perform noticeably better at very low bit counts.</p>
+
+  <h3>The practical rules</h3>
+  <ul>
+    <li><strong><code>Q4_K_M</code> is the default sweet spot.</strong> <code>Q5_K_M</code> when the VRAM is there.</li>
+    <li><strong>Below Q4 degradation accelerates &mdash; and it hits reasoning and code harder than prose.</strong> Which is exactly the capability this project cares about, so cheap quants are a false economy here.</li>
+    <li><strong>At equal VRAM, a big model heavily quantized usually beats a small model lightly quantized.</strong> <em>Measured</em> here: <code>qwen3-coder:30b</code> (MoE) beat the dense <code>qwen2.5-coder:14b</code> at a comparable footprint.</li>
+  </ul>
+
+  <h3>imatrix</h3>
+  <p>An <em>importance matrix</em> is a calibration pass over real text that measures which weights actually matter, so the quantizer knows where to spend its bits. One-time cost at quantization time, otherwise free &mdash; community consensus is to prefer imatrix ("weighted") quants over static ones at the same size.</p>
+
+  <h2>2. Third-party quantizers</h2>
+  <p>Model authors rarely publish good GGUF quants themselves. Three sources matter.</p>
+
+  <h3>bartowski and mradermacher</h3>
+  <p>Both mass-produce imatrix GGUFs. mradermacher's imatrix dataset is roughly <strong>double</strong> bartowski's &mdash; it contains bartowski's as its first half &mdash; which is the usual argument for preferring it. The measurements are not one-sided: bartowski's tend to lead on non-wiki test sets while mradermacher's <em>static</em> quants lead on wiki.test, which at least argues against either being tuned to a benchmark.</p>
+  <p><strong>For this project the difference is small enough that it must be measured, not assumed.</strong></p>
+
+  <h3>Unsloth Dynamic (<code>UD-*</code>)</h3>
+  <p><code>UD</code> = <strong>Unsloth Dynamic</strong>. Rather than one scheme for the whole model, each model gets a <strong>custom per-layer scheme</strong>: the layers quantized in Gemma differ from those in Llama. <code>UD-Q4_K_XL</code> promotes important matrices to Q5_K where it judges it safe, while <code>Q4_K_M</code> uses Q6_K in those places and is therefore <em>larger</em>.</p>
+  <p>The claim is better accuracy at smaller size. Plausible and well-motivated, <strong>and exactly the kind of vendor claim this project exists to verify independently</strong>.</p>
+
+  <h3>abliterated / uncensored</h3>
+  <ul>
+    <li><strong>uncensored</strong> &mdash; fine-tuned so the model stops refusing.</li>
+    <li><strong>abliterated</strong> &mdash; a <strong>direct weight edit</strong> removing the refusal direction from the activation space. No retraining; the behaviour is ablated out.</li>
+  </ul>
+  <p>Because abliteration edits weights along a direction found by analysis, it can damage capability unrelated to refusals. <strong>Working hypothesis: for code generation these are net negative.</strong> Not yet measured; cheap to settle with the Rust and test-generation categories.</p>
+
+  <h2>3. The KV cache &mdash; the real constraint on 16&nbsp;GB</h2>
+  <p><strong>This is general to every transformer</strong>, which is worth stating plainly because it is the single most useful thing on this page.</p>
+  <p>Any autoregressive transformer caches the <strong>key</strong> and <strong>value</strong> projections of every token it has already seen, at every layer, so it does not recompute them each step. The cache is not optional &mdash; it is what makes generation linear instead of quadratic &mdash; and it grows with context length <strong>and</strong> with the number of concurrent sequences.</p>
+  <pre><code>KV bytes &asymp; 2 &times; layers &times; kv_heads &times; head_dim &times; context &times; bytes_per_element &times; sequences</code></pre>
+
+  <h3>What varies between models</h3>
+  <p>The <em>existence</em> of the cache is universal. Its <em>size</em> is an architectural choice, and the spread is enormous.</p>
+  <table class="subcmd">
+    <thead><tr><th>Attention scheme</th><th>Effect on the cache</th><th>Examples</th></tr></thead>
+    <tbody>
+      <tr><td><strong>MHA</strong> (multi-head)</td><td>one K/V per head &mdash; the expensive baseline</td><td>older models</td></tr>
+      <tr><td><strong>GQA</strong> (grouped-query)</td><td>heads share K/V in groups &mdash; several times smaller</td><td>Llama 2/3, Mistral, Qwen2.5</td></tr>
+      <tr><td><strong>MQA</strong> (multi-query)</td><td>a single shared K/V</td><td>some smaller models</td></tr>
+      <tr><td><strong>MLA</strong> (latent attention)</td><td>K/V compressed into a low-rank latent &mdash; dramatically smaller</td><td>DeepSeek V2/V3</td></tr>
+      <tr><td><strong>sliding window</strong></td><td>local layers attend only to the last N tokens, so long context stops costing linearly</td><td>Mistral, Gemma 3 (5 local : 1 global)</td></tr>
+    </tbody>
+  </table>
+  <p>So "how much context can I afford" is not answerable from parameter count alone.</p>
+
+  <h3>What is <em>not</em> about the model at all</h3>
+  <p><strong>Measured, and it cost this project a discarded experiment:</strong> <code>qwen2.5-coder:14b</code> is 9&nbsp;GB on disk but asked for ~18&nbsp;GB and loaded 25% onto CPU. The cause was not the model &mdash; it was Ollama reserving cache for <strong>four parallel sequences</strong> by default. One sequence was in use.</p>
+  <p>The levers, in order of impact on this machine:</p>
+  <ol>
+    <li><strong><code>OLLAMA_NUM_PARALLEL=1</code></strong> &mdash; 4&times; less KV cache, free, and it also removes a source of run-to-run non-determinism. Not yet applied; needs an Ollama restart.</li>
+    <li><strong>Quantize the KV cache</strong> &mdash; llama.cpp's <code>--cache-type-k q8_0 --cache-type-v q8_0</code>, roughly halving it. Quality cost is small but real, so measure it.</li>
+    <li><strong>Lower the context</strong> &mdash; <code>AI_BENCH_NUM_CTX</code>. At 4096 the 14B loads 100% on GPU (13&nbsp;GB).</li>
+  </ol>
+  <p><strong>A CPU-offloaded model is not merely slower &mdash; it is slow enough to hit request timeouts, which the benchmark then records as the model failing the task.</strong> Three experiments were invalidated this way before the offload warning existed.</p>
+
+  <h2>4. Context compression</h2>
+  <ul>
+    <li><strong>Cache quantization</strong> &mdash; store K/V at lower precision. What llama.cpp offers today.</li>
+    <li><strong>Cache eviction</strong> &mdash; keep only part of the cache: StreamingLLM (attention sinks plus a recent window), H2O (the tokens that actually receive attention).</li>
+    <li><strong>Application level</strong> &mdash; summarisation, retrieval, budget allocation. Where this library's <code>ContextBudgetAllocator</code> and FreshContext mode already operate.</li>
+  </ul>
+
+  <h3>TurboQuant (Google DeepMind, ICLR 2026)</h3>
+  <p>Current state of the art, and <strong>not</strong> a weight quantizer &mdash; it compresses the <strong>KV cache</strong>. Training-free and data-oblivious, built on Quantized Johnson&ndash;Lindenstrauss and PolarQuant, reported at ~6&times; cache compression and ~8&times; faster attention, down to a 3-bit cache without meaningful accuracy loss.</p>
+  <p>Adoption is uneven and this matters for us: <strong>vLLM merged it; llama.cpp declined it</strong>, with a third-party implementation existing outside the tree. So on the Ollama / llama.cpp path it is not available today.</p>
+
+  <h2>5. Hardware number formats</h2>
+  <h3>NVFP4 &mdash; and what it means for an Ada card</h3>
+  <p>NVFP4 is NVIDIA's 4-bit floating-point format, introduced with <strong>Blackwell</strong>, where the tensor cores execute it natively.</p>
+  <p><strong>It is nevertheless usable on Ada.</strong> NVFP4 merged into llama.cpp over late March&ndash;April 2026, and vLLM supports NVFP4 checkpoints via llm-compressor. There is even an Ada-targeted runtime with custom decode kernels and an FP8 KV cache.</p>
+  <p>The honest summary for a 4080 SUPER: <strong>FP4 is mostly a memory story &mdash; small bandwidth speedup and no native tensor-core win.</strong> Older cards get the memory savings, not the acceleration.</p>
+  <p>So the claim that <em>Blackwell formats receive much more optimisation attention and may therefore pay off even on Ada</em> is <strong>half right</strong>, and the halves matter:</p>
+  <ul>
+    <li><strong>Memory, and possibly quality-per-bit: plausibly yes.</strong> A format receiving heavy engineering effort can beat older 4-bit schemes at equal size on quality alone.</li>
+    <li><strong>Speed on Ada: no.</strong> The tensor cores cannot execute FP4; the win is bandwidth, not compute.</li>
+  </ul>
+  <p><strong>This is measurable with the existing harness</strong> and that is the right way to settle it: same model, same tasks, NVFP4 vs <code>Q4_K_M</code>, comparing both score and tokens/s.</p>
+
+  <h3>What supporting it would take here</h3>
+  <p>Less than expected, and an earlier note in this project claiming "our stack could not touch it" was <strong>wrong</strong>:</p>
+  <ol>
+    <li><strong>The engine already supports it.</strong> llama.cpp has NVFP4; no work needed there.</li>
+    <li><strong>This library already speaks to it.</strong> <code>AiProvider::LlamaCpp</code> and <code>AiProvider::VLLM</code> exist, and the benchmark can target either with <code>AI_BENCH_PROVIDER=llamacpp</code> plus <code>AI_BENCH_URL</code>.</li>
+    <li><strong>What is actually missing is operational, not architectural</strong>: obtaining NVFP4 weights for the model of interest, and running a llama.cpp build recent enough to include the format. For the vLLM path on Windows, add WSL2.</li>
+  </ol>
+
+  <h2>6. Open questions &mdash; to measure, not assume</h2>
+  <ol>
+    <li><strong>bartowski vs mradermacher vs Unsloth <code>UD-*</code></strong> at matched size. Does the dynamic scheme's claimed edge survive an execution-verified benchmark?</li>
+    <li><strong>Where does quality actually fall off below Q4</strong> for <em>code</em>, as opposed to the perplexity numbers usually quoted?</li>
+    <li><strong>Do abliterated variants lose coding capability?</strong> Hypothesis: yes.</li>
+    <li><strong>KV cache quantization</strong> (<code>q8_0</code>) &mdash; how much VRAM freed, how much score lost?</li>
+    <li><strong><code>OLLAMA_NUM_PARALLEL=1</code></strong> &mdash; confirm the 4&times; saving, and whether it removes the residual verdict flipping.</li>
+    <li><strong>NVFP4 vs <code>Q4_K_M</code></strong> on this Ada card: score and throughput.</li>
+  </ol>
+
+  <h2>7. Terms that did not resolve</h2>
+  <ul>
+    <li><strong>"BitSeek v4"</strong> &mdash; no such thing found. Most likely <strong>DeepSeek V4</strong>, misheard. The context fits: DeepSeek's <strong>MLA</strong> is the headline architectural answer to KV cache size.</li>
+    <li><strong>"Turbo Quan"</strong> &mdash; real: <strong>TurboQuant</strong>, see &sect;4.</li>
+    <li><strong>"Gemma 3 8B"</strong> &mdash; Gemma 3 ships at 1B / 4B / 12B / 27B, plus Gemma 3n (E2B/E4B) for edge. No 8B; likely Gemma 2 9B or a community fine-tune.</li>
+    <li><strong>"NVFP4 for Maxwell&hellip; Blackwell (N111, N200)"</strong> &mdash; Maxwell is 2014-era and cannot be meant. "N111 / N200" is almost certainly <strong>B100 / B200</strong>.</li>
+    <li><strong>"Boris"</strong> as a quantizer &mdash; no match. bartowski and mradermacher are the two names that consistently come up.</li>
+  </ul>
+
+  <footer>ai_assistant &mdash; PolyForm Noncommercial 1.0.0</footer>
+</main>
+</body>
+</html>
