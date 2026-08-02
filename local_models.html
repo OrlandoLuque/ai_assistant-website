@@ -92,6 +92,23 @@
   </ol>
   <p><strong>A CPU-offloaded model is not merely slower &mdash; it is slow enough to hit request timeouts, which the benchmark then records as the model failing the task.</strong> Three experiments were invalidated this way before the offload warning existed.</p>
 
+  <h3>What actually fits on 16&nbsp;GB &mdash; measured</h3>
+  <table class="subcmd">
+    <thead><tr><th>Model</th><th><code>num_ctx</code></th><th>Loaded</th><th>Split</th></tr></thead>
+    <tbody>
+      <tr><td>qwen2.5-coder:7b-instruct</td><td>8192</td><td>8.2&nbsp;GB</td><td><strong>100&nbsp;% GPU</strong></td></tr>
+      <tr><td>qwen2.5-coder:14b</td><td>8192</td><td>18&nbsp;GB</td><td>25&nbsp;% CPU / 75&nbsp;% GPU</td></tr>
+      <tr><td>qwen2.5-coder:14b</td><td><strong>4096</strong></td><td>13&nbsp;GB</td><td><strong>100&nbsp;% GPU</strong></td></tr>
+      <tr><td>qwen3-coder:30b</td><td>4096</td><td>20&nbsp;GB</td><td>33&nbsp;% CPU / 67&nbsp;% GPU</td></tr>
+      <tr><td>qwen3-coder:30b</td><td>2048</td><td>19&nbsp;GB</td><td>27&nbsp;% CPU / 73&nbsp;% GPU</td></tr>
+    </tbody>
+  </table>
+  <p>Note the 14B: <strong>the same model at the same quantization goes from a third on CPU to entirely on GPU purely by halving the context.</strong> That is the KV cache, not the weights &mdash; and it is why the context knob exists.</p>
+  <p>The 30B does not fit at any usable context: 19&nbsp;GB against a 16&nbsp;GB card even at 2048. It is still worth running (an MoE activates only a few experts per token, so it tolerates offload better than a dense model), but <strong>the split must be recorded next to any score it produces</strong> and it cannot be compared head to head with a fully-resident model without that caveat.</p>
+
+  <h3>And do not build while measuring</h3>
+  <p>The corollary, learned by walking into it: with part of a model on CPU, a compilation on the same machine steals the cores its inference needs. Latency inflates, generations can hit the client's 120&nbsp;s ceiling, and the result is excluded runs and a meaningless score. The same trap as a badly loaded model, entered from the other side &mdash; a well-loaded model on a busy machine.</p>
+
   <h2>4. Context compression</h2>
   <ul>
     <li><strong>Cache quantization</strong> &mdash; store K/V at lower precision. What llama.cpp offers today.</li>
