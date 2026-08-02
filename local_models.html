@@ -101,7 +101,14 @@
 
   <h3>TurboQuant (Google DeepMind, ICLR 2026)</h3>
   <p>Current state of the art, and <strong>not</strong> a weight quantizer &mdash; it compresses the <strong>KV cache</strong>. Training-free and data-oblivious, built on Quantized Johnson&ndash;Lindenstrauss and PolarQuant, reported at ~6&times; cache compression and ~8&times; faster attention, down to a 3-bit cache without meaningful accuracy loss.</p>
-  <p>Adoption is uneven and this matters for us: <strong>vLLM merged it; llama.cpp declined it</strong>, with a third-party implementation existing outside the tree. So on the Ollama / llama.cpp path it is not available today.</p>
+  <p><strong>Why it is in vLLM but not in llama.cpp &mdash; and it is not a rejection.</strong> The upstream discussion shows no formal refusal; the work is <strong>stalled at the fork stage</strong>, with independent Metal, CUDA, Vulkan and CPU implementations living outside the tree. The results are real: 4&ndash;5&times; cache compression, one report of output identical to the f16 baseline on a 35B model at temperature 0, 262K context on multi-GPU.</p>
+  <p>Two barriers keep it out: every backend needs its own implementation, and &mdash; the decisive one &mdash; <strong>decode gets slower</strong>, reported anywhere from 37% to 8&times; depending on hardware, pending fused attention kernels.</p>
+  <p>That trade-off is exactly why the two engines diverge, and it is worth internalising because it recurs:</p>
+  <ul>
+    <li><strong>vLLM</strong> serves many concurrent long-context requests, where the KV cache is <em>the</em> binding constraint (PagedAttention exists for this reason). Paying decode speed to fit more sequences is a good trade.</li>
+    <li><strong>llama.cpp</strong> serves one latency-sensitive local user. An 8&times; decode slowdown to save memory the user may not be short of is a bad trade.</li>
+  </ul>
+  <p><strong>Practical consequence for us: on the Ollama / llama.cpp path TurboQuant is not available today</strong>, and if it arrives it should be measured for throughput, not only for the memory it frees.</p>
 
   <h2>5. Hardware number formats</h2>
   <h3>NVFP4 &mdash; and what it means for an Ada card</h3>
