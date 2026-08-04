@@ -98,12 +98,13 @@
     <tbody>
       <tr><td>qwen2.5-coder:7b-instruct</td><td>8192</td><td>8.2&nbsp;GB</td><td><strong>100&nbsp;% GPU</strong></td></tr>
       <tr><td>qwen2.5-coder:14b</td><td>8192</td><td>18&nbsp;GB</td><td>25&nbsp;% CPU / 75&nbsp;% GPU</td></tr>
-      <tr><td>qwen2.5-coder:14b</td><td><strong>4096</strong></td><td>13&nbsp;GB</td><td><strong>100&nbsp;% GPU</strong></td></tr>
+      <tr><td>qwen2.5-coder:14b</td><td><strong>4096</strong></td><td>13&nbsp;GB</td><td><strong>100&nbsp;% GPU</strong> (5&nbsp;% CPU when the desktop is busy)</td></tr>
       <tr><td>qwen3-coder:30b</td><td>4096</td><td>20&nbsp;GB</td><td>33&nbsp;% CPU / 67&nbsp;% GPU</td></tr>
-      <tr><td>qwen3-coder:30b</td><td>2048</td><td>19&nbsp;GB</td><td>27&nbsp;% CPU / 73&nbsp;% GPU</td></tr>
+      <tr><td>qwen3-coder:30b</td><td>2048</td><td>19&nbsp;GB</td><td>27&nbsp;% CPU / 73&nbsp;% GPU (33&nbsp;% when the desktop is busy)</td></tr>
     </tbody>
   </table>
   <p>Note the 14B: <strong>the same model at the same quantization goes from a third on CPU to entirely on GPU purely by halving the context.</strong> That is the KV cache, not the weights &mdash; and it is why the context knob exists.</p>
+  <p>The parenthesised numbers are the same models measured again with a few hundred MB more of the card in use by the desktop. <strong>The split is not a property of the model: it is decided at load time against whatever VRAM is free then.</strong> Read the table as &ldquo;fits when the card is quiet&rdquo;, and check <code>ollama ps</code> for the run you are about to trust rather than assuming last week's placement.</p>
   <p>The 30B does not fit at any usable context: 19&nbsp;GB against a 16&nbsp;GB card even at 2048. It is still worth running (an MoE activates only a few experts per token, so it tolerates offload better than a dense model), but <strong>the split must be recorded next to any score it produces</strong> and it cannot be compared head to head with a fully-resident model without that caveat.</p>
 
   <h3>And do not build while measuring</h3>
