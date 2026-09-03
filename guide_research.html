@@ -779,21 +779,25 @@ for check in &verification.checks {
     </table>
     </div>
 
-    <h3 style="margin-top: 28px; color: var(--green);">Combined Pipeline &mdash; One Command</h3>
+    <h3 style="margin-top: 28px; color: var(--green);">Review and Verification &mdash; Two Commands</h3>
     <p style="font-size:0.88rem; color:var(--text-dim); margin:12px 0;">
-      Use the CLI to run the full verified research pipeline in a single command:
+      Building the review and verifying claims against sources are separate commands, and
+      deliberately so: the review needs no model, and verification does.
     </p>
     <span class="code-label bash">terminal</span>
-    <pre>ai_cli research "RLHF" \
-  --review \
-  --format systematic \
-  --bibtex \
+    <pre># 1. Build the review — search, group, structure, cite. No model.
+ai_cli research review "RLHF" --mode systematic --out review.md --bibtex
+
+# 2. Ask a grounded question about it, with the anti-hallucination pipeline on.
+ai_cli verify "Which papers evaluate on human preferences, and when?" \
+  --knowledge review.md \
   --faithfulness \
+  --cove \
   --quality-gates</pre>
     <p style="font-size:0.88rem; color:var(--text-dim); margin-top:12px;">
-      This single command performs: academic search across all providers, literature review synthesis
-      in systematic style, BibTeX citation export, faithfulness scoring of every claim, and quality gate
-      enforcement. If the review fails verification, it is automatically regenerated.
+      <strong>They are not chained automatically.</strong> Nothing today takes the review's own
+      sentences and runs each one through the verifier; you choose what to check. This page
+      previously showed a single command that did all of it &mdash; that command never existed.
     </p>
 
     <div class="info-box success" style="border-left-width: 6px;">
