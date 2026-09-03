@@ -641,17 +641,24 @@ cargo run --bin ai_cli --features full -- \
       </div>
       <p class="problem"><strong>Problem.</strong> You need to search academic databases, generate a structured literature review, and export citations in BibTeX format &mdash; without manually combing through ArXiv, Google Scholar, and PubMed.</p>
       <span class="code-label bash">bash</span>
-<pre># 1. Search across multiple academic providers
-cargo run --bin ai_cli --features "full,research" -- \
+<pre># 1. Search across the five academic providers
+cargo run --bin ai_cli --features "full" -- \
     research "transformer attention" \
-    --providers arxiv,scholar,pubmed \
+    --providers arxiv,scholar,pubmed,openalex,crossref \
     --max-results 20
 
-# 2. Generate a systematic review with BibTeX export
-cargo run --bin ai_cli --features "full,research" -- \
-    research "RLHF" \
-    --review --format systematic \
-    --bibtex</pre>
+# 2. Generate a systematic review with BibTeX export.
+#    `review` is a subcommand, and no model is involved.
+cargo run --bin ai_cli --features "full" -- \
+    research review "RLHF" \
+    --mode systematic \
+    --out review.md --bibtex
+
+# 3. Or index what you found and ask it afterwards
+cargo run --bin ai_cli --features "full" -- \
+    research "RLHF" --index papers.db
+cargo run --bin ai_cli --features "full" -- \
+    research ask "which ones use human preference data?" --index papers.db</pre>
       <div class="info-box success">
         <strong>Security.</strong> API keys for academic providers are read from environment variables (never hard-coded or logged). BibTeX output is sanitized against LaTeX injection to prevent malicious payloads in exported <code>.bib</code> files.
       </div>
