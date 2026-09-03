@@ -483,11 +483,17 @@ export CROSSREF_MAILTO="you@example.com"</pre>
 
     <h3 style="margin-top: 28px; color: var(--text-bright);">Import &amp; Export</h3>
     <span class="code-label bash">terminal</span>
-    <pre># Import an existing .bib file into the RAG knowledge base
-ai_cli research import-bib references.bib
+    <pre># Export search results as BibTeX (written to stdout)
+ai_cli research "diffusion models" --providers arxiv --bibtex &gt; diffusion.bib
 
-# Export search results as BibTeX
-ai_cli research "diffusion models" --providers arxiv --bibtex --output diffusion.bib</pre>
+# Ingest the papers into a RAG index instead
+ai_cli research "diffusion models" --providers arxiv --index papers.db</pre>
+    <div class="info-box warning">
+      <strong>Importing a <code>.bib</code> file is available over MCP, not from the CLI.</strong>
+      The <code>import_bibtex</code> tool takes a <code>.bib</code> and loads it into the knowledge
+      base; <code>BibParser</code> is public in the Rust API. There is no
+      <code>ai_cli research import-bib</code> subcommand.
+    </div>
 
     <span class="code-label rust">Rust API</span>
     <pre>use ai_assistant::bibtex::{BibParser, BibGenerator, BibEntry};
