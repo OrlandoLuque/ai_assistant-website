@@ -275,7 +275,7 @@ footer {
   <div class="container">
     <h1>Academic Research Guide</h1>
     <p class="tagline">
-      Search arXiv, Semantic Scholar, and PubMed from a single command.
+      Search arXiv, Semantic Scholar, PubMed, OpenAlex and Crossref from a single command.
       Generate verified literature reviews with BibTeX export &mdash; automatically.
       No equivalent in LangChain or LlamaIndex.
     </p>
@@ -306,7 +306,7 @@ footer {
       <span class="step-number">!</span>
       <h3>The Solution</h3>
       <ul>
-        <li><strong>Unified search</strong> &mdash; one command, three academic databases, deduplicated results</li>
+        <li><strong>Unified search</strong> &mdash; one command, five academic databases, deduplicated by DOI</li>
         <li><strong>Automated review</strong> &mdash; structured literature reviews in four synthesis styles</li>
         <li><strong>Verified output</strong> &mdash; FaithfulnessScorer + CoVe verify every claim against source papers</li>
         <li><strong>BibTeX export</strong> &mdash; sanitized, standards-compliant citations in five bibliography formats</li>
@@ -327,41 +327,47 @@ footer {
   <div class="container">
     <h2 class="section-title">2. Quick Start</h2>
     <p class="section-sub">
-      Three steps to go from a research question to a verified, cited literature review.
+      Three steps to go from a research question to a cited literature review you can query.
     </p>
 
     <div class="step">
       <span class="step-number">1</span>
       <h3>Search Across Providers</h3>
-      <p>Search arXiv, Semantic Scholar, and PubMed in a single command. Export results as BibTeX.</p>
+      <p>Search all five providers in a single command. Results are normalised to one paper type and deduplicated by DOI.</p>
       <span class="code-label bash">terminal</span>
       <pre>ai_cli research "transformer attention mechanisms" \
-  --providers arxiv,scholar,pubmed \
+  --providers arxiv,scholar,pubmed,openalex,crossref \
   --max-results 30 \
-  --bibtex --output results.bib</pre>
-      <p>This searches all three providers, deduplicates results, and writes a <code>.bib</code> file with sanitized entries.</p>
+  --bibtex &gt; results.bib</pre>
+      <p><code>--bibtex</code> writes BibTeX to standard output, so redirect it where you want it.</p>
     </div>
 
     <div class="step">
       <span class="step-number">2</span>
       <h3>Generate a Literature Review</h3>
-      <p>Synthesize search results into a structured review with proper citations.</p>
+      <p>Synthesize search results into a structured review with proper citations. <strong>No model is involved</strong> &mdash; the pipeline searches, groups and structures, so this runs on a machine with no local LLM and no API key.</p>
       <span class="code-label bash">terminal</span>
-      <pre>ai_cli research "RLHF alignment techniques" \
-  --review --depth standard \
-  --format systematic --bibtex</pre>
-      <p>Generates a systematic literature review covering up to 50 papers, with auto-generated BibTeX bibliography.</p>
+      <pre>ai_cli research review "RLHF alignment techniques" \
+  --mode systematic \
+  --providers arxiv,scholar,openalex \
+  --out review.md --bibtex</pre>
+      <p>Two presets: <code>--mode quick</code> and <code>--mode systematic</code>, which differ in how many papers they pull, how deep they search and which synthesis style they use. Without <code>--out</code> the Markdown goes to standard output.</p>
     </div>
 
     <div class="step">
       <span class="step-number">3</span>
-      <h3>Verified Research with Anti-Hallucination</h3>
-      <p>Add faithfulness scoring and quality gates to ensure the review is factually accurate.</p>
+      <h3>Index the Papers and Ask Them</h3>
+      <p>Finding fifty papers and being left holding a list is half the job. <code>--index</code> ingests what the search just found into a RAG database; <code>research ask</code> queries it.</p>
       <span class="code-label bash">terminal</span>
-      <pre>ai_cli research "RLHF alignment techniques" \
-  --review --format systematic --bibtex \
-  --faithfulness --quality-gates</pre>
-      <p>Every claim in the review is verified against the source papers. Quality gates reject output below the confidence threshold.</p>
+      <pre># search and ingest in one step
+ai_cli research "retrieval augmented generation" \
+  --providers openalex,crossref \
+  --index papers.db
+
+# ask the index (retrieval only, still no model)
+ai_cli research ask "what do they say about hallucination?" \
+  --index papers.db --top-k 5</pre>
+      <p>Papers are keyed by DOI, so re-running the same search re-indexes nothing and finding the same paper through two providers files it once.</p>
     </div>
   </div>
 </section>
@@ -371,8 +377,9 @@ footer {
   <div class="container">
     <h2 class="section-title">3. Academic Search Providers</h2>
     <p class="section-sub">
-      ai_assistant integrates three academic search APIs through a unified <code>AcademicSearchEngine</code>
-      interface. Each provider is queried in parallel and results are deduplicated by title + author.
+      ai_assistant integrates five academic search APIs through a unified <code>AcademicSearchEngine</code>
+      interface. Providers are queried in turn and results are deduplicated by DOI &mdash; the only
+      identifier that survives finding the same paper through two different providers.
     </p>
 
     <div style="overflow-x: auto; border-radius: 10px;">
@@ -402,6 +409,20 @@ footer {
           <td>3 req/s (10 with key)</td>
           <td>Biomedical &amp; life sciences</td>
         </tr>
+        <tr>
+          <td>OpenAlex</td>
+          <td>REST/JSON</td>
+          <td>Contact address (polite pool)</td>
+          <td>100k/day, 10/s</td>
+          <td>Everything &mdash; ~250M works, all disciplines</td>
+        </tr>
+        <tr>
+          <td>Crossref</td>
+          <td>REST/JSON</td>
+          <td>Contact address (polite pool)</td>
+          <td>Unmetered in the polite pool</td>
+          <td>Authoritative metadata for any DOI</td>
+        </tr>
       </tbody>
     </table>
     </div>
@@ -415,11 +436,18 @@ footer {
 export SEMANTIC_SCHOLAR_API_KEY="your-key-here"
 
 # PubMed / NCBI — raises limit from 3/s to 10/s
-export NCBI_API_KEY="your-key-here"</pre>
+export NCBI_API_KEY="your-key-here"
+
+# OpenAlex and Crossref — a contact address, not a key. It puts requests in the
+# "polite pool", which is a much higher quota, not a courtesy.
+export OPENALEX_MAILTO="you@example.com"
+export CROSSREF_MAILTO="you@example.com"</pre>
 
     <div class="info-box success">
-      <strong>Reserved for future batches:</strong> CrossRef and OpenAlex providers are defined in
-      <code>AcademicSource</code> and will be wired in a future release.
+      <strong>Being throttled is reported as being throttled.</strong> A 429 or 503 is retried with
+      exponential backoff that honours the server's <code>Retry-After</code> header, and if it still
+      fails the error says <em>rate limited</em> &mdash; not "network error", which used to send people
+      looking at their connection instead of at their request rate.
     </div>
   </div>
 </section>
@@ -537,7 +565,7 @@ std::fs::write("export.bib", bibtex_str)?;</pre>
     <div class="pipeline">
       <div class="pipeline-step">
         <strong>Search</strong>
-        <span>arXiv + Scholar + PubMed</span>
+        <span>arXiv + Scholar + PubMed + OpenAlex + Crossref</span>
       </div>
       <span class="pipeline-arrow">&rarr;</span>
       <div class="pipeline-step">
@@ -562,23 +590,24 @@ std::fs::write("export.bib", bibtex_str)?;</pre>
     </div>
 
     <span class="code-label rust">Rust API</span>
-    <pre>use ai_assistant::literature_review::{
-    LiteratureReviewConfig, SearchDepth, SynthesisStyle, BibliographyFormat,
-};
+    <pre>use ai_assistant::academic_search::{AcademicSearchEngine, ArxivProvider, OpenAlexProvider};
+use ai_assistant::literature_review::{LiteratureReviewConfig, LiteratureReviewPipeline};
 
-let config = LiteratureReviewConfig {
-    query: "reinforcement learning from human feedback".to_string(),
-    depth: SearchDepth::Standard,
-    style: SynthesisStyle::Systematic,
-    bibliography_format: BibliographyFormat::BibTeX,
-    ..Default::default()
-};
+let mut engine = AcademicSearchEngine::new();
+engine.add_provider(Box::new(ArxivProvider::new()));
+engine.add_provider(Box::new(OpenAlexProvider::new()));
 
-// The pipeline handles search, filter, synthesize, cite, and export
-let review = literature_review_engine.generate_review(&config).await?;
+// `quick()` and `systematic()` are presets; the config fields
+// (max_papers, search_depth, synthesis_style, year_range…) are public.
+let config = LiteratureReviewConfig::systematic();
 
-println!("Review: {} words", review.text.split_whitespace().count());
-println!("Citations: {}", review.citations.len());
+// Synchronous, and no model involved: the pipeline searches, groups and structures.
+let review = LiteratureReviewPipeline::new(engine, config)
+    .execute("reinforcement learning from human feedback");
+
+println!("{} of {} papers, {} words",
+         review.papers_included, review.papers_found, review.total_word_count());
+std::fs::write("review.md", review.to_markdown())?;
 std::fs::write("review.bib", &review.bibtex)?;</pre>
   </div>
 </section>
@@ -932,35 +961,26 @@ ai_assistant_core = { git = "https://github.com/OrlandoLuque/ai_assistant", feat
     <h3 style="margin-top: 28px; color: var(--text-bright);">TOML Configuration</h3>
     <span class="code-label toml">config.toml</span>
     <pre>[research]
-# Default search depth: "quick", "standard", or "deep"
-default_depth = "standard"
+# Which providers to search when none are given on the command line.
+# Available: "arxiv", "semantic_scholar", "pubmed", "openalex", "crossref"
+default_providers = ["arxiv", "semantic_scholar", "pubmed"]
 
-# Default synthesis style: "narrative", "systematic", "annotated", "comparative"
-default_style = "narrative"
+# Default max results per search
+default_max_results = 10
 
 # Default bibliography format: "bibtex", "apa", "mla", "chicago", "ieee"
 default_bibliography_format = "bibtex"
 
-# Enable anti-hallucination verification by default
-enable_faithfulness = true
-enable_quality_gates = true
-faithfulness_threshold = 0.7
-
-[research.providers]
-# arXiv needs no API key
-arxiv_enabled = true
-
-# Semantic Scholar — set SEMANTIC_SCHOLAR_API_KEY env var for higher limits
-semantic_scholar_enabled = true
-
-# PubMed — set NCBI_API_KEY env var for higher limits
-pubmed_enabled = true
-
-[research.rate_limits]
-# Override default rate limits (in milliseconds between requests)
-arxiv_interval_ms = 3000
-scholar_requests_per_5min = 100
-pubmed_requests_per_second = 3</pre>
+# Optional API keys. Both fall back to the environment variables
+# SEMANTIC_SCHOLAR_API_KEY and NCBI_API_KEY when unset.
+semantic_scholar_api_key = ""
+ncbi_api_key = ""</pre>
+    <div class="info-box">
+      Rate limiting is not configured here: each provider applies its own published limit, and a
+      429 or 503 is retried with exponential backoff honouring <code>Retry-After</code>. OpenAlex and
+      Crossref take a contact address through <code>OPENALEX_MAILTO</code> and
+      <code>CROSSREF_MAILTO</code>.
+    </div>
   </div>
 </section>
 
