@@ -313,6 +313,9 @@ footer {
       <a href="#ep-v1-models"><code>GET /v1/models</code></a>
       <a href="#websocket"><code>GET /ws</code> (WebSocket)</a>
       <a href="#ep-openapi"><code>GET /openapi.json</code></a>
+      <a href="#ollama"><code>GET /api/tags</code></a>
+      <a href="#ep-ollama-chat"><code>POST /api/chat</code></a>
+      <a href="#ep-ollama-generate"><code>POST /api/generate</code></a>
       <a href="#enrichment">Enrichment Pipeline</a>
       <a href="#rate-limiting">Rate Limiting</a>
       <a href="#cors">CORS</a>
@@ -806,6 +809,138 @@ data: [DONE]</pre>
   </div>
 </section>
 
+<!-- ==================== OLLAMA ==================== -->
+<section id="ollama">
+  <div class="container">
+    <h2 class="section-title">Ollama-Compatible Endpoints</h2>
+    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
+      These three endpoints speak <strong>Ollama&rsquo;s</strong> wire dialect, so a tool that believes it is
+      talking to a local Ollama daemon can be pointed at this server and work without knowing anything
+      about it. Many tools hardcode <code>localhost:11434</code> and these exact paths.
+    </p>
+
+    <div class="info-box warning">
+      <strong>Served at the literal path only.</strong> Unlike every other endpoint, these have
+      <em>no</em> <code>/api/v1/</code> alias. That is deliberate: the tools these routes exist for look
+      for the exact path Ollama uses, so a prefixed alias would be of no use to them.
+    </div>
+
+    <div class="info-box warning">
+      <strong>The answer is not incremental.</strong> All three respond with a single NDJSON line
+      carrying <code>done: true</code>. That is exactly right for <code>stream: false</code> (one JSON
+      object), and it is a valid one-element stream for the <code>stream: true</code> Ollama defaults to
+      &mdash; but the whole answer arrives at once. A client that paints tokens as they land will work,
+      and will paint them all in one frame.
+    </div>
+
+    <div class="info-box">
+      <strong><code>model</code> is accepted and ignored.</strong> The server answers with the model it is
+      configured with, and reports that model in the response. It does not switch models per request.
+    </div>
+
+    <!-- GET /api/tags -->
+    <div class="endpoint" id="ep-ollama-tags">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/api/tags</span>
+      </div>
+      <p>List the available models in Ollama&rsquo;s format.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "models": [
+    {
+      "name": "llama3:latest",
+      "model": "llama3:latest",
+      "modified_at": "2026-09-05T12:00:00Z",
+      "size": 4661211808,
+      "digest": "",
+      "details": {"family": "llama", "parameter_size": "8B", "quantization_level": "Q4_K_M"}
+    }
+  ]
+}</pre>
+      <p style="font-size: 0.84rem; color: var(--text-dim);">
+        <code>size</code> is an <strong>integer byte count</strong>, as Ollama specifies. The library&rsquo;s
+        internal <code>ModelInfo::size</code> is a display string (<code>"7.0 GB"</code>); it is converted
+        here, and when the string cannot be parsed the field is <strong>omitted</strong> rather than
+        guessed. Emitting <code>0</code> would have told the client the model is empty &mdash; a confident,
+        wrong answer where silence is the correct one.
+      </p>
+    </div>
+
+    <!-- POST /api/chat -->
+    <div class="endpoint" id="ep-ollama-chat">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/api/chat</span>
+      </div>
+      <h4>Request Body</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "model": "llama3",
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is Rust?"}
+  ],
+  "stream": false
+}</pre>
+      <div style="overflow-x: auto;">
+      <table class="api-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>model</code></td><td>string</td><td>No</td><td>Accepted and ignored (see above)</td></tr>
+          <tr><td><code>messages</code></td><td>array</td><td>Yes</td><td><code>{role, content}</code> objects; at least one <code>user</code> turn</td></tr>
+          <tr><td><code>stream</code></td><td>boolean</td><td>No</td><td>Accepted; the response shape is the same either way</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <h4>Response <span class="status-code status-2xx">200 OK</span> <code>application/x-ndjson</code></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{"model":"llama3","created_at":"2026-09-05T12:00:00Z","message":{"role":"assistant","content":"Rust is..."},"done":true,"done_reason":"stop"}</pre>
+      <h4>Errors</h4>
+      <ul style="font-size: 0.84rem; color: var(--text-dim);">
+        <li><span class="status-code status-4xx">400</span> Body could not be parsed, or <code>messages</code> contains no <code>user</code> turn</li>
+        <li><span class="status-code status-4xx">422</span> A message exceeds the configured maximum length</li>
+        <li><span class="status-code status-5xx">504</span> Generation timed out</li>
+      </ul>
+    </div>
+
+    <!-- POST /api/generate -->
+    <div class="endpoint" id="ep-ollama-generate">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/api/generate</span>
+      </div>
+      <p>Single-prompt completion. Same response shape and same caveats as <code>/api/chat</code>, with the
+      text in <code>response</code> rather than <code>message.content</code>.</p>
+      <h4>Request Body</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{
+  "model": "llama3",
+  "prompt": "What is Rust?",
+  "system": "You are a helpful assistant.",
+  "stream": false
+}</pre>
+      <h4>Response <span class="status-code status-2xx">200 OK</span> <code>application/x-ndjson</code></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{"model":"llama3","created_at":"2026-09-05T12:00:00Z","response":"Rust is...","done":true,"done_reason":"stop"}</pre>
+      <h4>Errors</h4>
+      <ul style="font-size: 0.84rem; color: var(--text-dim);">
+        <li><span class="status-code status-4xx">400</span> Body could not be parsed, or <code>prompt</code> is missing</li>
+        <li><span class="status-code status-4xx">422</span> The prompt exceeds the configured maximum length</li>
+        <li><span class="status-code status-5xx">504</span> Generation timed out</li>
+      </ul>
+      <h4>Pointing an existing tool at this server</h4>
+      <span class="code-label bash">Bash</span>
+      <pre># The tool believes this is Ollama.
+export OLLAMA_HOST=http://localhost:8090
+curl http://localhost:8090/api/tags
+curl -X POST http://localhost:8090/api/generate \
+  -d '{"model":"llama3","prompt":"What is Rust?","stream":false}'</pre>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════ WEBSOCKET ══════════════════ -->
 <section id="websocket">
   <div class="container">
@@ -971,6 +1106,12 @@ curl -X OPTIONS \
     <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 16px;">
       All endpoints are available under both root (<code>/</code>) and versioned (<code>/api/v1/</code>) paths:
     </p>
+    <div class="info-box warning">
+      <strong>One exception:</strong> the three <a href="#ollama">Ollama-compatible endpoints</a>
+      (<code>/api/tags</code>, <code>/api/chat</code>, <code>/api/generate</code>) are served
+      <em>only</em> at their literal paths, with no <code>/api/v1/</code> alias &mdash; the tools they
+      exist for look for the exact Ollama path.
+    </div>
     <div style="overflow-x: auto;">
     <table class="api-table">
       <thead><tr><th>Root Path</th><th>Versioned Path</th></tr></thead>
