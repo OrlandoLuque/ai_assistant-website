@@ -389,9 +389,24 @@
 <body>
 
 <h1>AI Assistant &mdash; Cat&aacute;logo MCP</h1>
-<p class="subtitle">Tools, Resources y Prompts disponibles v&iacute;a Model Context Protocol (MCP 2024-11-05) &mdash; Updated 2026-02-24 (v9) &bull; <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub</a></p>
+<p class="subtitle">Tools, Resources y Prompts disponibles v&iacute;a Model Context Protocol &mdash; se negocia <strong>MCP 2025-03-26</strong>, con ca&iacute;da a 2024-11-05 por compatibilidad &mdash; Updated 2026-09-05 (v10) &bull; <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener">GitHub</a></p>
 
 <div class="protocol-banner" id="banner"></div>
+<div style="border:1px solid rgba(127,127,127,.35); border-left:4px solid #6ea8fe; border-radius:10px;
+            padding:16px 18px; margin:18px 0; line-height:1.6;">
+  <strong>&iquest;C&oacute;mo se sirve todo esto?</strong>
+  Con el binario <code>ai_mcp_server</code> (V305): JSON-RPC 2.0 delimitado por l&iacute;neas sobre
+  <strong>stdio</strong>, que es el transporte que lanzan Claude Desktop, Claude Code y el resto de
+  clientes MCP.
+  <pre style="overflow-x:auto; padding:10px 12px; border-radius:8px; margin:12px 0;">cargo run --bin ai_mcp_server --features tools -- --list-tools</pre>
+  <pre style="overflow-x:auto; padding:10px 12px; border-radius:8px; margin:12px 0;">{ "mcpServers": { "ai_assistant": { "command": "ai_mcp_server", "args": [] } } }</pre>
+  <p style="margin:8px 0 0;">Qu&eacute; conjuntos registra depende de las features compiladas, y el binario
+  <strong>dice por stderr los que faltan y por qu&eacute;</strong>: una herramienta ausente no deber&iacute;a
+  obligarte a distinguir entre un feature apagado y un fallo.</p>
+  <p style="margin:8px 0 0;"><code>examples/mcp_server.rs</code> <em>no</em> sirve nada: demuestra la
+  API contra dos peticiones que se escribe a s&iacute; mismo y nunca lee stdin.</p>
+</div>
+
 
 <div class="search-bar">
   <input type="text" class="search-input" id="searchInput" placeholder="Buscar tool, recurso o prompt..." oninput="filterCards()">
