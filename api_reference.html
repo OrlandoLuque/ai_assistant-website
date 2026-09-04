@@ -303,6 +303,9 @@ footer {
       <a href="#ep-config-get"><code>GET /config</code></a>
       <a href="#ep-config-post"><code>POST /config</code></a>
       <a href="#ep-metrics"><code>GET /metrics</code></a>
+      <a href="#ep-hardware"><code>GET /hardware</code></a>
+      <a href="#ep-benchmarks"><code>GET /benchmarks</code></a>
+      <a href="#ep-recommend-model"><code>POST /recommend-model</code></a>
       <a href="#ep-sessions"><code>GET /sessions</code></a>
       <a href="#ep-session-id"><code>GET /sessions/{id}</code></a>
       <a href="#ep-session-delete"><code>DELETE /sessions/{id}</code></a>
@@ -614,6 +617,47 @@ ai_server_requests_by_status{status="5xx"} 14
 # HELP ai_server_request_duration_seconds_total Total time processing.
 # TYPE ai_server_request_duration_seconds_total counter
 ai_server_request_duration_seconds_total 45.123456</pre>
+    </div>
+
+    <!-- GET /hardware -->
+    <div class="endpoint" id="ep-hardware">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/hardware</span>
+      </div>
+      <p>CPU, RAM and GPU as detected on the host. Probed once and cached, so repeated calls are cheap and report the same thing.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{ "cpu_cores": 16, "ram_gb": 32, "gpus": [ { "name": "NVIDIA RTX 4080 SUPER", "vram_gb": 16 } ] }</pre>
+    </div>
+
+    <!-- GET /benchmarks -->
+    <div class="endpoint" id="ep-benchmarks">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/benchmarks</span>
+      </div>
+      <p>The benchmark catalogue this build knows about.</p>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <span class="code-label json">JSON</span>
+      <pre>{ "total": 7, "benchmarks": [ { "id": "truthfulqa", "name": "TruthfulQA" } ] }</pre>
+    </div>
+
+    <!-- POST /recommend-model -->
+    <div class="endpoint" id="ep-recommend-model">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/recommend-model</span>
+      </div>
+      <p>Rank models against this machine's hardware and a set of constraints.</p>
+      <div class="info-box warning">
+        <strong>Only present when built with the <code>model-recommender</code> feature.</strong> Without it the route answers <code>404</code> like any unknown path &mdash; worth knowing before you build a client around it.
+      </div>
+      <h4>Request &mdash; both fields optional</h4>
+      <span class="code-label json">JSON</span>
+      <pre>{ "request": { "task": "coding", "max_vram_gb": 16 }, "registry_path": "./models.dev.json" }</pre>
+      <h4>Response <span class="status-code status-2xx">200 OK</span></h4>
+      <p>The ranked recommendations, or <code>404</code> if the feature is absent.</p>
     </div>
 
     <!-- GET /sessions -->
