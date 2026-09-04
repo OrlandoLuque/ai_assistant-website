@@ -11,7 +11,7 @@
 <style>pre code.hljs{background:transparent;padding:0}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Binary Catalogue &mdash; ai_assistant</title>
-<meta name="description" content="The 37 binaries shipped by ai_assistant: CLIs, HTTP/MCP servers, desktop GUIs, ledger auditors, and ops tools — each with its build command and required feature flags.">
+<meta name="description" content="The 41 binaries shipped by ai_assistant: CLIs, HTTP/MCP servers, desktop GUIs, ledger auditors, and ops tools — each with its build command and required feature flags.">
 <style>
 /* ── Theme Variables ──────────────────────────────────────── */
 :root {
@@ -229,6 +229,7 @@ footer {
     <a href="#summary">Summary</a>
     <a href="#cli">CLI</a>
     <a href="#servers">Servers</a>
+    <a href="#mcp">MCP</a>
     <a href="#guis">GUIs</a>
     <a href="#ops">Setup &amp; Ops</a>
     <a href="#media">Media</a>
@@ -261,10 +262,13 @@ footer {
     <p class="section-sub">
       This page is the authoritative inventory of every binary in the crate and is kept
       in lockstep with <a href="https://github.com/OrlandoLuque/ai_assistant/blob/master/docs/BINARIES.md"><code>docs/BINARIES.md</code></a>.
-      Total user-facing binaries: <strong>37</strong> (plus an internal <a href="binaries/mock_llama_server.html"><code>mock_llama_server</code></a>
-      used only by the test harness). Recent additions: the Recipes auditors (V106), the ACP
-      auditors, the encrypted <code>ai_backup</code> tool (V128), the local-inference runner +
-      auditors, and the PromptBreeder auditors (V97).
+      Total user-facing binaries: <strong>40</strong> (plus an internal <a href="binaries/mock_llama_server.html"><code>mock_llama_server</code></a>
+      used only by the test harness) &mdash; <strong>41</strong> <code>[[bin]]</code> entries in
+      <code>Cargo.toml</code>, which CI checks against this list and against
+      <code>docs/BINARIES.md</code> on every push. Recent additions: <code>ai_mcp_server</code>
+      (V305), the self-correction auditors, the Recipes auditors (V106), the ACP auditors, the
+      encrypted <code>ai_backup</code> tool (V128), the local-inference runner + auditors, and
+      the PromptBreeder auditors (V97).
       V79 additionally ships the crate as a <strong>shared and static library</strong>
       with a C ABI &mdash; see <a href="#library-artifacts">Library Artifacts</a> below.
     </p>
@@ -330,6 +334,9 @@ footer {
         <tr><td>35</td><td><a href="binaries/ai_local_infer.html">ai_local_infer</a></td><td>Local inference</td><td class="feat">local-inference</td><td>Local inference runner + benchmark (info, generate, bench) over stub/candle/llama-cpp backends</td></tr>
         <tr><td>36</td><td><a href="binaries/ai_local_infer_audit.html">ai_local_infer_audit</a></td><td>Local inference</td><td class="feat">local-inference</td><td>Local-inference SLO log auditor CLI (list, show, audit)</td></tr>
         <tr><td>37</td><td><a href="binaries/ai_local_infer_audit_gui.html">ai_local_infer_audit_gui</a></td><td>Local inference</td><td class="feat">gui-local-inference</td><td>Local-inference SLO auditor desktop app</td></tr>
+        <tr><td>38</td><td>ai_corrections</td><td>Self-Learning</td><td class="feat">self-correction</td><td>Audits the self-correction run ledger and the review queue of work the engine could not make correct</td></tr>
+        <tr><td>39</td><td>ai_corrections_gui</td><td>Self-Learning</td><td class="feat">gui-corrections</td><td>Visual auditor for the self-correction review queue</td></tr>
+        <tr><td>40</td><td>ai_mcp_server <span class="tag-new">NEW V305</span></td><td>MCP</td><td class="feat">tools</td><td>MCP server over stdio (JSON-RPC 2.0) &mdash; the real transport, not the example</td></tr>
       </tbody>
     </table>
   </div>
@@ -409,6 +416,38 @@ ai_proxy --config ai_proxy.toml --port 9000 --disable-cache</code></pre>
       <p><strong>Deprecated:</strong> <code>--api-key</code> CLI flag (still works, warns &mdash; prefer <code>AI_PROXY_API_KEY</code> env var, which wins over both the config file and <code>--api-key</code>).</p>
       <p><strong>Response headers:</strong> <code>X-Request-Id</code> on every response, <code>X-Cache: HIT|MISS</code> on <code>/v1/chat/completions</code>, <code>X-Reason</code> on 429 / 503.</p>
       <p>Streaming (<code>stream: true</code>) and <code>/v1/embeddings</code> are passed through unmodified in V78 &mdash; full guardrail wiring over SSE/WebSocket is deferred to V80. See <code>docs/IMPROVEMENTS_V78.md</code> for the full design and the list of 13 security mitigations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MCP ==================== -->
+<section id="mcp">
+  <div class="container">
+    <h2 class="section-title">MCP</h2>
+
+    <div class="group">
+      <h4>ai_mcp_server <span class="tag-new">NEW V305</span></h4>
+      <p>An MCP server over <strong>stdio</strong>, speaking newline-delimited JSON-RPC 2.0 &mdash;
+      the transport Claude Desktop, Claude Code and the rest of the MCP ecosystem use to launch a
+      local server. It registers the library&rsquo;s real tool sets (tasks, config, benchmarks,
+      knowledge): 18 tools in a full build.</p>
+      <pre>cargo run --bin ai_mcp_server --features tools -- --list-tools</pre>
+      <p>Registering it with a client:</p>
+      <pre>{ "mcpServers": { "ai_assistant": { "command": "ai_mcp_server", "args": [] } } }</pre>
+      <div class="info-box">
+        <strong>stdout belongs to the protocol.</strong> Anything written there that is not a
+        JSON-RPC frame desynchronises the client, and the symptom (&ldquo;the server
+        disconnected&rdquo;) appears nowhere near the cause. Every human-facing byte &mdash;
+        <code>--help</code> included &mdash; goes to stderr.
+      </div>
+      <div class="info-box">
+        <strong>Notifications get no reply.</strong> A JSON-RPC request without an <code>id</code>
+        must not be answered, and every client sends <code>notifications/initialized</code> right
+        after <code>initialize</code>. <code>McpServer::handle_stream_message</code> returns
+        <code>Option&lt;String&gt;</code> for exactly this.
+      </div>
+      <p><code>examples/mcp_server.rs</code> is <em>not</em> this: it demonstrates the API against
+      two requests it writes itself and never reads stdin.</p>
     </div>
   </div>
 </section>
