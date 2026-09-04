@@ -368,6 +368,19 @@ ai_cli research "retrieval augmented generation" \
 ai_cli research ask "what do they say about hallucination?" \
   --index papers.db --top-k 5</pre>
       <p>Papers are keyed by DOI, so re-running the same search re-indexes nothing and finding the same paper through two providers files it once.</p>
+
+      <h4 style="margin-top:20px; color: var(--text-bright);">Index the whole paper, not just the abstract</h4>
+      <p><code>--fulltext</code> downloads each paper's PDF and indexes the entire article. Measured on a real run: <strong>229 chunks versus about 2 per paper</strong> from abstracts alone &mdash; and it shows in the answers, because a question about experimental setup is answered from the method section, which is never in the abstract.</p>
+      <span class="code-label bash">terminal</span>
+      <pre>ai_cli research "retrieval augmented generation" \
+  --providers openalex \
+  --index papers.db --fulltext</pre>
+      <p>Same source key as the abstract-only path, so this <em>upgrades</em> what is already indexed rather than duplicating it. Three things it refuses to guess about:</p>
+      <ul>
+        <li><strong>Most results have no open PDF.</strong> arXiv and OpenAlex populate it; Crossref and PubMed rarely do. Counted separately from failures, because "closed access" and "the download broke" call for different reactions.</li>
+        <li><strong>A paywall answers 200 OK with HTML.</strong> The status code tells you nothing, so the bytes are checked for the <code>%PDF-</code> magic first &mdash; feeding a login page to a PDF parser produces plausible garbage, which is worse than a clean skip.</li>
+        <li><strong>A "paper" can be hundreds of megabytes</strong> of supplementary material. Capped at 32 MB, enforced on the bytes actually read rather than on <code>Content-Length</code>, which is a hint and not a guarantee.</li>
+      </ul>
     </div>
   </div>
 </section>
