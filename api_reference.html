@@ -866,6 +866,19 @@ data: [DONE]</pre>
         guessed. Emitting <code>0</code> would have told the client the model is empty &mdash; a confident,
         wrong answer where silence is the correct one.
       </p>
+      <p style="font-size: 0.84rem; color: var(--text-dim);">
+        <code>modified_at</code> follows the same rule: an RFC3339 instant, <strong>omitted</strong>
+        when unknown rather than sent as <code>""</code>, which does not parse as one. Until V308 it
+        did send the empty string &mdash; the same mistake as <code>size: 0</code>, made in the field
+        next to the one where it was avoided.
+      </p>
+      <div class="info-box warning">
+        <strong>No models means <code>[]</code>, not a placeholder.</strong> Until V308 this endpoint
+        &mdash; and <code>GET /v1/models</code> &mdash; fell back to the configured model without
+        checking that one was configured, so both could return a single entry whose name was the
+        empty string. A client would list a model called nothing, select it, and fail somewhere
+        unrelated.
+      </div>
     </div>
 
     <!-- POST /api/chat -->
