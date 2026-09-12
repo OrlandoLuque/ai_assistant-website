@@ -669,6 +669,43 @@ for doc in &docs {
     println!("{}: {} bytes", doc.name, doc.content.len());
 }</pre>
   </div>
+
+    <h3 class="sub-title">Retrieving from a Vector Database</h3>
+    <div class="prose">
+      <p>
+        <code>RetrievalCallback::semantic_search</code> takes a query embedding and returns the
+        nearest chunks &mdash; which is what a vector database does.
+        <code>VectorDbRetrieval</code> implements that trait over any <code>VectorDb</code>
+        backend, so the pipeline and the vector subsystem no longer need glue code written per
+        caller.
+      </p>
+      <p>
+        Chunk text comes from the <code>content</code> metadata key
+        (<code>.with_content_key()</code> for another convention); any other key is carried
+        through into the chunk&rsquo;s metadata rather than dropped.
+        <strong>Keyword search is refused, not faked</strong>: a vector store has no lexical
+        index, and an empty result would be indistinguishable from &ldquo;nothing
+        matched&rdquo;, so <code>keyword_search</code> errors unless you pass a delegate with
+        <code>.with_keyword_search()</code>. That pairing &mdash; BM25/FTS5 for words, vectors
+        for meaning &mdash; is the hybrid setup the fusion stage was built for.
+      </p>
+      <p>
+        <code>HierarchicalRouter</code> classifies a query and returns a strategy name
+        (<code>"bm25"</code>, <code>"dense"</code>, <code>"graph"</code>,
+        <code>"raptor"</code>); it does not dispatch. <code>VectorDbRetrieval</code> is what
+        <code>"dense"</code> should be wired to.
+      </p>
+    </div>
+    <div class="code-block">
+      <pre>use ai_assistant::{RagPipeline, VectorDbRetrieval};
+use ai_assistant::vector_db::{InMemoryVectorDb, VectorDbConfig};
+
+let db = InMemoryVectorDb::new(VectorDbConfig::default());
+// ...insert vectors, each with a `content` key in its metadata...
+
+let retrieval = VectorDbRetrieval::new(&amp;db).with_keyword_search(&amp;my_fts_retriever);
+let result = pipeline.process(query, &amp;my_llm, Some(&amp;my_embedder), &amp;retrieval, None)?;</pre>
+    </div>
 </section>
 
 <!-- ════════════════════════ AGENTS ═════════════════════ -->
