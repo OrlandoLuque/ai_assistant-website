@@ -1043,10 +1043,12 @@ ws.onmessage = (event) => {
       <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td>enable_rag</td><td>bool</td><td>false</td><td>Enable RAG context retrieval</td></tr>
-        <tr><td>enable_guardrails</td><td>bool</td><td>false</td><td>Enable input guardrails</td></tr>
+        <tr><td>enable_guardrails</td><td>bool</td><td>false</td><td>Enable the guardrail pipeline on input <strong>and</strong> output</td></tr>
         <tr><td>enable_memory</td><td>bool</td><td>false</td><td>Enable conversation memory</td></tr>
         <tr><td>block_on_input_violation</td><td>bool</td><td>true</td><td>Return 400 on guardrail violations</td></tr>
         <tr><td>redact_output_pii</td><td>bool</td><td>true</td><td>Mask PII in responses</td></tr>
+        <tr><td>block_on_output_violation</td><td>bool</td><td>true</td><td>Withhold a response the output guards blocked, reporting <code>finish_reason: "content_filter"</code>. Streaming routes stop the stream.</td></tr>
+        <tr><td>output_violation_message</td><td>String</td><td><code>[Response withheld by content policy]</code></td><td>What to serve in place of a withheld response</td></tr>
         <tr><td>guardrail_threshold</td><td>f32</td><td>0.8</td><td>Guardrail confidence threshold</td></tr>
       </tbody>
     </table>
