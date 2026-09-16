@@ -1,1 +1,14 @@
 backups/
+
+# ---------------------------------------------------------------------------
+# Things that are deliberately NOT committed
+# ---------------------------------------------------------------------------
+# Drafts, scratch files, anything half-finished. Put it in `_private/` and it
+# cannot reach a commit by accident.
+#
+# Why: on 2026-09-16 a `git add -A` swept two untracked working files into
+# commits on public repositories. They came out of HEAD in minutes; the commits
+# are still in the history, and taking them out means a force-push.
+#
+# The rule that goes with the folder: stage files by NAME. Never `git add -A`.
+_private/
