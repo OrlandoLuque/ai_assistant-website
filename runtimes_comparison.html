@@ -260,7 +260,7 @@ footer {
       <ul>
         <li><strong>CPU performance.</strong> Best CPU inference of the four.</li>
         <li><strong>Apple Silicon.</strong> Metal offload is a first-class target.</li>
-        <li><strong>Exotic quants.</strong> <code>Q1_0</code> / ternary kernels on the PrismML fork (Bonsai models).</li>
+        <li><strong>Exotic quants.</strong> 1-bit <code>Q1_0</code> (Bonsai) runs on a recent mainline build — <code>GGML_TYPE_Q1_0</code> is upstream across the CUDA, SYCL and Vulkan backends. The <strong>ternary</strong> (<code>Q2_0</code>) kernels still need the PrismML fork.</li>
         <li><strong>Tight control.</strong> Direct <code>-ngl</code>, <code>-c</code>, <code>-t</code> flags.</li>
       </ul>
     </div>

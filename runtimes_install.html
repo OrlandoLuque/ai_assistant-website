@@ -313,7 +313,7 @@ lm_studio = "http://localhost:1234"</pre>
     <div class="step">
       <h3>When to pick it</h3>
       <ul>
-        <li>Quantizations that Ollama doesn't expose (e.g. <code>Q1_0</code> on the PrismML fork for Bonsai models).</li>
+        <li>Quantizations that Ollama doesn't expose (e.g. 1-bit <code>Q1_0</code> for the Bonsai models — upstream now, so a recent build is enough; only the ternary <code>Q2_0</code> weights still need the PrismML fork).</li>
         <li>CPU-only operation on a machine without a supported GPU.</li>
         <li>Tight control over <code>-c</code> (context), <code>-ngl</code> (GPU layers), <code>-t</code> (threads).</li>
       </ul>
