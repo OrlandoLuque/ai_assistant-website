@@ -148,7 +148,45 @@
     <li><strong>What is actually missing is operational, not architectural</strong>: obtaining NVFP4 weights for the model of interest, and running a llama.cpp build recent enough to include the format. For the vLLM path on Windows, add WSL2.</li>
   </ol>
 
-  <h2>6. Open questions &mdash; to measure, not assume</h2>
+  <h2>6. The kernel that isn't there &mdash; when the quantization fits but doesn't run</h2>
+  <p>The sections above decide whether a model <em>fits</em>. This one decides whether it
+  moves, and it is the easiest to miss, because nothing fails: the model answers correctly
+  and takes forever.</p>
+  <p>A quantization type is only fast if the engine ships a <strong>kernel compiled for your
+  architecture</strong>. ggml resolves each type to a dot product through a table; if there
+  is no version for yours, <code>arch-fallback.h</code> redirects it to the generic scalar
+  implementation. No warning, no error, correct output.</p>
+  <p><strong>Measured 2026-09-19.</strong> Bonsai-4B <code>Q1_0</code>, same prompt and
+  parameters, x86 laptop:</p>
+  <table class="subcmd">
+    <thead><tr><th>engine</th><th>generation</th></tr></thead>
+    <tbody>
+      <tr><td><code>llama-cpp-sys-2</code> 0.1.146</td><td>108.4 &middot; 108.8 s</td></tr>
+      <tr><td><code>llama-cpp-sys-2</code> 0.1.156</td><td>2.97 &middot; 3.34 &middot; 3.56 &middot; 3.02 &middot; 3.46 s</td></tr>
+    </tbody>
+  </table>
+  <p>In 0.1.146, <code>ggml_vec_dot_q1_0_q8_0</code> existed <strong>only for ARM</strong>.
+  Thirty-two times, from one line in <code>Cargo.lock</code>.</p>
+  <ul>
+    <li><strong>The bindings vendor their own llama.cpp.</strong> On the in-process route the
+    engine version is fixed by the crate, not by whatever you cloned. Before concluding
+    anything about a model's speed, check that your type has a kernel for your architecture
+    in <code>ggml/src/ggml-cpu/arch/&lt;arch&gt;/quants.c</code>.</li>
+    <li><strong>Careful grepping for it:</strong> <code>q1_0</code> also matches inside
+    <code>tq1_0</code>, which is a different (ternary) type &mdash; a naive grep gives a
+    perfectly convincing false negative. Use <code>[^t]q1_0</code>.</li>
+    <li><strong>The more exotic the quantization, the likelier the hole.</strong> Ordinary
+    <code>Q4_K_M</code> has kernels everywhere; 1-bit and ternary formats are recent and
+    per-architecture coverage lags. That is a real reason not to pick an unusual
+    quantization just because the file is small.</li>
+  </ul>
+  <p>And the sibling failure, just as quiet: <strong>thread count</strong>. The library uses
+  <strong>physical</strong> cores, not logical &mdash; filling the SMT siblings measured five
+  times slower on the same test (16.8 s vs 3.5 s). llama.cpp's own default is a fixed 4
+  whatever the machine is; override with
+  <code>LocalInferenceConfig::builder(...).n_threads(n)</code>.</p>
+
+  <h2>7. Open questions &mdash; to measure, not assume</h2>
   <ol>
     <li><strong>bartowski vs mradermacher vs Unsloth <code>UD-*</code></strong> at matched size. Does the dynamic scheme's claimed edge survive an execution-verified benchmark?</li>
     <li><strong>Where does quality actually fall off below Q4</strong> for <em>code</em>, as opposed to the perplexity numbers usually quoted?</li>
@@ -158,7 +196,7 @@
     <li><strong>NVFP4 vs <code>Q4_K_M</code></strong> on this Ada card: score and throughput.</li>
   </ol>
 
-  <h2>7. Terms that did not resolve</h2>
+  <h2>8. Terms that did not resolve</h2>
   <ul>
     <li><strong>"BitSeek v4"</strong> &mdash; no such thing found. Most likely <strong>DeepSeek V4</strong>, misheard. The context fits: DeepSeek's <strong>MLA</strong> is the headline architectural answer to KV cache size.</li>
     <li><strong>"Turbo Quan"</strong> &mdash; real: <strong>TurboQuant</strong>, see &sect;4.</li>
