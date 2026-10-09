@@ -394,8 +394,11 @@ footer {
       link resolves &mdash; plus
       <a href="https://github.com/OrlandoLuque/ai_assistant/tree/master/scripts/mutations">mutation
       specs</a> that check the tests would <em>notice</em> if the code were wrong, and a
-      literature-comparable retrieval score: nDCG@10 = 0.2979 on NFCorpus, against BEIR's
-      published 0.325 for Anserini BM25.
+      retrieval score that was <em>run</em> rather than asserted: <strong>nDCG@10 = 0.2979</strong>
+      over the 323 judged queries of NFCorpus, with the crate's own BM25-over-SQLite. The figure
+      to hold it against is the BM25 baseline in
+      <a href="https://arxiv.org/abs/2104.08663">the BEIR paper</a> &mdash; go and read it there,
+      because a number quoted second-hand is the kind of claim this page has stopped making.
       <br><br>
       <strong>And it still needs more hammering.</strong> The recurring defect here has been
       capability that was built, tested, documented &mdash; and never connected. Two documented
