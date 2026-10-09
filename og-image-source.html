@@ -1,4 +1,21 @@
 <!DOCTYPE html>
+<!--
+  Source for og-image.png (1200x630), the card shown when the site is shared.
+
+  LOGO ONLY, BY DESIGN. The earlier version had a panel with the tagline and
+  three stat badges; commit 774096c replaced it, but left that markup behind
+  under `.content { display: none }`. The hidden numbers then went stale (390K
+  lines, 6,874 tests) and read like the source of the served image, which they
+  never were -- it cost a round of "the OG image needs updating" over an image
+  that has no numbers in it. Deleted rather than left hidden: a figure nothing
+  renders is a figure nothing can correct.
+
+  To regenerate after editing:
+    chrome --headless --window-size=1200,630 --screenshot=og-image.png \
+           --default-background-color=0f172aff og-image-source.html
+  Check the result by eye -- a plain headless screenshot crops the logo's lower
+  tendrils compared to the committed PNG, so the scale needs a look, not a diff.
+-->
 <html>
 <head>
 <meta charset="UTF-8">
@@ -8,15 +25,6 @@ body { width: 1200px; height: 630px; background: #0f172a; display: flex; align-i
 .bg-text { position: absolute; font-size: 90px; font-weight: 700; color: #253348; letter-spacing: 4px; white-space: nowrap; user-select: none; top: 61%; left: 66%; transform: translate(-50%, -50%); z-index: 0; }
 .logo { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
 .logo svg { transform: scale(5.5) translateY(19.75px); }
-.content { display: none; }
-h1 { color: #e2e8f0; font-size: 48px; font-weight: 400; margin-bottom: 8px; }
-.tagline { color: #6366f1; font-size: 24px; margin-bottom: 24px; }
-.desc { color: #94a3b8; font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
-.stats { display: flex; gap: 16px; margin-bottom: 48px; }
-.stat { background: #1e293b; border-radius: 8px; padding: 12px 20px; min-width: 150px; }
-.stat .num { color: #6366f1; font-size: 28px; font-weight: 700; display: block; }
-.stat .label { color: #94a3b8; font-size: 14px; }
-.footer { color: #64748b; font-size: 14px; line-height: 1.6; }
 /* Accent bars */
 .bar-top, .bar-bottom { position: fixed; left: 0; right: 0; height: 4px; background: #6366f1; }
 .bar-top { top: 0; }
@@ -67,25 +75,6 @@ h1 { color: #e2e8f0; font-size: 48px; font-weight: 400; margin-bottom: 8px; }
 <path d="M42,88 Q58,98 76,104 Q96,110 114,104 Q122,98 118,94" stroke="#6366f1" stroke-width="1" fill="none" opacity=".25" stroke-linecap="round"/>
 <circle cx="140" cy="30" r=".7" fill="#e879f9" opacity=".18"/><circle cx="176" cy="60" r=".6" fill="#c084fc" opacity=".12"/><circle cx="140" cy="90" r=".7" fill="#e879f9" opacity=".18"/><circle cx="158" cy="48" r=".5" fill="#818cf8" opacity=".1"/><circle cx="158" cy="72" r=".5" fill="#818cf8" opacity=".1"/>
 </svg>
-</div>
-
-<div class="content">
-  <h1>ai_assistant</h1>
-  <div class="tagline">One Binary. Complete AI Infrastructure.</div>
-  <div class="desc">
-    A single Rust crate that replaces 5-10 Python/Node services.<br>
-    LLM orchestration, RAG, multi-agent, security, streaming,<br>
-    and distributed computing.
-  </div>
-  <div class="stats">
-    <div class="stat"><span class="num">558K</span><span class="label">Lines of Rust</span></div>
-    <div class="stat"><span class="num">8,990</span><span class="label">Tests</span></div>
-    <div class="stat"><span class="num">98</span><span class="label">Feature Flags</span></div>
-  </div>
-  <div class="footer">
-    PolyForm Noncommercial 1.0.0<br>
-    ai-assistant.runawaybrains.com
-  </div>
 </div>
 </body>
 </html>
