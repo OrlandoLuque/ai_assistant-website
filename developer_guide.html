@@ -1570,14 +1570,14 @@ pub trait LlmProvider {
   <div class="container">
     <h2 class="section-title">Testing</h2>
     <div class="prose">
-      <p><strong>8,990 library tests pass under the CI feature set</strong> (<code>FEATURES_STD</code>) and 7,668 under the other one (<code>FEATURES_NETWORK</code>). Those two <em>overlap</em> &mdash; both include <code>full</code> &mdash; so they are not additive, and no single total is quoted here for that reason. <code>src/</code> declares 10,138 <code>#[test]</code> attributes; the difference between that and 8,990 is tests behind features neither CI job compiles. Measured 2026-10-08 at 0.2.333.</p>
+      <p><strong>8,991 library tests pass under the CI feature set</strong> (<code>FEATURES_STD</code>) and 7,668 under the other one (<code>FEATURES_NETWORK</code>). Those two <em>overlap</em> &mdash; both include <code>full</code> &mdash; so they are not additive, and no single total is quoted here for that reason. <code>src/</code> declares 10,138 <code>#[test]</code> attributes; the difference between that and 8,991 is tests behind features neither CI job compiles. Measured 2026-10-08 at 0.2.333.</p>
     </div>
 
     <div style="overflow-x: auto;">
     <table class="doc-table">
       <thead><tr><th>Category</th><th>Count</th><th>Command</th></tr></thead>
       <tbody>
-        <tr><td>Unit tests (<code>FEATURES_STD</code>)</td><td>8,990</td><td><code>cargo test --features "full,autonomous,..." --lib</code></td></tr>
+        <tr><td>Unit tests (<code>FEATURES_STD</code>)</td><td>8,991</td><td><code>cargo test --features "full,autonomous,..." --lib</code></td></tr>
         <tr><td>Unit tests (<code>FEATURES_NETWORK</code>)</td><td>7,668</td><td><code>cargo test --features "full,distributed-network,p2p,..." --lib</code></td></tr>
         <tr><td>Integration tests</td><td>38</td><td><code>cargo test --features full --test '*'</code></td></tr>
         <tr><td>Test harness (CLI, regression gate)</td><td>609</td><td><code>cargo run --bin ai_test_harness -- --all</code></td></tr>
