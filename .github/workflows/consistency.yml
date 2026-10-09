@@ -1,0 +1,64 @@
+# The site's claims about the library, checked against the library.
+#
+# This repository had no CI at all, and on 2026-10-08 its hero badges carried
+# the same stale figures the library's README did -- 369 source files, 61
+# feature flags, ~520K lines -- plus six Rust examples importing types the
+# crate does not have, on the two pages a stranger opens first.
+#
+# WHY IT CLONES THE OTHER REPOSITORY
+# The facts are measured in `ai_assistant`'s tree and asserted here. There is
+# no way to check one against the other from a single checkout, and keeping a
+# copy of the figures in this repo would just move the drift. So the checkers
+# live with the measurement (one resolver, one source of truth) and this job
+# fetches them.
+#
+# The trade-off, stated rather than discovered later: this job depends on
+# `ai_assistant` staying public. It is, deliberately and by a standing rule in
+# that repository's CLAUDE.md, so the coupling runs with the rule and not
+# against it. If that ever changed, this job fails loudly rather than passing
+# silently -- which is the behaviour you want from it.
+name: Consistency with the library
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+  # Weekly: the library moves without this repository being touched, so a
+  # push-only trigger would let the numbers go stale between website edits --
+  # which is exactly how they got stale in the first place.
+  schedule:
+    - cron: "17 6 * * 1"
+
+jobs:
+  consistency:
+    name: Figures and Rust examples match the crate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the website
+        uses: actions/checkout@v5
+        with:
+          path: website
+
+      - name: Check out the library
+        uses: actions/checkout@v5
+        with:
+          repository: OrlandoLuque/ai_assistant
+          path: library
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The figures on the hero badges and in the <meta> descriptions -- the
+      # text Google and LinkedIn show. Prose is deliberately out of scope and
+      # the script says why in the place it would otherwise check it.
+      - name: Front-page figures
+        working-directory: library
+        run: python scripts/check_website_numbers.py ../website
+
+      # Every `use ai_assistant::…` in a <pre><code> block must name an item
+      # the crate actually has. Six did not when this was first run.
+      - name: Rust examples name real types
+        working-directory: library
+        run: python scripts/check_website_examples.py ../website
