@@ -519,25 +519,25 @@ fn main() {
     </p>
 
     <span class="code-label rust">providers.rs</span>
-    <pre>use ai_assistant::{AiAssistant, ProviderType};
+    <pre>use ai_assistant::{AiAssistant, AiProvider};
 
 fn main() {
     let mut assistant = AiAssistant::new();
 
     // Use Ollama (local, default)
-    assistant.set_provider(ProviderType::Ollama);
+    assistant.set_provider(AiProvider::Ollama);
     assistant.set_provider_url("http://localhost:11434");
 
     // Or use LM Studio (local)
-    assistant.set_provider(ProviderType::LmStudio);
+    assistant.set_provider(AiProvider::LmStudio);
     assistant.set_provider_url("http://localhost:1234");
 
     // Or use OpenAI (cloud)
-    assistant.set_provider(ProviderType::OpenAi);
+    assistant.set_provider(AiProvider::OpenAi);
     assistant.set_api_key("sk-...");
 
     // Or use Anthropic (cloud)
-    assistant.set_provider(ProviderType::Anthropic);
+    assistant.set_provider(AiProvider::Anthropic);
     assistant.set_api_key("sk-ant-...");
 
     // All providers share the same API:

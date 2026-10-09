@@ -758,9 +758,9 @@ if !gate.passes(&faithfulness_result) {
     </p>
 
     <span class="code-label rust">Rust API</span>
-    <pre>use ai_assistant::chain_of_verification::CoVeVerifier;
+    <pre>use ai_assistant::chain_of_verification::ChainOfVerification;
 
-let verifier = CoVeVerifier::new();
+let verifier = ChainOfVerification::new();
 let verification = verifier.verify(&review.text, &source_documents)?;
 
 for check in &verification.checks {
@@ -882,9 +882,9 @@ ai_cli verify "Which papers evaluate on human preferences, and when?" \
     </div>
 
     <span class="code-label rust">Rust API</span>
-    <pre>use ai_assistant::multi_agent::{AgentRole, MultiAgentOrchestrator};
+    <pre>use ai_assistant::multi_agent::{AgentRole, AgentOrchestrator};
 
-let mut orchestrator = MultiAgentOrchestrator::new();
+let mut orchestrator = AgentOrchestrator::new();
 
 // Define the systematic review pipeline
 orchestrator.add_agent(AgentRole::ResearchAssistant);

@@ -557,16 +557,16 @@ distillation,constrained-decoding,hitl,webrtc,devtools,eval-suite"</pre>
     </div>
 
     <span class="code-label rust">Rust</span>
-    <pre>use ai_assistant::{AiAssistant, ProviderType};
+    <pre>use ai_assistant::{AiAssistant, AiProvider};
 
 let mut assistant = AiAssistant::new();
 
 // Configure multiple providers
-assistant.set_provider(ProviderType::Ollama);
+assistant.set_provider(AiProvider::Ollama);
 assistant.set_provider_url("http://localhost:11434");
 
 // Switch at runtime
-assistant.set_provider(ProviderType::OpenAi);
+assistant.set_provider(AiProvider::OpenAi);
 assistant.set_api_key("sk-...");
 
 // Auto-selection based on query complexity
@@ -654,10 +654,10 @@ User Query
       </p>
     </div>
     <span class="code-label rust">Rust</span>
-    <pre>use ai_assistant::{KpkgWriter, KpkgReader};
+    <pre>use ai_assistant::{KpkgBuilder, KpkgReader};
 
 // Create an encrypted package
-let mut writer = KpkgWriter::new("my-secret-key");
+let mut writer = KpkgBuilder::new("my-secret-key");
 writer.add_document("guide.md", &content);
 writer.add_document("faq.txt", &faq_content);
 let package_bytes = writer.finish()?;
@@ -1523,15 +1523,15 @@ match error {
       </p>
     </div>
     <span class="code-label rust">Rust</span>
-    <pre>use ai_assistant::AssistantConfig;
+    <pre>use ai_assistant::AiConfig;
 
 // Option A: Default + field assignment
-let mut config = AssistantConfig::default();
+let mut config = AiConfig::default();
 config.provider = "ollama".into();
 config.model = "llama3".into();
 
 // Option B: builder / constructor (where available)
-let config = AssistantConfig::new("ollama", "llama3");</pre>
+let config = AiConfig::new("ollama", "llama3");</pre>
 
     <div class="info-box warning">
       <strong>Do not</strong> use struct literal syntax for library types. It will fail to
