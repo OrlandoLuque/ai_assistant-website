@@ -363,7 +363,7 @@ cargo run --bin ai_cli --features full -- quality gates list</pre>
       <ul>
         <li><code>verify</code> &mdash; One-shot query with anti-hallucination pipeline (<code>--strategy</code>, <code>--faithfulness</code>, <code>--cove</code>, <code>--quality-gates</code>).</li>
         <li><code>research</code> &mdash; Search academic databases (requires <code>research</code> feature: <code>--providers</code>, <code>--max-results</code>, <code>--bibtex</code>, <code>--review</code>).</li>
-        <li><code>quality</code> &mdash; Inspect or run quality gates (<code>gates list</code>, <code>gates check</code>).</li>
+        <li><code>quality</code> &mdash; Inspect or run quality gates (<code>gates list</code>, <code>gates check</code>) and score a response with an LLM judge (<code>judge --prompt &lt;P&gt; --response &lt;R&gt; [--judges N]</code>). With <code>--judges N</code> the judge is asked N times and the <strong>median</strong> is taken; a metric it did not score is not shown and not counted as zero.</li>
       </ul>
 
       <h4>ai_assistant_cli</h4>
