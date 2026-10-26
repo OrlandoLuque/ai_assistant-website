@@ -1,3 +1,22 @@
 # Opt-out of AI training on GitHub and compatible platforms
 # See: https://github.com/healsdata/ai-training-opt-out
 * linguist-generated=true
+
+# Normaliza los finales de linea AL COMITEAR, sea lo que sea lo que haya en el
+# disco --- el mismo arreglo que `ai_assistant` lleva desde V397, y por el mismo
+# motivo: `pathlib.write_text()` en Windows traduce 
+ a 
+, y los scripts
+# que editan estas paginas viven FUERA del repositorio, asi que no se puede
+# arreglar en el script. Se arregla en el indice.
+#
+# Medido hoy (2026-10-26), antes de esto: 72 ficheros guardados con CRLF, 52 con
+# LF y 9 con LF en el indice y CRLF en el disco. Tres estados para la misma
+# pregunta. El sintoma fue un cambio de 30 lineas en seis paginas que produjo un
+# diff de 5.678, porque `concepts.html` estaba en CRLF y se reescribio entero.
+# Un diff que no se puede leer no se revisa.
+#
+# El instrumento que contesta si esto esta bien es `git ls-files --eol`, no la
+# vista del diff: lo que cuenta es la columna `i/` --- el indice ---, y el disco
+# puede seguir en CRLF sin que importe.
+* text=auto
