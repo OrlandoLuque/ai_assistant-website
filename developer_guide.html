@@ -1390,6 +1390,8 @@ lm_studio = "http://localhost:1234"
 temperature = 0.7         # 0.0 (deterministic) to 2.0 (creative)
 max_history = 20          # Conversation messages to keep
 system_prompt = "You are a helpful assistant."
+stream_timeout_secs = 1800  # Streaming: total CEILING, not the policy
+stream_stall_secs = 180     # Streaming: seconds of SILENCE before giving up
 
 [rag]
 enabled = true
@@ -1427,6 +1429,32 @@ let mut assistant = AiAssistant::new();
 assistant.set_temperature(0.7);
 assistant.set_max_history(20);
 assistant.set_system_prompt("You are a helpful coding assistant.");</pre>
+
+    <h3 class="sub-title">Streaming Timeouts: Watch the Silence, Not the Clock</h3>
+    <div class="prose">
+      <p>
+        A total timeout is the wrong instrument for a token stream, and it is wrong in
+        <strong>both</strong> directions: short, and it kills a legitimate six-minute
+        generation; long, and you wait those same six minutes to notice the server died.
+        So streaming carries two values. <code>stream_stall_secs</code> is the policy &mdash;
+        seconds with no token arriving &mdash; and it restarts on every read, so a slow but
+        living stream is never cut. <code>stream_timeout_secs</code> is only a ceiling, so a
+        connection that dribbles one byte a minute cannot hold a thread forever.
+      </p>
+      <p>
+        The stall default is 180&nbsp;s and not 30&nbsp;s because a cold model load can take
+        minutes before the first token &mdash; 166&nbsp;s, measured on this project's own
+        hardware when Ollama had to share layers with the CPU. And it applies to
+        <em>streaming only</em>: a buffered completion sends nothing until it is finished, so
+        &ldquo;no bytes for N seconds&rdquo; would just be a total timeout under another name.
+      </p>
+      <p>
+        In code the same decision is one call:
+        <code>HttpRequest::long_lived(total, stall)</code>, with
+        <code>DEFAULT_LONG_LIVED_TIMEOUT</code> (1&nbsp;h) and
+        <code>DEFAULT_STALL_TIMEOUT</code> (60&nbsp;s) for downloads.
+      </p>
+    </div>
 
     <h3 class="sub-title">Hot Reload</h3>
     <div class="prose">
