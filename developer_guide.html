@@ -705,6 +705,53 @@ let db = InMemoryVectorDb::new(VectorDbConfig::default());
 
 let retrieval = VectorDbRetrieval::new(&amp;db).with_keyword_search(&amp;my_fts_retriever);
 let result = pipeline.process(query, &amp;my_llm, Some(&amp;my_embedder), &amp;retrieval, None)?;</pre>
+
+    <h3 class="sub-title">Deleting: <code>delete()</code> Answers Locally, <code>delete_detailed()</code> Asks the Server</h3>
+    <div class="prose">
+      <p>
+        <code>delete() -&gt; AiResult&lt;bool&gt;</code> means <strong>&ldquo;something stopped
+        being where it was&rdquo;</strong>. In the six remote backends that bool was, until
+        V444, computed purely from the local cache &mdash; the server&rsquo;s reply was
+        discarded &mdash; so with the backend down or answering 401 it returned
+        <code>Ok(true)</code> while the vector was still in the index, ready to reappear on
+        the next start with an empty cache. And <code>clear()</code> was worse: with an expired
+        key it emptied the cache, returned <code>Ok(())</code> and left the whole index in
+        place.
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>use ai_assistant::{DeleteConfirmation, VectorDb};
+
+let outcome = db.delete_detailed("vec_1")?;
+if !outcome.confirmed_by_server() {
+    // The local copy is gone; the server never said so.
+    eprintln!("unconfirmed delete: {}", outcome.unconfirmed_reason().unwrap_or("?"));
+}
+match outcome.server {
+    DeleteConfirmation::Deleted => {}             // the server accepted
+    DeleteConfirmation::NotFound => {}            // the server said it is not there
+    DeleteConfirmation::Unconfirmed { .. } =&gt; {}  // nobody confirmed anything
+    _ =&gt; {}                                       // `#[non_exhaustive]`
+}</pre>
+    <div class="prose">
+      <ul>
+        <li><strong><code>Deleted</code> is not a claim that it existed.</strong> A delete is
+        idempotent in several backends &mdash; Pinecone answers 200 whether the id is there or
+        not &mdash; so absence arrives as <code>Deleted</code> too. What the variant
+        guarantees is that the server spoke and accepted. Elasticsearch <em>does</em>
+        distinguish, so there <code>NotFound</code> is a real answer.</li>
+        <li><strong>The server&rsquo;s verdict and the local copy are orthogonal</strong>,
+        which is why they are two fields and not three enum variants. A server can say
+        &ldquo;not there&rdquo; while the local cache did have it; collapsing that into one
+        value is what the first version of this type got wrong, and an existing test caught
+        it.</li>
+      </ul>
+      <p>
+        Implementations with no remote server &mdash; in-memory, HNSW, LanceDB, pgvector
+        &mdash; inherit the trait&rsquo;s default, which is correct for them: what
+        <code>delete()</code> says is the whole truth, because there is nobody else to ask.
+      </p>
+    </div>
     </div>
 </section>
 
