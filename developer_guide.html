@@ -1589,29 +1589,57 @@ match error {
     other => log::warn!("other error: {other}"),
 }</pre>
 
-    <h3 class="sub-title">Constructing Non-Exhaustive Structs</h3>
+    <h3 class="sub-title">Configuring Non-Exhaustive Structs: <code>with_*</code> Setters</h3>
     <div class="prose">
       <p>
-        Struct literal syntax (<code>MyStruct { field: value }</code>) is disallowed for
-        non-exhaustive types. Use <code>Default</code> + field assignment, or the provided
-        constructor.
+        Struct expression syntax (<code>MyStruct { field: value }</code>) is disallowed for
+        non-exhaustive types, <strong>including</strong> with functional update syntax
+        &mdash; <code>..Default::default()</code> is rejected too
+        (<code>error[E0639]</code>). Since V446 every public field of every input config has
+        a chainable <code>with_&lt;field&gt;</code>, so a config can be built in one
+        expression and passed straight into a call:
       </p>
     </div>
     <span class="code-label rust">Rust</span>
-    <pre>use ai_assistant::AiConfig;
+    <pre>use ai_assistant::VectorDbConfig;
 
-// Option A: Default + field assignment
-let mut config = AiConfig::default();
-config.provider = "ollama".into();
-config.model = "llama3".into();
-
-// Option B: builder / constructor (where available)
-let config = AiConfig::new("ollama", "llama3");</pre>
+let config = VectorDbConfig::default()
+    .with_dimensions(1536)
+    .with_collection_name("papers".to_string());</pre>
+    <div class="prose">
+      <p>
+        <strong>204</strong> types work this way; <strong>17</strong> have a dedicated
+        <code>*Builder</code> instead (used where there are required fields or validation at
+        construction) and <strong>15</strong> have a <code>new</code> that takes the values
+        with no sensible default &mdash;
+        <code>S2SConfig::new(model_id, input_format, output_format, capability)</code>, for
+        instance, because guessing an audio format would send the wrong bytes to the model.
+      </p>
+      <p>
+        Field assignment on a value you already own was never forbidden by the attribute and
+        still works, since these fields are all <code>pub</code>. It just costs a
+        <code>mut</code> binding and a statement per field:
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>let mut config = VectorDbConfig::default();
+config.dimensions = 1536;        // compiles: `pub` field, value you own</pre>
 
     <div class="info-box warning">
-      <strong>Do not</strong> use struct literal syntax for library types. It will fail to
-      compile because <code>#[non_exhaustive]</code> prevents external crates from listing
-      all fields.
+      <strong>Do not</strong> use struct expression syntax for library types, with or without
+      <code>..Default::default()</code>. It will fail to compile because
+      <code>#[non_exhaustive]</code> prevents external crates from naming all the fields.
+    </div>
+
+    <div class="info-box">
+      <strong>If a type has neither a <code>Default</code> nor any function returning it</strong>,
+      setters cannot help &mdash; there is no first value to chain from. A CI gate
+      (<code>check_config_constructible.py</code>) keeps those two cases apart and fails on
+      both: it is how <code>MockHttpServer</code> and <code>VectorDbConfig.dimensions</code>
+      stopped being the kind of thing a consumer discovers for us. Three record types
+      (<code>SkillDefinition</code>, <code>WasmArtifact</code>,
+      <code>ConfigSearchResult</code>) stay closed on purpose &mdash; they carry computed
+      hashes and signatures, and what they need is a producer, not setters.
     </div>
 
     <h3 class="sub-title">Trait Stability Guarantees</h3>
