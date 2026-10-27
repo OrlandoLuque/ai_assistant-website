@@ -1692,6 +1692,57 @@ pub trait LlmProvider {
     </table>
     </div>
 
+    <h3 class="sub-title">Injecting Your Own HTTP Client</h3>
+    <div class="prose">
+      <p>
+        Every outbound request goes through one port, <code>HttpClient</code>, and that port is
+        being made <em>injectable</em> module by module &mdash; a port you can only use with its
+        one concrete implementation does not decouple anything. Two shapes, both already in the
+        crate:
+      </p>
+    </div>
+    <span class="code-label rust">Rust</span>
+    <pre>// A struct that holds one: `with_http_client`.
+let checker = HealthChecker::new(config).with_http_client(Arc::new(my_client));
+let registry = ResilientProviderRegistry::new(primary).with_http_client(Arc::new(my_client));
+
+// A free function: the `_with` suffix takes the client, the short name keeps the
+// convenient default.
+let capability = probe_vllm_with(&amp;my_client, "http://localhost:8000")?;
+let models = fetch_ollama_models_with(&amp;my_client, "http://localhost:11434")?;</pre>
+    <div class="prose">
+      <p>
+        What this buys is not abstraction for its own sake: it is the only way to test the rules
+        a module actually encodes. Two of them shipped untested for as long as they existed, and
+        both are opinions rather than mechanics:
+      </p>
+      <ul>
+        <li><strong>A 4xx counts as <em>healthy</em></strong> in
+        <code>health_check</code> &mdash; what a probe measures is that the server answers, not
+        that the route exists. The module had an escape hatch before
+        (<code>with_check_fn</code>, which takes a closure), but it replaces the
+        <em>whole</em> check, so a test using it never reached the rule.</li>
+        <li><strong>A 4xx is <code>Degraded</code>, not <code>Unhealthy</code></strong>, in
+        <code>ResilientProviderRegistry::check_health</code> &mdash; 2xx healthy, 3xx/4xx
+        degraded because the server answered, 5xx and transport failure unhealthy. Proving it
+        needed a server returning 404 on demand.</li>
+      </ul>
+      <p>
+        Injection can also be done <em>badly</em>:
+        <code>fetch_model_context_size</code> dispatches over twenty providers and three of
+        those branches speak HTTP, so injecting at the entry point alone would leave the
+        branches on the default adapter &mdash; the original defect wearing a parameter. The
+        client is threaded through every branch, with a request-counting double asserting it
+        arrives.
+      </p>
+      <p>
+        Migrated so far: <code>health_check</code>, <code>vllm_capability</code>,
+        <code>providers</code>. The high-level <code>generate_response</code> and
+        <code>generate_response_streaming</code> are deliberately not in that list: they route
+        through the phase-3 adapter factory rather than touching HTTP directly.
+      </p>
+    </div>
+
     <h3 class="sub-title">Test Doubles for Consumers: the <code>test-utils</code> Feature</h3>
     <div class="prose">
       <p>
