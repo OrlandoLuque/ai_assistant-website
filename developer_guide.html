@@ -1746,7 +1746,7 @@ let models = fetch_ollama_models_with(&amp;my_client, "http://localhost:11434")?
     <h3 class="sub-title">Test Doubles for Consumers: the <code>test-utils</code> Feature</h3>
     <div class="prose">
       <p>
-        Two of the doubles this crate uses for its own tests are available to you behind
+        Four of the doubles this crate uses for its own tests are available to you behind
         <code>test-utils</code> &mdash; off by default, because a mock server in a release
         binary helps nobody.
       </p>
@@ -1764,14 +1764,35 @@ ai_assistant = { version = "0.2", features = ["test-utils"] }</pre>
         goes quiet <em>without closing</em>. For testing stall timeouts; and
         <code>dribbling(bytes, gap)</code> for the opposite case, delivering the whole body
         a byte at a time, which is the only way to tell a per-read timeout from a total one.</li>
+        <li><code>CannedHttpClient</code> &mdash; implements <code>HttpClient</code> itself, so
+        it replaces the <em>transport</em> instead of the server: it answers a prepared status
+        and body, or a <code>sequence</code> of them with the last one repeating, and it
+        records what went out &mdash; <code>seen()</code> for the last request,
+        <code>calls()</code> for how many, <code>served()</code> for the statuses it really
+        served. This is the one to reach for when the code under test <em>builds</em> its own
+        URL and there is nowhere to point a server at.</li>
+        <li><code>FailingHttpClient</code> &mdash; every send is an <code>Err</code>. It is the
+        case that separates &laquo;the server said no&raquo; from &laquo;there was no
+        server&raquo;, which behind this port are different things: a non-2xx arrives as
+        <code>Ok</code> with a status, and only a transport failure is <code>Err</code>.</li>
       </ul>
       <p>
-        Until V443 both lived under <code>#[cfg(test)]</code>, so writing
+        Until V443 the first two lived under <code>#[cfg(test)]</code>, so writing
         <code>MockHttpServer::start()</code> in another crate did not compile and the only
         option was hand-rolling a TCP server &mdash; exactly the work these two already did
-        in here. <code>MockHttpClient</code> stays internal: it pins the status at 200,
-        which makes it the wrong tool for most things a consumer wants to test. Implement
-        <code>HttpClient</code> yourself; it is one required method.
+        in here. The other two made the same move in V473, when a second module needed the
+        same double. <code>MockHttpClient</code> stays internal: it pins the status at 200,
+        which makes it the wrong tool for most things a consumer wants to test &mdash;
+        <code>CannedHttpClient</code> is the general version of it.
+      </p>
+      <p>
+        Writing your own is still fine, and it is <strong>two</strong> required methods, not
+        one: <code>send</code> and <code>send_streaming</code>. This paragraph said
+        &laquo;one&raquo; until V473, and so did the doc comment on <code>send</code>; what
+        showed it was that both doubles added that day had to write a
+        <code>send_streaming</code> that bails. The other three
+        (<code>get_json</code>, <code>post_json</code>, <code>post_streaming</code>) derive
+        from those two.
       </p>
     </div>
 
