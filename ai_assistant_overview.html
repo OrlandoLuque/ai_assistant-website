@@ -150,27 +150,6 @@ td:first-child { font-weight: 600; color: #e2e8f0; white-space: nowrap; }
 .partial { color: #f59e0b; }
 .no { color: #64748b; }
 
-/* ── Tiers ─────────────────────────────────────────────────── */
-.tier-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-.tier {
-  background: #1e293b; border: 1px solid #334155; border-radius: 14px;
-  padding: 28px; text-align: center; position: relative; overflow: hidden;
-}
-.tier.highlight { border-color: #3b82f6; }
-.tier.highlight::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #a78bfa);
-}
-.tier h3 { font-size: 1.15rem; margin-bottom: 4px; }
-.tier .price { font-size: 1.4rem; font-weight: 800; color: #60a5fa; margin: 12px 0; }
-.tier ul { list-style: none; text-align: left; margin-top: 16px; }
-.tier li { padding: 6px 0; font-size: 0.85rem; color: #94a3b8; border-bottom: 1px solid #293548; }
-.tier li::before { content: ''; margin-right: 8px; }
-
 /* ── Intro box ─────────────────────────────────────────────── */
 .intro-box {
   max-width: 800px; margin: 0 auto;
@@ -197,7 +176,6 @@ footer strong { color: #94a3b8; }
   .stat-badge .num { font-size: 1.3rem; }
   .card-grid, .feat-grid { grid-template-columns: 1fr; }
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-  .tier-grid { grid-template-columns: 1fr; }
   .intro-box { padding: 20px; font-size: 0.92rem; }
   nav a { font-size: 0.78rem; padding: 4px 8px; }
   table { font-size: 0.78rem; }
@@ -223,7 +201,6 @@ footer strong { color: #94a3b8; }
     <a href="#calidad">Calidad</a>
     <a href="#casos-de-uso">Casos de uso</a>
     <a href="#comparativa">Comparativa</a>
-    <a href="#tiers">Tiers</a>
     <a href="binaries.html">Binaries</a>
     <a href="https://github.com/OrlandoLuque/ai_assistant" target="_blank" rel="noopener" style="margin-left:auto;">GitHub</a>
   </div>
@@ -625,61 +602,6 @@ footer strong { color: #94a3b8; }
 </section>
 
 <!-- ═══ TIERS ═════════════════════════════════════════════════ -->
-<section id="tiers">
-  <div class="container">
-    <h2 class="section-title">Estructura de features</h2>
-    <p class="section-sub">Compila solo lo que necesitas. 99 feature flags para control total.</p>
-    <div class="tier-grid">
-
-      <div class="tier">
-        <h3>Gratuito / Personal</h3>
-        <div class="price">0 &euro;</div>
-        <p style="font-size: 0.82rem; color: #94a3b8;">Uso personal, academico, investigacion</p>
-        <ul>
-          <li>Core LLM (18 proveedores)</li>
-          <li>Embeddings y busqueda semantica</li>
-          <li>Streaming (SSE, WebSocket)</li>
-          <li>Herramientas y function calling</li>
-          <li>Parsing de documentos</li>
-          <li>RAG basico y avanzado</li>
-          <li>55 ejemplos compilables</li>
-        </ul>
-      </div>
-
-      <div class="tier highlight">
-        <h3>Pro</h3>
-        <div class="price">Negociado</div>
-        <p style="font-size: 0.82rem; color: #94a3b8;">Uso comercial con soporte</p>
-        <ul>
-          <li>Todo lo de Gratuito +</li>
-          <li>Multi-agente (5 roles)</li>
-          <li>Seguridad (RBAC, PII, cifrado)</li>
-          <li>Analytics y metricas</li>
-          <li>Evaluacion y benchmarks</li>
-          <li>Vision y analisis de imagen</li>
-          <li>Prompt optimization (DSPy)</li>
-        </ul>
-      </div>
-
-      <div class="tier">
-        <h3>Enterprise</h3>
-        <div class="price">Personalizado</div>
-        <p style="font-size: 0.82rem; color: #94a3b8;">Despliegue a escala</p>
-        <ul>
-          <li>Todo lo de Pro +</li>
-          <li>Sistema distribuido (P2P, CRDTs)</li>
-          <li>Agentes autonomos + scheduler</li>
-          <li>Automatizacion de navegador</li>
-          <li>Ejecucion en contenedores</li>
-          <li>Voz y WebRTC</li>
-          <li>Generacion de media</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
   <div class="container">
